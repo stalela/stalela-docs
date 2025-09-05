@@ -7,7 +7,7 @@ The Canonical Transfer Service (CTS) exposes the primary API for creating and re
 ## 🎯 Purpose
 - Provide a **unified API** for initiating transfers.  
 - Normalize requests into canonical model.  
-- Return transfer state and timeline.
+- Return transfer state and timeline
 
 ---
 
