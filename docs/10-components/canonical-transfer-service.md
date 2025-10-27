@@ -55,7 +55,7 @@ Assumptions/Constraints
 
 ### 3. Functional Requirements
 
-- Accept API requests: `POST /transfers`, `GET /transfers/:id`.
+- Accept API requests: `POST /transfers`, `GET /transfers`, `GET /transfers/:id`.
 - Deduplicate via idempotency key + request body hash.
 - Validate and normalize into canonical schema.
 - Pre-screen entities with Compliance.
@@ -67,7 +67,8 @@ API contracts (summary)
 
 | Method | Path | Required Headers | Success | Notes |
 |---|---|---|---|---|
-| POST | /transfers | Authorization, Idempotency-Key, X-Canonical-Version? | 201 with resource or 200 on idempotent replay | Request validated against canonical model |
+| POST | /transfers | Authorization, Idempotency-Key, X-Canonical-Version | 201 with resource or 200 on idempotent replay | Request validated against canonical model |
+| GET | /transfers | Authorization | 200 | Cursor-paginated list with optional filters; eventually consistent |
 | GET | /transfers/:id | Authorization | 200 | Returns transfer details + timeline |
 
 Canonical Request (excerpt)
@@ -76,10 +77,17 @@ Canonical Request (excerpt)
   "tenantId": "tnt_123",
   "intent": "PUSH",
   "amount": { "value": "100.00", "currency": "USD" },
+  "sourceCurrency": "USD",
+  "targetCurrency": "USD",
+  "fxStrategy": "NOT_APPLICABLE",
   "payer": { "type": "WALLET", "id": "payer-abc" },
-  "payee": { "type": "WALLET", "id": "payee-xyz" },
+  "payee": { "type": "BANK", "id": "payee-xyz" },
+  "railHints": ["usdc-algo"],
+  "feeModel": "STORO_STANDARD",
+  "endUserRef": "end-user-55",
   "externalRef": "client-789",
-  "metadata": { "purpose": "invoice-42" }
+  "metadata": { "purpose": "invoice-42" },
+  "traceparent": "00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-00"
 }
 ```
 
@@ -96,7 +104,7 @@ Prod targets
 | Throughput | Baseline 200 TPS; burst 1,000 TPS (5 min) | HPA + queue smoothing |
 | Scalability | Horizontal scale by stateless API; partition by tenantId/transferId | Stickiness not required |
 | Security & Privacy | OAuth2 client-cred or HMAC per tenant; TLS 1.2+; PII encrypted at rest | Logs redact PII |
-| Reliability | Idempotency (24h TTL); transactional outbox with retries; DLQ | Exactly-once publish semantics |
+| Reliability | Idempotency (36h TTL); transactional outbox with retries; DLQ | Exactly-once publish semantics |
 | Compliance/Audit | Immutable events; correlation IDs; retention ≥ 7 years (configurable) | WORM storage optional |
 
 Pilot targets (20 merchants, 100 tx/merchant/day ≈ 2k/day)
@@ -277,6 +285,8 @@ sequenceDiagram
   API-->>Client: 502 RoutingUnavailable {retryAfter: 5s}
 ```
 
+- When Directory reports a closed settlement window (e.g., EFT cutoff), propagate `retryAfter` aligned with the next open window. Clients must back off until that timestamp; CTS logs the incident for analytics.
+
 Outbox Retry & DLQ
 ```mermaid
 sequenceDiagram
@@ -284,7 +294,7 @@ sequenceDiagram
   participant Bus as EventBus
   OB->>Bus: publish
   alt failure
-    OB->>OB: attempts++ backoff(1s→5s→30s→2m→10m→1h)
+    OB->>OB: attempts++ backoff(1s→5s→30s→2m→10m→1h→2h→4h→8h→16h)
   else success
     OB->>OB: mark SENT
   end
@@ -314,8 +324,16 @@ flowchart LR
   Persist --> Outbox[Write Outbox]
   Outbox --> Bus[Event Bus]
   Bus --> Proj[Read Model Projections]
-  Proj --> API[GET /transfers/:id]
+ Proj --> API[List & Detail Reads]
 ```
+
+**Read-model list semantics**
+- Backed by a denormalized `transfer_summaries` projection populated from lifecycle events and command writes.
+- Cursor pagination uses `(tenantId, createdAt DESC, transferId)` encoded inside `pageToken` to avoid skipping rows during concurrent inserts.
+- Filters: `state[]`, `intent[]`, `rail[]`, `fxStrategy[]`, `createdAtFrom/To`, `updatedAtFrom/To`, `externalRef`, `endUserRef`; default window capped to 90 days of hot storage.
+- Response omits encrypted payer/payee blobs; only stable references (`payerRef`, `payeeRef`) and operational metadata are exposed.
+- Consistency: eventual—projections catch up within seconds; POST/GET-by-id remain the authoritative source immediately after writes.
+- Authorization and throttling enforced per-tenant; list endpoint has stricter rate limits to protect OLTP workloads.
 
 5.6 Deployment View
 ```mermaid
@@ -327,7 +345,7 @@ graph TD
   end
   hpa[HPA policy: target 70% CPU/qps]
   db[(Primary/Replica OLTP DB)]
-  topics[[Kafka Topics: events.transfers - 12 partitions]]
+  topics[[SNS FIFO Topic: events.transfers.fifo]]
   secrets[[Secrets Manager]]
   envoy[[Envoy/Ingress]]
 
@@ -349,9 +367,9 @@ graph TD
 
 | Topic | Decision | Alternatives | Rationale | Consequences |
 |---|---|---|---|---|
-| Idempotency | `Idempotency-Key` + SHA256(normalized body) unique per tenant; TTL 24h | Key-only; body-only; longer TTL | Prevents divergent bodies on same key; caps storage | Store hash; shard hot tenants |
-| Outbox Pattern | Same-DB transactional outbox; ordered per `transferId`; backoff 1s→5s→30s→2m→10m→1h; DLQ at 10 | Separate queue; exactly-once Kafka | Simpler atomicity; avoids dual-write | Worker lag can grow → monitor/autoscale |
-| Routing | Cache TTL 5m; negative cache 30s; deterministic rules; quirks in gateways | Longer TTL | Balanced freshness vs cost | Possible staleness → admin bust |
+| Idempotency | `Idempotency-Key` + SHA256(normalized body) unique per tenant; TTL 36h | Key-only; body-only | Prevents divergent bodies on same key; aligns with retention window | Store hash; shard hot tenants |
+| Outbox Pattern | Same-DB transactional outbox; ordered per `transferId`; backoff 1s→5s→30s→2m→10m→1h→2h→4h→8h→16h; DLQ at 10 | Dedicated streaming bus (Kafka) | Simpler atomicity; avoids dual-write | Worker lag can grow → monitor/autoscale |
+| Routing | Cache TTL 5m; negative cache 45s; deterministic rules; quirks in gateways | Longer TTL | Balanced freshness vs cost | Possible staleness → admin bust |
 | Multitenancy | Row-level scope by `tenantId`; per-tenant quotas; per-tenant secrets | DB schemas per tenant | Simpler ops; shared pool | Strong tenancy guard required |
 | Schema Evolution | Canonical SemVer; `X-Canonical-Version`; events `envelope.v` (BACKWARD) | Ad-hoc | Predictable upgrades | Maintain registry and migrations |
 | Consistency | Non-blocking settlement; POST 201/200 with `state=SUBMITTED` + Location | Synchronous settlement | Lower latency; simpler SLAs | Clients must poll/subscribe |
@@ -376,9 +394,14 @@ Tables
 | payee | JSONB | no | PII encrypted-at-rest |
 | amount_value | NUMERIC(20,8) | no | |
 | amount_currency | CHAR(3) | no | ISO-4217 or pseudo |
+| source_currency | CHAR(3) | yes | defaults to amount currency |
+| target_currency | CHAR(3) | yes | set for FX conversions |
+| fx_strategy | TEXT | yes | NOT_APPLICABLE \| QUOTE_AT_SUBMIT \| PASS_THROUGH |
 | rail | TEXT | no | e.g., usdc, zimswitch |
 | intent | TEXT | no | AUTH|CAPTURE|PUSH|PULL |
 | externalRef | TEXT | yes | client reference |
+| feeModel | TEXT | yes | tariff applied to calculate fees |
+| endUserRef | TEXT | yes | downstream end-user correlation |
 | state | TEXT | no | INITIATED|SUBMITTED|... |
 | createdAt | TIMESTAMP WITH TZ | no | |
 | updatedAt | TIMESTAMP WITH TZ | no | |
@@ -403,6 +426,36 @@ Indexes
 - PK: `(eventId)`
 - IDX: `(transferId, occurredAt)`
 - Unique: `(transferId, type)` for lifecycle uniqueness
+
+#### Transfer Summaries (Read Model)
+
+| Column | Type | Nullable | Notes |
+|---|---|---|---|
+| tenantId | TEXT | no | partition key |
+| transferId | UUID | no | PK with tenant |
+| state | TEXT | no | latest lifecycle state |
+| intent | TEXT | no | AUTH\|CAPTURE\|PUSH\|PULL |
+| rail | TEXT | no | routed rail |
+| amount_value | NUMERIC(20,8) | no | denormalized from transfer |
+| amount_currency | CHAR(3) | no | |
+| source_currency | CHAR(3) | yes | |
+| target_currency | CHAR(3) | yes | |
+| fx_strategy | TEXT | yes | |
+| externalRef | TEXT | yes | |
+| endUserRef | TEXT | yes | |
+| payerRef | TEXT | yes | stable reference only |
+| payeeRef | TEXT | yes | stable reference only |
+| version | BIGINT | no | mirrors write model version |
+| createdAt | TIMESTAMP WITH TZ | no | for cursor pagination |
+| updatedAt | TIMESTAMP WITH TZ | no | |
+| latestEventType | TEXT | yes | audit of final lifecycle event |
+| latestEventAt | TIMESTAMP WITH TZ | yes | |
+
+Indexes
+- PK: `(tenantId, transferId)`
+- IDX: `(tenantId, createdAt DESC, transferId)` for cursor pagination
+- IDX: `(tenantId, state, createdAt DESC, transferId)` for backlog filtering
+- IDX: `(tenantId, externalRef)` partial on non-null
 
 #### Outbox Transfers
 
@@ -429,7 +482,7 @@ Indexes
 | idempotencyKey | TEXT | no | |
 | bodyHash | CHAR(64) | no | sha256 |
 | transferId | UUID | no | |
-| createdAt | TIMESTAMP WITH TZ | no | TTL policy ≥ 24h |
+| createdAt | TIMESTAMP WITH TZ | no | TTL policy ≥ 36h |
 
 Indexes
 - Unique: `(tenantId, idempotencyKey, bodyHash)`
@@ -657,6 +710,7 @@ Schema registry & compatibility
 Replay & re-drive
 - Controlled replay from outbox or archived events; idempotent updates ensured by `(transferId,type)` uniqueness.
 - Time-boxed replays with audit log entries for who/when/why.
+- Requires dual approval (engineering + compliance/ops) before marking events for re-drive; store signed reason alongside the `SENT` transition.
 
 ---
 
@@ -683,19 +737,25 @@ Migrations
 - Rollback: feature-flag writes; maintain backward compatible reads; revert via migrations down.
 
 Runbooks (deepening)
-- Poison message: locate `eventId`, inspect `lastError`, retry N with backoff, if still failing park to DLQ and open ticket; optional manual mark-SENT with signed approval.
+- Poison message: locate `eventId`, inspect `lastError`, retry N with backoff, if still failing park to DLQ and open ticket; optional manual mark-SENT with **dual approval** and signed reason attached to the record.
 - Hot tenant: reduce tenant-specific rate limit, shard outbox processing by `tenantId`, notify tenant of temporary caps.
 
 ---
 
 ### 9. Testing Strategy
 
-- Unit: validators, normalizer, idempotency calculator.
-- Contract: Pact for HTTP (Compliance/Directory) and events (submitted, accepted, settled).
-- Integration: testcontainers for DB + fake services; deterministic retries.
-- E2E: happy path, duplicates, deny, routing fail, outbox DLQ.
-- Chaos: inject timeouts/circuit-open; DB failover drills.
-- Load: realistic mix (90% POST, 10% GET); 1% duplicates.
+- **Unit**: canonical normalizer (trimming, casing, currency scale table), bodyHash calculator vectors, idempotency repository, error mapper, routing cache TTL math.
+- **Contract**: Pact for Compliance `/screen` and Directory `/route` clients; JSON Schema validation on emitted events (`canonical.transfer.v1`).
+- **Integration**: Testcontainers Postgres 15 + LocalStack SNS/SQS FIFO; fake Compliance/Directory services with latency/deny toggles; verify outbox backoff ladder + DLQ placement after 10 attempts.
+- **E2E**:
+  - Happy path USDC submit → gateway ack → settlement event.
+  - Duplicate submission returns `200` replay.
+  - Idempotency conflict (same key, different hash) → `409`.
+  - Compliance deny → `422` with reason.
+  - Directory window closed → `502` with accurate `retryAfter`.
+  - Outbox DLQ + dual-approval re-drive flow.
+- **Chaos**: inject DB failover, SNS publish failure (>3 attempts), Directory latency spikes; assert no unscreened submit escapes.
+- **Load**: 200 TPS synthetic traffic (90% POST, 10% GET) with 1% duplicates; target POST p95 < 1.5s and zero lost events.
 
 ---
 

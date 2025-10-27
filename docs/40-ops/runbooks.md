@@ -15,10 +15,11 @@ Operational procedures for Storo nucleus components. Keep these pragmatic and up
 2. Event bus health; consumer lag.  
 3. Directory lookup SLOs (routing latency spikes?).  
 
-**Actions**  
-- Restart gateway dispatcher if wedged.  
-- Drain DLQ after verifying poison messages are quarantined.  
-- Temporarily throttle creation rate from CTS for the tenant with spikes.  
+**Actions**
+- Restart gateway dispatcher if wedged.
+- Drain DLQ after verifying poison messages are quarantined.
+- Temporarily throttle creation rate from CTS for the tenant with spikes.
+- Archive any DLQ extracts to object storage (7-year retention) before purging queue entries (14-day in-queue policy).
 
 **Postmortem notes**  
 - Attach event IDs and sample transferIds.  
@@ -83,10 +84,11 @@ Operational procedures for Storo nucleus components. Keep these pragmatic and up
 1. Bus broker health, partition leaders.  
 2. Dispatcher logs for auth / throttling errors.  
 
-**Actions**  
-- Scale consumers horizontally.  
-- Increase partitions if saturated.  
+**Actions**
+- Scale consumers horizontally.
+- Increase partitions if saturated.
 - Enable backpressure on producers (CTS) temporarily.
+- If manual re-drive required, obtain dual approval and attach signed reason to the ticket before replaying messages.
 
 ---
 
