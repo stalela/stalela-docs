@@ -68,7 +68,6 @@ API contracts (summary)
 | Method | Path | Required Headers | Success | Notes |
 |---|---|---|---|---|
 | POST | /transfers | Authorization, Idempotency-Key, X-Canonical-Version | 201 with resource or 200 on idempotent replay | Request validated against canonical model |
-| GET | /transfers | Authorization | 200 | Cursor-paginated list with optional filters; eventually consistent |
 | GET | /transfers/:id | Authorization | 200 | Returns transfer details + timeline |
 
 Canonical Request (excerpt)
