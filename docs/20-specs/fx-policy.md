@@ -11,6 +11,7 @@ Defines quote sources, TTL, and audit requirements for FX conversions in support
 ## TTL & Usage
 - TTL per corridor; reject expired quotes.
 - Store applied rate on event/journal for audit.
+- Canonical requests declare `fxStrategy` (`NOT_APPLICABLE`, `QUOTE_AT_SUBMIT`, `PASS_THROUGH`); Directory enforces viability before routing.
 
 ## Controls
 - Max deviation vs reference index; alert on breach.

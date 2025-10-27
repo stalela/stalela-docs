@@ -11,28 +11,39 @@ The **Event model** defines the envelope and catalog of all domain events emitte
 
 ---
 
-## 📦 Event Envelope (v field)
+## 📦 Event Envelope (v1)
 
 ```json
 {
-  "eventId": "uuid",
-  "type": "transfers.settled",
-  "v": 1,
-  "occurredAt": "2025-08-26T10:15:01Z",
-  "transferId": "tr_123",
-  "tenantId": "tn_456",
-  "payload": { "amount": { "value": 1000, "currency": "USD" } }
+  "envelope": {
+    "v": 1,
+    "eventId": "uuid",
+    "type": "events.transfers.submitted.usdc",
+    "occurredAt": "2025-08-26T10:15:01Z",
+    "tenantId": "tn_456",
+    "transferId": "tr_123",
+    "traceparent": "00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-00",
+    "payloadSchema": "canonical.transfer.v1"
+  },
+  "payload": {
+    "amount": { "value": "1000.00", "currency": "USD" },
+    "payerRef": "payer-1",
+    "payeeRef": "payee-9",
+    "endUserRef": "end-7"
+  }
 }
 ```
 
 **Fields**
-- `eventId` – unique ID (UUIDv7 recommended).  
-- `type` – dot-delimited string category (see catalog).  
-- `v` – envelope schema version (integer, starting at 1).  
-- `occurredAt` – ISO8601 UTC timestamp.  
-- `transferId` – optional link to transfer (if relevant).  
-- `tenantId` – tenant scoping.  
-- `payload` – type-specific content.  
+- `envelope.v` – envelope schema version (integer, starting at 1).
+- `envelope.eventId` – unique ID (UUIDv7 recommended).
+- `envelope.type` – dot-delimited string category (see catalog).
+- `envelope.occurredAt` – ISO8601 UTC timestamp.
+- `envelope.tenantId` – tenant scoping.
+- `envelope.transferId` – optional link to transfer (if relevant).
+- `envelope.traceparent` – W3C trace context for correlation end-to-end.
+- `envelope.payloadSchema` – canonical schema identifier (`canonical.transfer.v1`).
+- `payload` – type-specific content (PII-free; only stable references).
 
 **Optional enrichment (additive)**
 - `kycTier` – KYC tier for context (T0|T1|T2).  
@@ -72,9 +83,17 @@ The **Event model** defines the envelope and catalog of all domain events emitte
 ---
 
 ## 🔁 Idempotency Rules
-- Event consumers must dedupe using `eventId`.  
-- For transfer lifecycle, `(transferId,type)` must be unique.  
-- Outbox pattern ensures atomic persistence + publish.
+- Event consumers must dedupe using `envelope.eventId`.
+- For transfer lifecycle, `(envelope.transferId, envelope.type)` must be unique.
+- Outbox pattern ensures atomic persistence + publish; events are immutable after emission.
+
+---
+
+## 🚦 Partitioning & Delivery Defaults
+
+- SNS FIFO topic: `events.transfers.fifo` with `MessageGroupId = transferId` to guarantee order.
+- Outbox worker retry/backoff: `1s, 5s, 30s, 2m, 10m, 1h, 2h, 4h, 8h, 16h`; send to DLQ after the 10th attempt.
+- DLQ retention: 14 days within queue, plus archived copy retained for 7 years.
 
 ---
 
