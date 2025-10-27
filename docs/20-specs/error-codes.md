@@ -15,6 +15,8 @@ Consistent error codes across APIs.
 - **4xx — Client Errors**
   - `40001` Invalid request schema
   - `40002` Idempotency key missing/invalid
+  - `40901` Version conflict (optimistic concurrency on internal tools)
+  - `40902` Idempotency conflict (same key, different body hash)
   - `42201` Compliance screening: denied
   - `42202` Directory route not found
 
@@ -22,6 +24,7 @@ Consistent error codes across APIs.
   - `50001` Rail adapter unavailable
   - `50002` Outbox publish failure
   - `50003` Ledger posting failed
+  - `50301` Dependency unavailable (Compliance, Directory, FX)
 
 ---
 

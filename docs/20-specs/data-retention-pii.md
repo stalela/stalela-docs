@@ -32,8 +32,11 @@ The **data retention policy** governs how long Storo stores sensitive data and h
 ---
 
 ## 🧹 Redaction
-- After expiry, replace PII fields with irreversible hashes.  
-- Keep metadata (transferId, amounts, dates).  
+- After expiry, execute stored proc `select cts_pii_tombstone(:tenantId, :transferId)` which:
+  - Nulls column-level PII on canonical tables (`payer`, `payee`, contact fields).
+  - Writes an immutable audit row documenting who requested the erasure and why.
+  - Leaves immutable event payloads untouched (they only contain stable references).
+- Keep metadata (transferId, amounts, dates).
 
 ---
 
