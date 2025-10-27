@@ -55,7 +55,7 @@ Assumptions/Constraints
 
 ### 3. Functional Requirements
 
-- Accept API requests: `POST /transfers`, `GET /transfers/:id`.
+- Accept API requests: `POST /transfers`, `GET /transfers`, `GET /transfers/:id`.
 - Deduplicate via idempotency key + request body hash.
 - Validate and normalize into canonical schema.
 - Pre-screen entities with Compliance.
@@ -323,8 +323,16 @@ flowchart LR
   Persist --> Outbox[Write Outbox]
   Outbox --> Bus[Event Bus]
   Bus --> Proj[Read Model Projections]
-  Proj --> API[GET /transfers/:id]
+ Proj --> API[List & Detail Reads]
 ```
+
+**Read-model list semantics**
+- Backed by a denormalized `transfer_summaries` projection populated from lifecycle events and command writes.
+- Cursor pagination uses `(tenantId, createdAt DESC, transferId)` encoded inside `pageToken` to avoid skipping rows during concurrent inserts.
+- Filters: `state[]`, `intent[]`, `rail[]`, `fxStrategy[]`, `createdAtFrom/To`, `updatedAtFrom/To`, `externalRef`, `endUserRef`; default window capped to 90 days of hot storage.
+- Response omits encrypted payer/payee blobs; only stable references (`payerRef`, `payeeRef`) and operational metadata are exposed.
+- Consistency: eventual—projections catch up within seconds; POST/GET-by-id remain the authoritative source immediately after writes.
+- Authorization and throttling enforced per-tenant; list endpoint has stricter rate limits to protect OLTP workloads.
 
 5.6 Deployment View
 ```mermaid
@@ -417,6 +425,36 @@ Indexes
 - PK: `(eventId)`
 - IDX: `(transferId, occurredAt)`
 - Unique: `(transferId, type)` for lifecycle uniqueness
+
+#### Transfer Summaries (Read Model)
+
+| Column | Type | Nullable | Notes |
+|---|---|---|---|
+| tenantId | TEXT | no | partition key |
+| transferId | UUID | no | PK with tenant |
+| state | TEXT | no | latest lifecycle state |
+| intent | TEXT | no | AUTH\|CAPTURE\|PUSH\|PULL |
+| rail | TEXT | no | routed rail |
+| amount_value | NUMERIC(20,8) | no | denormalized from transfer |
+| amount_currency | CHAR(3) | no | |
+| source_currency | CHAR(3) | yes | |
+| target_currency | CHAR(3) | yes | |
+| fx_strategy | TEXT | yes | |
+| externalRef | TEXT | yes | |
+| endUserRef | TEXT | yes | |
+| payerRef | TEXT | yes | stable reference only |
+| payeeRef | TEXT | yes | stable reference only |
+| version | BIGINT | no | mirrors write model version |
+| createdAt | TIMESTAMP WITH TZ | no | for cursor pagination |
+| updatedAt | TIMESTAMP WITH TZ | no | |
+| latestEventType | TEXT | yes | audit of final lifecycle event |
+| latestEventAt | TIMESTAMP WITH TZ | yes | |
+
+Indexes
+- PK: `(tenantId, transferId)`
+- IDX: `(tenantId, createdAt DESC, transferId)` for cursor pagination
+- IDX: `(tenantId, state, createdAt DESC, transferId)` for backlog filtering
+- IDX: `(tenantId, externalRef)` partial on non-null
 
 #### Outbox Transfers
 

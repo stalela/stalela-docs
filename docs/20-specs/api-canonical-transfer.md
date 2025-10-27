@@ -59,6 +59,53 @@ Errors
 
 ---
 
+### `GET /transfers`
+Lists transfers for the authenticated tenant using cursor-based pagination backed by the projection/read-model.
+
+**Query Parameters**
+
+| Name | Type | Notes |
+| --- | --- | --- |
+| `pageSize` | integer (1–250, default 50) | Number of rows to return per page. |
+| `pageToken` | string | Encodes `(tenantId, createdAt DESC, transferId)` for cursor pagination. |
+| `state` | array<string> | Filter by lifecycle state(s); omit for all. |
+| `intent` | array<string> | Optional filter for AUTH/CAPTURE/PUSH/PULL. |
+| `rail` | array<string> | Optional filter for routed rail(s). |
+| `fxStrategy` | array<string> | Optional filter for NOT_APPLICABLE / QUOTE_AT_SUBMIT / PASS_THROUGH. |
+| `createdAtFrom` / `createdAtTo` | RFC3339 timestamp | Time-window filter aligned to indexed `createdAt`. |
+| `updatedAtFrom` / `updatedAtTo` | RFC3339 timestamp | Optional trailing updates window (defaults to 90-day horizon). |
+| `externalRef` | string | Exact match against client-supplied reference. |
+| `endUserRef` | string | Exact match for downstream correlation. |
+
+**Response**
+
+```json
+{
+  "items": [
+    {
+      "transferId": "tr_12345",
+      "state": "SETTLED",
+      "intent": "PUSH",
+      "rail": "usdc",
+      "amount": { "value": "1000.00", "currency": "USD" },
+      "sourceCurrency": "USD",
+      "targetCurrency": "USD",
+      "fxStrategy": "NOT_APPLICABLE",
+      "externalRef": "ext_abc123",
+      "endUserRef": "end_abc123",
+      "payerRef": "acct_001",
+      "payeeRef": "acct_999",
+      "createdAt": "2025-03-02T12:10:00Z",
+      "updatedAt": "2025-03-02T12:20:00Z",
+      "version": 4
+    }
+  ],
+  "nextPageToken": "g2wAAAABaANkABRt..."
+}
+```
+
+> Listings are **eventually consistent**; immediately after POST the transfer may not appear until the projection catches up. Clients needing the freshest state should continue to rely on the POST response or `GET /transfers/{id}`.
+
 ### `GET /transfers/:id`
 Returns transfer details and event timeline.
 
