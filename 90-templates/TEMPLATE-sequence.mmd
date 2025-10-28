@@ -1,0 +1,10 @@
+sequenceDiagram
+  participant A as Actor
+  participant S1 as Service 1
+  participant S2 as Service 2
+
+  A->>S1: Request
+  S1-->>A: Ack
+  S1->>S2: Command
+  S2-->>S1: Result
+  S1-->>A: Response
