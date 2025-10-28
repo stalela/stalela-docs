@@ -1,4 +1,4 @@
-# AWS Infrastructure Blueprint (Storo Nucleus)
+# AWS Infrastructure Blueprint (Stalela Nucleus)
 
 ## General
 - VPC (3 AZs); public subnets (ALB/NLB), private subnets (ECS/RDS), VPC endpoints (S3, SQS, SNS, Secrets Manager, ECR, CloudWatch).

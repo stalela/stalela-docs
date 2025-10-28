@@ -1,6 +1,6 @@
-# Storo Nucleus
+# Stalela Nucleus
 
-The **Storo nucleus** is the boring, strict, event-driven core of the platform.  
+The **Stalela nucleus** is the boring, strict, event-driven core of the platform.  
 It orchestrates all money movement across rails (USDC/Algorand, Zimswitch/OPPWA, EFT, mobile money) while enforcing compliance, ledger discipline, and reconciliation.
 
 ---
@@ -38,7 +38,7 @@ flowchart LR
     A[Client Apps / Merchants / WhatsApp Bot]
   end
 
-  subgraph Core["Storo Nucleus"]
+  subgraph Core["Stalela Nucleus"]
     direction LR
 
     subgraph API["Canonical Transfer Service (API)"]

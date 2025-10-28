@@ -200,7 +200,7 @@ Returns transfer details and event timeline.
 ```yaml
 openapi: 3.1.0
 info:
-  title: Storo CTS API
+  title: Stalela CTS API
   version: 1.0.0
 servers:
   - url: https://api.storo.io

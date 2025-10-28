@@ -1,12 +1,12 @@
-# Storo Documentation
+# Stalela Documentation
 
-Welcome to the **Storo Docs** — the single source of truth for how the Storo payments nucleus is designed, built, and operated.
+Welcome to the **Stalela Docs** — the single source of truth for how the Stalela payments nucleus is designed, built, and operated.
 
 ---
 
 ## 🌍 What this provides?
 
-Storo provides a **payments nucleus** for the Southern Africa ↔ global corridor. It provides:
+Stalela provides a **payments nucleus** for the Southern Africa ↔ global corridor. It provides:
 
 - **Unified API** for payments, payouts, and transfers.
 - **Ledger** for strict double-entry accounting and balance tracking.
@@ -23,7 +23,7 @@ This docs repo is organized into clear layers:
 
 ### 1. Overview (you are here)
 - **`index.md`** → This page: big-picture introduction, how to use the docs.
-- **`nucleus.md`** → Detailed description of the Storo nucleus (all components together).
+- **`nucleus.md`** → Detailed description of the Stalela nucleus (all components together).
 - **`glossary.md`** → Domain terms (rails, ledger, reconciliation, returns, etc.).
 - **`architecture-decisions/`** → ADRs (Architecture Decision Records) documenting why we made key choices.
 

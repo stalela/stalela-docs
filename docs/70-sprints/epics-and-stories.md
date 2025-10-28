@@ -1,4 +1,4 @@
-# 🛠 Storo Nucleus — Kanban Board (with Repos, Langs, Infra Deps)
+# 🛠 Stalela Nucleus — Kanban Board (with Repos, Langs, Infra Deps)
 
 > Columns: **Backlog → In Progress → Review → Done**  
 > Each task card includes:  

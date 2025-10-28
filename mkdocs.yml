@@ -1,5 +1,5 @@
-site_name: Storo Docs
-site_description: Documentation for the Storo payments nucleus — architecture, specs, ops.
+site_name: Stalela Docs
+site_description: Documentation for the Stalela payments nucleus — architecture, specs, ops.
 site_url: https://your-org.github.io/fintech-core/
 repo_url: https://github.com/your-org/fintech-core
 repo_name: your-org/fintech-core
@@ -62,7 +62,7 @@ nav:
       - "00-overview/index.md"
       - "00-overview/nucleus.md"
       - "00-overview/glossary.md"
-      - "00-overview/storo-vs-mojaloop.md"
+      - "00-overview/stalela-vs-mojaloop.md"
       - Architecture Decisions:
           - "00-overview/architecture-decisions/ADR-0001-events-outbox.md"
           - "00-overview/architecture-decisions/ADR-0002-double-entry-ledger.md"

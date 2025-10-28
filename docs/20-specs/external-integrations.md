@@ -1,6 +1,6 @@
 # External Integrations — Edge Map
 
-This file maps out **external systems** Storo must eventually connect to.  
+This file maps out **external systems** Stalela must eventually connect to.  
 
 ---
 

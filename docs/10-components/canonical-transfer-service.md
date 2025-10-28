@@ -1,6 +1,6 @@
 ## Canonical Transfer Service (CTS) — System Design Document
 
-The Canonical Transfer Service (CTS) is the front door and conductor of Storo. It provides a single API for creating and managing transfers, normalizes requests into a canonical format, enforces idempotency, screens entities, routes transfers, and emits domain events.
+The Canonical Transfer Service (CTS) is the front door and conductor of Stalela. It provides a single API for creating and managing transfers, normalizes requests into a canonical format, enforces idempotency, screens entities, routes transfers, and emits domain events.
 
 ---
 
@@ -24,7 +24,7 @@ graph TD
     A[Client Apps / Integrators]
   end
 
-  subgraph Storo Core
+  subgraph Stalela Core
     B[CTS API]
     C[Compliance Service]
     D[Directory & Routing]
@@ -889,7 +889,7 @@ As provided. Preserved verbatim for traceability.
 [BEGIN INPUT SPEC]
 # Canonical Transfer Service (CTS)
 
-The **Canonical Transfer Service (CTS)** is the **front door and conductor** of Storo.  
+The **Canonical Transfer Service (CTS)** is the **front door and conductor** of Stalela.  
 It provides a single API for creating and managing transfers, normalizes requests into a canonical format, enforces idempotency, screens entities, routes transfers, and emits domain events.
 
 ---

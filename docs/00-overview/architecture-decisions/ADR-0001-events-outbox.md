@@ -7,7 +7,7 @@
 
 ## Context
 
-Storo is an event-driven system. Each service must emit domain events when its state changes (e.g., `transfers.submitted`, `ledger.balance.updated`).  
+Stalela is an event-driven system. Each service must emit domain events when its state changes (e.g., `transfers.submitted`, `ledger.balance.updated`).  
 We need to guarantee **exactly-once delivery** of these events despite crashes, retries, or network failures.
 
 Naïve approaches (publishing to the bus inside app logic) risk double-emits, message loss, or divergence between DB state and events.

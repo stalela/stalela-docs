@@ -1,6 +1,6 @@
 # Event Specifications
 
-The **Event model** defines the envelope and catalog of all domain events emitted across Storo services.
+The **Event model** defines the envelope and catalog of all domain events emitted across Stalela services.
 
 ---
 

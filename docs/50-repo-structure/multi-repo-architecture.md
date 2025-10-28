@@ -1,6 +1,6 @@
-# Multi‑Repo Architecture (Storo)
+# Multi‑Repo Architecture (Stalela)
 
-> How Storo’s nucleus is organized across independent repositories so multiple teams can ship fast without stepping on each other.
+> How Stalela’s nucleus is organized across independent repositories so multiple teams can ship fast without stepping on each other.
 
 This document defines **which repos exist**, **who owns them**, **how they interoperate (contracts-first)**, and **how you develop locally** without a monorepo. It also sets **versioning rules**, **release flows**, and **deprecation discipline**.
 

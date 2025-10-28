@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Documentation for the Storo payments nucleus — architecture, specs, ops.">
+        <meta name="description" content="Documentation for the Stalela payments nucleus — architecture, specs, ops.">
       
       
       
@@ -24,7 +24,7 @@
     
     
       
-        <title>Glossary - Storo Docs</title>
+        <title>Glossary - Stalela Docs</title>
       
     
     
@@ -92,7 +92,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Storo Docs" class="md-header__button md-logo" aria-label="Storo Docs" data-md-component="logo">
+    <a href="../.." title="Stalela Docs" class="md-header__button md-logo" aria-label="Stalela Docs" data-md-component="logo">
       
   <img src="../../assets/images/favicon.svg" alt="logo">
 
@@ -105,7 +105,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Storo Docs
+            Stalela Docs
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -452,12 +452,12 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Storo Docs" class="md-nav__button md-logo" aria-label="Storo Docs" data-md-component="logo">
+    <a href="../.." title="Stalela Docs" class="md-nav__button md-logo" aria-label="Stalela Docs" data-md-component="logo">
       
   <img src="../../assets/images/favicon.svg" alt="logo">
 
     </a>
-    Storo Docs
+    Stalela Docs
   </label>
   
     <div class="md-nav__source">
@@ -554,7 +554,7 @@
   
   
   <span class="md-ellipsis">
-    Storo Documentation
+    Stalela Documentation
     
   </span>
   
@@ -577,7 +577,7 @@
   
   
   <span class="md-ellipsis">
-    Storo Nucleus
+    Stalela Nucleus
     
   </span>
   
@@ -800,7 +800,7 @@
   
   
   <span class="md-ellipsis">
-    Storo Nucleus vs Mojaloop Hub - Visual Contrast
+    Stalela Nucleus vs Mojaloop Hub - Visual Contrast
     
   </span>
   
@@ -1611,7 +1611,7 @@
   
   
   <span class="md-ellipsis">
-    Chart of Accounts (Storo)
+    Chart of Accounts (Stalela)
     
   </span>
   
@@ -2192,7 +2192,7 @@
   
   
   <span class="md-ellipsis">
-    AWS Infrastructure Blueprint (Storo Nucleus)
+    AWS Infrastructure Blueprint (Stalela Nucleus)
     
   </span>
   
@@ -2263,7 +2263,7 @@
   
   
   <span class="md-ellipsis">
-    Multi‑Repo Architecture (Storo)
+    Multi‑Repo Architecture (Stalela)
     
   </span>
   
@@ -2609,23 +2609,23 @@
 
 
 <h1 id="glossary">Glossary<a class="headerlink" href="#glossary" title="Permanent link">&para;</a></h1>
-<p>Shared domain language for Storo. Sources include our design docs and Moov.io’s <a href="https://github.com/moov-io/terms-dictionary">terms-dictionary</a>.<br />
+<p>Shared domain language for Stalela. Sources include our design docs and Moov.io’s <a href="https://github.com/moov-io/terms-dictionary">terms-dictionary</a>.<br />
 This file should be the <strong>first stop</strong> for new contributors.</p>
 <hr />
 <h2 id="a">A<a class="headerlink" href="#a" title="Permanent link">&para;</a></h2>
 <p><strong>ACH</strong><br />
 Automated Clearing House. Batch-based payment network in the U.S.<br />
-<em>Not directly used in Storo, but referenced via Moov patterns.</em></p>
+<em>Not directly used in Stalela, but referenced via Moov patterns.</em></p>
 <p><strong>Account</strong><br />
 A ledger entity that holds balances and records postings. Types include: User, Merchant, Liquidity, Fees, FX, Settlement.</p>
 <p><strong>ADR (Architecture Decision Record)</strong><br />
 Lightweight doc capturing a key architectural choice, its context, decision, and consequences.</p>
 <p><strong>Authorization (AUTH)</strong><br />
-A request to place a hold on funds. In Storo, represented in the canonical transfer intent.</p>
+A request to place a hold on funds. In Stalela, represented in the canonical transfer intent.</p>
 <hr />
 <h2 id="b">B<a class="headerlink" href="#b" title="Permanent link">&para;</a></h2>
 <p><strong>BAI2</strong><br />
-Bank Administration Institute format for statement files. Used by Moov and referenced as a model for Storo’s reconciliation exports.</p>
+Bank Administration Institute format for statement files. Used by Moov and referenced as a model for Stalela’s reconciliation exports.</p>
 <p><strong>Balance</strong><br />
 The net amount for an account at a given time, derived from postings.</p>
 <p><strong>BIN (Bank Identification Number)</strong><br />
@@ -2635,7 +2635,7 @@ Pub/sub system (SNS+SQS in dev) delivering domain events between services.</p>
 <hr />
 <h2 id="c">C<a class="headerlink" href="#c" title="Permanent link">&para;</a></h2>
 <p><strong>Canonical Transfer Service (CTS)</strong><br />
-Front-door API and orchestrator for transfers in Storo. Ensures idempotency, normalization, compliance, and routing.</p>
+Front-door API and orchestrator for transfers in Stalela. Ensures idempotency, normalization, compliance, and routing.</p>
 <p><strong>Chargeback / Return</strong><br />
 Reversal of a prior settlement, with reason codes. Modeled as state transitions in CTS and reversal postings in the Ledger.</p>
 <p><strong>Compliance Screening</strong><br />
@@ -2647,7 +2647,7 @@ Time of day after which payments are queued for next business day. Defined in Di
 <p><strong>Directory Service</strong><br />
 Component maintaining authoritative data on institutions, BINs, fees, and settlement windows.</p>
 <p><strong>Double-entry</strong><br />
-Accounting principle: every debit has an equal credit. Enforced in Storo Ledger.</p>
+Accounting principle: every debit has an equal credit. Enforced in Stalela Ledger.</p>
 <p><strong>DLQ (Dead Letter Queue)</strong><br />
 Queue for events that failed processing and need operator intervention.</p>
 <hr />
@@ -2669,7 +2669,7 @@ Sample payload used in tests to ensure round-trip parsing and validation stabili
 <p><strong>Gateway</strong><br />
 Adapter for a payment rail (Zimswitch, OPPWA, USDC/Algorand). Translates canonical transfers into rail-specific requests.</p>
 <p><strong>GL (General Ledger)</strong><br />
-The book of record. Storo Ledger service maintains the general ledger.</p>
+The book of record. Stalela Ledger service maintains the general ledger.</p>
 <p><strong>Glossary</strong><br />
 This file. Shared terms and definitions.</p>
 <hr />
@@ -2677,7 +2677,7 @@ This file. Shared terms and definitions.</p>
 <p><strong>Idempotency</strong><br />
 Ensuring a request (e.g., <code>POST /transfers</code>) can be safely retried without duplication.</p>
 <p><strong>ISO 8583</strong><br />
-International standard for card payment messages. Zimswitch uses this; Storo validates payloads via strict schemas.</p>
+International standard for card payment messages. Zimswitch uses this; Stalela validates payloads via strict schemas.</p>
 <p><strong>ISO 20022</strong><br />
 XML/JSON standard for financial messaging. Referenced for future-proofing rails.</p>
 <hr />
@@ -2715,7 +2715,7 @@ Negative state transition; undo of a prior settlement with reason codes.</p>
 <hr />
 <h2 id="s">S<a class="headerlink" href="#s" title="Permanent link">&para;</a></h2>
 <p><strong>Settlement</strong><br />
-Final movement of funds on a rail. In Storo, confirmed by events and reconciled against statements.</p>
+Final movement of funds on a rail. In Stalela, confirmed by events and reconciled against statements.</p>
 <p><strong>Specs Repo</strong><br />
 Dedicated repo holding event schemas, API definitions, and fixtures (<code>storo-specs</code>). Source of truth for contracts.</p>
 <p><strong>State Diagram</strong><br />
@@ -2723,11 +2723,11 @@ Visual representation of lifecycle states and transitions (Mermaid).</p>
 <hr />
 <h2 id="t">T<a class="headerlink" href="#t" title="Permanent link">&para;</a></h2>
 <p><strong>Tenant</strong><br />
-Isolated namespace for a customer/institution using Storo. All transfers are scoped by tenantId.</p>
+Isolated namespace for a customer/institution using Stalela. All transfers are scoped by tenantId.</p>
 <p><strong>Trace ID</strong><br />
 Identifier used for distributed tracing across services.</p>
 <p><strong>Transfer</strong><br />
-Core unit of money movement in Storo, defined by canonical schema (payer, payee, amount, rail, intent, etc.).</p>
+Core unit of money movement in Stalela, defined by canonical schema (payer, payee, amount, rail, intent, etc.).</p>
 <hr />
 <h2 id="w">W<a class="headerlink" href="#w" title="Permanent link">&para;</a></h2>
 <p><strong>Watchlist</strong><br />

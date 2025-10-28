@@ -5,7 +5,7 @@ This is a **living list** of risks and unknowns that need clarity.
 ---
 
 ## ❓ Open Questions
-- Settlement liquidity ownership: who pre-funds? merchant vs Storo vs bank?
+- Settlement liquidity ownership: who pre-funds? merchant vs Stalela vs bank?
 - How to handle returns when rail semantics don’t map 1:1?
 - Which rails are **priority for MVP** (EcoCash, USDC, OPPWA)?
 - Is PayShap integration required in Phase 1?

@@ -9,7 +9,7 @@ Based on accrual accounting and double-entry principles.
 
 1. **Reconciliation**  
    - Ingest statements from rails (Zimswitch, OPPWA, Algorand).  
-   - Match to transfers in Storo.  
+   - Match to transfers in Stalela.  
    - Investigate unmatched items in Operator Console.  
 
 2. **Ledger Validation**  

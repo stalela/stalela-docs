@@ -1,6 +1,6 @@
 # Missing Items for Southern Africa Context
 
-This document tracks gaps to make the Storo nucleus production-ready for South Africa (ZA) and Zimbabwe (ZW). Each entry lists a short description, suggested docs location, and status.
+This document tracks gaps to make the Stalela nucleus production-ready for South Africa (ZA) and Zimbabwe (ZW). Each entry lists a short description, suggested docs location, and status.
 
 ---
 

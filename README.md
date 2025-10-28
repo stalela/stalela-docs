@@ -1,6 +1,6 @@
-# Storo Documentation Repo
+# Stalela Documentation Repo
 
-This repository is the **single source of truth** for the Storo nucleus design, components, specifications, and operations.
+This repository is the **single source of truth** for the Stalela nucleus design, components, specifications, and operations.
 
 ---
 

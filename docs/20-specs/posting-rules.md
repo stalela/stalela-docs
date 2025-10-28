@@ -1,6 +1,6 @@
 # Posting Rules (Expanded)
 
-Defines how Storo translates transfer lifecycle events into **double‑entry ledger postings**.  
+Defines how Stalela translates transfer lifecycle events into **double‑entry ledger postings**.  
 This is the authoritative mapping for `ledger-service`.
 
 ---
@@ -43,7 +43,7 @@ This is the authoritative mapping for `ledger-service`.
 #### Per‑rail surcharges and partner fees (netting)
 | Debit (Dr) | Credit (Cr) | Notes |
 |------------|-------------|-------|
-| Merchant / Payee | Fees Partner | Partner surcharge retained by Storo on behalf of partner |
+| Merchant / Payee | Fees Partner | Partner surcharge retained by Stalela on behalf of partner |
 | Fees Partner | Partner Payable | Net settlement to partner at recon/settlement time |
 
 > Netting entries reduce operational payouts; settle partner payable on statement reconciliation.

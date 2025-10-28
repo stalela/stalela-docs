@@ -1,6 +1,6 @@
 # Release Strategy
 
-Versioning, compatibility, and deprecation policy for Storo’s **multi‑repo** nucleus.
+Versioning, compatibility, and deprecation policy for Stalela’s **multi‑repo** nucleus.
 
 ---
 

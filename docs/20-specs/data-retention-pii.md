@@ -1,6 +1,6 @@
 # Data Retention & PII Handling
 
-The **data retention policy** governs how long Storo stores sensitive data and how it is redacted.
+The **data retention policy** governs how long Stalela stores sensitive data and how it is redacted.
 
 ---
 

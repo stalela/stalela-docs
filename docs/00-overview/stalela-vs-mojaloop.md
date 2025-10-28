@@ -1,6 +1,6 @@
-# Storo Nucleus vs Mojaloop Hub - Visual Contrast
+# Stalela Nucleus vs Mojaloop Hub - Visual Contrast
 
-This note shows how **Storo** is *inspired by* Mojaloop while keeping a **modular, rail-agnostic nucleus**. Two diagrams:
+This note shows how **Stalela** is *inspired by* Mojaloop while keeping a **modular, rail-agnostic nucleus**. Two diagrams:
 1) Component landscape comparison
 2) Transaction flow (Request-to-Pay) mapped to each architecture
 
@@ -10,7 +10,7 @@ This note shows how **Storo** is *inspired by* Mojaloop while keeping a **modula
 
 ```mermaid
 flowchart LR
-  subgraph S["Storo Nucleus (Modular, Rail-Agnostic)"]
+  subgraph S["Stalela Nucleus (Modular, Rail-Agnostic)"]
     direction LR
     S1["CTS (Canonical Transfer Service)"]
     S2["Rail Gateways (EcoCash/PayShap/OPPWA/USDC)"]
@@ -35,7 +35,7 @@ flowchart LR
     M8["ILP Coordinator (Conditions/Fulfillment)"]
   end
 
-  %% Storo internals
+  %% Stalela internals
   S1 --> S4
   S1 --> S5
   S1 --> S2
@@ -59,9 +59,9 @@ flowchart LR
 ```
 
 **Key differences**  
-- **Storo** separates **rail adapters** (gateways) from the core; ledger is **internal SoT**.  
+- **Stalela** separates **rail adapters** (gateways) from the core; ledger is **internal SoT**.  
 - **Mojaloop** is a **shared switch**: it offers discovery, quoting, clearing & settlement to **external DFSPs**.  
-- Both use **directories (ALS)**, **FX/fees agreement**, **security (PKI)**, and **fraud hooks** — but Storo keeps them inside its nucleus; Mojaloop exposes them as scheme services.
+- Both use **directories (ALS)**, **FX/fees agreement**, **security (PKI)**, and **fraud hooks** — but Stalela keeps them inside its nucleus; Mojaloop exposes them as scheme services.
 
 ---
 
@@ -71,22 +71,22 @@ flowchart LR
 sequenceDiagram
   autonumber
   participant Client as Merchant App / POS
-  participant Storo as Storo CTS
+  participant Stalela as Stalela CTS
   participant Dir as Directory (ALS)
   participant GW as Rail Gateway (e.g., EcoCash/PayShap/USDC)
   participant Ledger as Ledger Service
 
-  Note over Client,Ledger: Storo — Rail-agnostic nucleus
+  Note over Client,Ledger: Stalela — Rail-agnostic nucleus
 
-  Client->>Storo: POST /transfers (payer alias, amount, rail)
-  Storo->>Dir: Resolve alias -> provider/route
-  Dir-->>Storo: Provider & fees/windows
-  Storo->>GW: transfers.submitted.<rail>
-  GW-->>Storo: transfers.accepted (prompt delivered / tx observed)
-  GW-->>Storo: transfers.settled (funds final)
-  Storo->>Ledger: Postings (Dr/Cr + fees/FX)
-  Ledger-->>Storo: Balances updated
-  Storo-->>Client: 200 OK (state: SETTLED)
+  Client->>Stalela: POST /transfers (payer alias, amount, rail)
+  Stalela->>Dir: Resolve alias -> provider/route
+  Dir-->>Stalela: Provider & fees/windows
+  Stalela->>GW: transfers.submitted.<rail>
+  GW-->>Stalela: transfers.accepted (prompt delivered / tx observed)
+  GW-->>Stalela: transfers.settled (funds final)
+  Stalela->>Ledger: Postings (Dr/Cr + fees/FX)
+  Ledger-->>Stalela: Balances updated
+  Stalela-->>Client: 200 OK (state: SETTLED)
 ```
 
 ```mermaid
@@ -117,14 +117,14 @@ sequenceDiagram
 ```
 
 **Interpretation**  
-- **Storo** treats R2P as an internal orchestration; **gateways** perform the last-mile prompt/observe/settle.  
+- **Stalela** treats R2P as an internal orchestration; **gateways** perform the last-mile prompt/observe/settle.  
 - **Mojaloop** formalizes **Discovery -> Quote -> Transfer** across **multiple DFSPs**, with **ILP** ensuring atomicity and a separate **settlement layer**.
 
 ---
 
 ## When to use which ideas
 
-- Use **Storo’s modular gateways** when you must integrate diverse rails (EcoCash, PayShap, OPPWA, USDC) *and* keep a single internal ledger of record.  
+- Use **Stalela’s modular gateways** when you must integrate diverse rails (EcoCash, PayShap, OPPWA, USDC) *and* keep a single internal ledger of record.  
 - Use **Mojaloop patterns** (FSPIOP, ILP, ISO 20022 mapping, scheme rules) to standardize cross-institution flows and future-proof for **regional interop**.
 
 ---

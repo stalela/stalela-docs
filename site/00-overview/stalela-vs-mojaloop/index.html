@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Documentation for the Storo payments nucleus — architecture, specs, ops.">
+        <meta name="description" content="Documentation for the Stalela payments nucleus — architecture, specs, ops.">
       
       
       
@@ -24,7 +24,7 @@
     
     
       
-        <title>Storo Nucleus vs Mojaloop Hub - Visual Contrast - Storo Docs</title>
+        <title>Stalela Nucleus vs Mojaloop Hub - Visual Contrast - Stalela Docs</title>
       
     
     
@@ -92,7 +92,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Storo Docs" class="md-header__button md-logo" aria-label="Storo Docs" data-md-component="logo">
+    <a href="../.." title="Stalela Docs" class="md-header__button md-logo" aria-label="Stalela Docs" data-md-component="logo">
       
   <img src="../../assets/images/favicon.svg" alt="logo">
 
@@ -105,13 +105,13 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Storo Docs
+            Stalela Docs
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Storo Nucleus vs Mojaloop Hub - Visual Contrast
+              Stalela Nucleus vs Mojaloop Hub - Visual Contrast
             
           </span>
         </div>
@@ -452,12 +452,12 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Storo Docs" class="md-nav__button md-logo" aria-label="Storo Docs" data-md-component="logo">
+    <a href="../.." title="Stalela Docs" class="md-nav__button md-logo" aria-label="Stalela Docs" data-md-component="logo">
       
   <img src="../../assets/images/favicon.svg" alt="logo">
 
     </a>
-    Storo Docs
+    Stalela Docs
   </label>
   
     <div class="md-nav__source">
@@ -554,7 +554,7 @@
   
   
   <span class="md-ellipsis">
-    Storo Documentation
+    Stalela Documentation
     
   </span>
   
@@ -577,7 +577,7 @@
   
   
   <span class="md-ellipsis">
-    Storo Nucleus
+    Stalela Nucleus
     
   </span>
   
@@ -632,7 +632,7 @@
   
   
   <span class="md-ellipsis">
-    Storo Nucleus vs Mojaloop Hub - Visual Contrast
+    Stalela Nucleus vs Mojaloop Hub - Visual Contrast
     
   </span>
   
@@ -645,7 +645,7 @@
   
   
   <span class="md-ellipsis">
-    Storo Nucleus vs Mojaloop Hub - Visual Contrast
+    Stalela Nucleus vs Mojaloop Hub - Visual Contrast
     
   </span>
   
@@ -1503,7 +1503,7 @@
   
   
   <span class="md-ellipsis">
-    Chart of Accounts (Storo)
+    Chart of Accounts (Stalela)
     
   </span>
   
@@ -2084,7 +2084,7 @@
   
   
   <span class="md-ellipsis">
-    AWS Infrastructure Blueprint (Storo Nucleus)
+    AWS Infrastructure Blueprint (Stalela Nucleus)
     
   </span>
   
@@ -2155,7 +2155,7 @@
   
   
   <span class="md-ellipsis">
-    Multi‑Repo Architecture (Storo)
+    Multi‑Repo Architecture (Stalela)
     
   </span>
   
@@ -2500,14 +2500,14 @@
   
 
 
-<h1 id="storo-nucleus-vs-mojaloop-hub-visual-contrast">Storo Nucleus vs Mojaloop Hub - Visual Contrast<a class="headerlink" href="#storo-nucleus-vs-mojaloop-hub-visual-contrast" title="Permanent link">&para;</a></h1>
-<p>This note shows how <strong>Storo</strong> is <em>inspired by</em> Mojaloop while keeping a <strong>modular, rail-agnostic nucleus</strong>. Two diagrams:
+<h1 id="storo-nucleus-vs-mojaloop-hub-visual-contrast">Stalela Nucleus vs Mojaloop Hub - Visual Contrast<a class="headerlink" href="#storo-nucleus-vs-mojaloop-hub-visual-contrast" title="Permanent link">&para;</a></h1>
+<p>This note shows how <strong>Stalela</strong> is <em>inspired by</em> Mojaloop while keeping a <strong>modular, rail-agnostic nucleus</strong>. Two diagrams:
 1) Component landscape comparison
 2) Transaction flow (Request-to-Pay) mapped to each architecture</p>
 <hr />
 <h2 id="1-component-landscape">1) Component Landscape<a class="headerlink" href="#1-component-landscape" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
-  subgraph S["Storo Nucleus (Modular, Rail-Agnostic)"]
+  subgraph S["Stalela Nucleus (Modular, Rail-Agnostic)"]
     direction LR
     S1["CTS (Canonical Transfer Service)"]
     S2["Rail Gateways (EcoCash/PayShap/OPPWA/USDC)"]
@@ -2532,7 +2532,7 @@
     M8["ILP Coordinator (Conditions/Fulfillment)"]
   end
 
-  %% Storo internals
+  %% Stalela internals
   S1 --&gt; S4
   S1 --&gt; S5
   S1 --&gt; S2
@@ -2554,30 +2554,30 @@
   M6 --- M7
 </code></pre>
 <p><strong>Key differences</strong><br />
-- <strong>Storo</strong> separates <strong>rail adapters</strong> (gateways) from the core; ledger is <strong>internal SoT</strong>.<br />
+- <strong>Stalela</strong> separates <strong>rail adapters</strong> (gateways) from the core; ledger is <strong>internal SoT</strong>.<br />
 - <strong>Mojaloop</strong> is a <strong>shared switch</strong>: it offers discovery, quoting, clearing &amp; settlement to <strong>external DFSPs</strong>.<br />
-- Both use <strong>directories (ALS)</strong>, <strong>FX/fees agreement</strong>, <strong>security (PKI)</strong>, and <strong>fraud hooks</strong> — but Storo keeps them inside its nucleus; Mojaloop exposes them as scheme services.</p>
+- Both use <strong>directories (ALS)</strong>, <strong>FX/fees agreement</strong>, <strong>security (PKI)</strong>, and <strong>fraud hooks</strong> — but Stalela keeps them inside its nucleus; Mojaloop exposes them as scheme services.</p>
 <hr />
 <h2 id="2-request-to-pay-r2p-flow-side-by-side">2) Request-to-Pay (R2P) Flow — Side-by-Side<a class="headerlink" href="#2-request-to-pay-r2p-flow-side-by-side" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>sequenceDiagram
   autonumber
   participant Client as Merchant App / POS
-  participant Storo as Storo CTS
+  participant Stalela as Stalela CTS
   participant Dir as Directory (ALS)
   participant GW as Rail Gateway (e.g., EcoCash/PayShap/USDC)
   participant Ledger as Ledger Service
 
-  Note over Client,Ledger: Storo — Rail-agnostic nucleus
+  Note over Client,Ledger: Stalela — Rail-agnostic nucleus
 
-  Client-&gt;&gt;Storo: POST /transfers (payer alias, amount, rail)
-  Storo-&gt;&gt;Dir: Resolve alias -&gt; provider/route
-  Dir--&gt;&gt;Storo: Provider &amp; fees/windows
-  Storo-&gt;&gt;GW: transfers.submitted.&lt;rail&gt;
-  GW--&gt;&gt;Storo: transfers.accepted (prompt delivered / tx observed)
-  GW--&gt;&gt;Storo: transfers.settled (funds final)
-  Storo-&gt;&gt;Ledger: Postings (Dr/Cr + fees/FX)
-  Ledger--&gt;&gt;Storo: Balances updated
-  Storo--&gt;&gt;Client: 200 OK (state: SETTLED)</code></pre>
+  Client-&gt;&gt;Stalela: POST /transfers (payer alias, amount, rail)
+  Stalela-&gt;&gt;Dir: Resolve alias -&gt; provider/route
+  Dir--&gt;&gt;Stalela: Provider &amp; fees/windows
+  Stalela-&gt;&gt;GW: transfers.submitted.&lt;rail&gt;
+  GW--&gt;&gt;Stalela: transfers.accepted (prompt delivered / tx observed)
+  GW--&gt;&gt;Stalela: transfers.settled (funds final)
+  Stalela-&gt;&gt;Ledger: Postings (Dr/Cr + fees/FX)
+  Ledger--&gt;&gt;Stalela: Balances updated
+  Stalela--&gt;&gt;Client: 200 OK (state: SETTLED)</code></pre>
 <pre class="mermaid"><code>sequenceDiagram
   autonumber
   participant PayerApp as Payer DFSP App
@@ -2603,12 +2603,12 @@
   Hub-&gt;&gt;Settle: (Net/Gross) settlement instruction
   Hub--&gt;&gt;PayerApp: Transfer completed</code></pre>
 <p><strong>Interpretation</strong><br />
-- <strong>Storo</strong> treats R2P as an internal orchestration; <strong>gateways</strong> perform the last-mile prompt/observe/settle.<br />
+- <strong>Stalela</strong> treats R2P as an internal orchestration; <strong>gateways</strong> perform the last-mile prompt/observe/settle.<br />
 - <strong>Mojaloop</strong> formalizes <strong>Discovery -&gt; Quote -&gt; Transfer</strong> across <strong>multiple DFSPs</strong>, with <strong>ILP</strong> ensuring atomicity and a separate <strong>settlement layer</strong>.</p>
 <hr />
 <h2 id="when-to-use-which-ideas">When to use which ideas<a class="headerlink" href="#when-to-use-which-ideas" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Use <strong>Storo’s modular gateways</strong> when you must integrate diverse rails (EcoCash, PayShap, OPPWA, USDC) <em>and</em> keep a single internal ledger of record.  </li>
+<li>Use <strong>Stalela’s modular gateways</strong> when you must integrate diverse rails (EcoCash, PayShap, OPPWA, USDC) <em>and</em> keep a single internal ledger of record.  </li>
 <li>Use <strong>Mojaloop patterns</strong> (FSPIOP, ILP, ISO 20022 mapping, scheme rules) to standardize cross-institution flows and future-proof for <strong>regional interop</strong>.</li>
 </ul>
 <hr />

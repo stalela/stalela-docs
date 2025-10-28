@@ -1,6 +1,6 @@
 # Non-Functional Requirements (NFRs)
 
-This document captures the **performance, availability, security, and compliance targets** for the Storo nucleus.
+This document captures the **performance, availability, security, and compliance targets** for the Stalela nucleus.
 
 ---
 

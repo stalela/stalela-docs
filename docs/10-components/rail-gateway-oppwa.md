@@ -1,6 +1,6 @@
 # Rail Gateway — OPPWA (Card / Tokenized Payments)
 
-The **OPPWA Gateway** adapts Storo canonical transfers to OPPWA (Open Payment Platform) APIs used by acquirers/processors (e.g., for Zimswitch card-present/tokenized flows). It validates payloads, transforms to OPPWA request formats, handles webhooks, and emits domain events.
+The **OPPWA Gateway** adapts Stalela canonical transfers to OPPWA (Open Payment Platform) APIs used by acquirers/processors (e.g., for Zimswitch card-present/tokenized flows). It validates payloads, transforms to OPPWA request formats, handles webhooks, and emits domain events.
 
 ---
 
@@ -61,7 +61,7 @@ The **OPPWA Gateway** adapts Storo canonical transfers to OPPWA (Open Payment Pl
 - **Tokenization** → require network token / OPPWA token; **never** store PAN.
 - **3DS** → include 3DS server results when present; pass-through fields via metadata.
 - **Idempotency** → set OPPWA idempotency keys using `{tenantId}:{transferId}`.
-- **Reason mapping** → maintain mapping table from OPPWA result/return codes → Storo `reason` enums.
+- **Reason mapping** → maintain mapping table from OPPWA result/return codes → Stalela `reason` enums.
 - **Auth/Capture** split → only capture after explicit command or webhook indicating capture.
 
 ---
