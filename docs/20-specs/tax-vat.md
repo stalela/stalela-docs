@@ -1,12 +1,12 @@
 # Tax & VAT (ZA/ZW)
 
-Guidance on tax treatment for fees and surcharges in the Storo ledger.
+Guidance on tax treatment for fees and surcharges in the Stalela ledger.
 
 ---
 
 ## VAT Basics (ZA)
 - Standard rate: 15% (as of doc date).  
-- Taxable supplies: Storo service fees typically vatable; confirm per tenant.
+- Taxable supplies: Stalela service fees typically vatable; confirm per tenant.
 - Invoicing: include VAT breakdown and tax codes per line.
 
 ## Zimbabwe Considerations

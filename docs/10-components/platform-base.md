@@ -1,6 +1,6 @@
 # Platform/Base Library
 
-The **Platform/Base Library** provides shared utilities for all Storo services, ensuring consistency in health checks, IDs, error handling, time logic, and migrations.
+The **Platform/Base Library** provides shared utilities for all Stalela services, ensuring consistency in health checks, IDs, error handling, time logic, and migrations.
 
 ---
 

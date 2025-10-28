@@ -1,8 +1,8 @@
-# 📦 Storo MVP – Pilot with 20 Merchants
+# 📦 Stalela MVP – Pilot with 20 Merchants
 
 ## 🎯 Goal
 
-Demonstrate the end-to-end viability of Storo’s Canonical Transfer Service (CTS) and POS/payment ecosystem in a **controlled pilot** with 20 merchants. The MVP validates:
+Demonstrate the end-to-end viability of Stalela’s Canonical Transfer Service (CTS) and POS/payment ecosystem in a **controlled pilot** with 20 merchants. The MVP validates:
 
 * Unified transfer orchestration (CTS front-door)
 * USDC-based merchant acceptance (POS / wallet QR)

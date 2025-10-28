@@ -6,7 +6,7 @@ flowchart LR
     A[Client Apps / Merchants / WhatsApp Bot]
   end
 
-  subgraph Core["Storo Nucleus"]
+  subgraph Core["Stalela Nucleus"]
     direction LR
 
     subgraph API["Canonical Transfer Service (API)"]

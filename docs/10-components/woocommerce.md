@@ -1,12 +1,12 @@
-# WooCommerce ↔️ Storo CTS Plugin (USDC Example)
+# WooCommerce ↔️ Stalela CTS Plugin (USDC Example)
 
-This document describes a production‑ready WooCommerce plugin that connects a merchant’s store to **Storo’s Canonical Transfer Service (CTS)** to accept **USDC** (AVAX) payments. It covers integration flows, mapping, idempotency, and operational concerns with **Mermaid** diagrams.
+This document describes a production‑ready WooCommerce plugin that connects a merchant’s store to **Stalela’s Canonical Transfer Service (CTS)** to accept **USDC** (AVAX) payments. It covers integration flows, mapping, idempotency, and operational concerns with **Mermaid** diagrams.
 
 ---
 
 ## 1) Objectives
 
-* Let WooCommerce merchants accept **USDC** at checkout using Storo CTS.
+* Let WooCommerce merchants accept **USDC** at checkout using Stalela CTS.
 * Keep the **storefront UX native** (Woo buttons, order notes, refunds) while offloading payment orchestration to CTS.
 * Ensure **idempotency**, observability, and clear failure handling.
 
@@ -22,11 +22,11 @@ flowchart LR
 
   subgraph Woo[Merchant WooCommerce]
     WC[WooCore + Orders]
-    P[Storo Payment Gateway Plugin]
+    P[Stalela Payment Gateway Plugin]
     WH[Woo REST Webhooks]
   end
 
-  subgraph Storo
+  subgraph Stalela
     API[CTS API]
     BUS[events.transfers.*]
     GW[USDC Gateway]
@@ -52,13 +52,13 @@ sequenceDiagram
   autonumber
   participant U as Shopper
   participant WC as WooCommerce
-  participant P as Storo Plugin
+  participant P as Stalela Plugin
   participant API as CTS/API
   participant BUS as EventBus
   participant GW as Gateway(USDC)
   participant WH as Woo Webhook Endpoint
 
-  U->>WC: Place order (payment method = Storo USDC)
+  U->>WC: Place order (payment method = Stalela USDC)
   WC->>P: on_payment_process(order)
   Note over P: Build canonical request + Idempotency-Key
   P->>API: POST /transfers {Idempotency-Key}
@@ -162,11 +162,11 @@ stateDiagram-v2
 
 ---
 
-## 7) Webhook Contract (from Storo → Woo)
+## 7) Webhook Contract (from Stalela → Woo)
 
 **Endpoint**: `POST https://merchant.store/wc/storo/webhook`
 
-**Headers**: `X-Storo-Signature`, `X-Storo-Timestamp`, `X-Request-Id`
+**Headers**: `X-Stalela-Signature`, `X-Stalela-Timestamp`, `X-Request-Id`
 
 **Body (accepted)**
 
@@ -223,7 +223,7 @@ flowchart LR
 
 ## 10) Configuration & Onboarding
 
-* **API Keys**: Tenant‑scoped key from Storo Console.
+* **API Keys**: Tenant‑scoped key from Stalela Console.
 * **Merchant Wallet (USDC)**: Provided during onboarding; validated against network.
 * **Webhook Secret**: Rotate via plugin UI; validate on each callback.
 * **Test Mode**: Sandboxed CTS tenant & USDC test network.
@@ -241,7 +241,7 @@ flowchart LR
 ## 12) Example Admin Runbook
 
 1. Order stuck **On‑Hold** > 10 min → check webhook delivery logs.
-2. If missing, press **Re‑deliver** in Storo Console or poll `GET /transfers/:id`.
+2. If missing, press **Re‑deliver** in Stalela Console or poll `GET /transfers/:id`.
 3. If `returned/failed`, contact customer; optionally retry new payment method.
 
 ---

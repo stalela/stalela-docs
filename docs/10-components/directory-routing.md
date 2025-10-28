@@ -1,6 +1,6 @@
 # Directory & Routing Service
 
-The **Directory & Routing Service** is Storo’s authoritative source of rails metadata. It ensures transfers are routed deterministically to the correct rail endpoints, institutions, and fee structures.
+The **Directory & Routing Service** is Stalela’s authoritative source of rails metadata. It ensures transfers are routed deterministically to the correct rail endpoints, institutions, and fee structures.
 
 ---
 

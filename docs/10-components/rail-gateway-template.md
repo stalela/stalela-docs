@@ -26,7 +26,7 @@ Adapt canonical transfers to the rail; strict schema validation; webhooks/file i
 ## Transform & Validation
 - Strict validation of identifiers, amounts, currencies.
 - Idempotency: `{tenantId}:{transferId}` partner reference.
-- Reason mapping → Storo enums (see `docs/20-specs/error-codes.md`).
+- Reason mapping → Stalela enums (see `docs/20-specs/error-codes.md`).
 
 ## Diagrams (example)
 ```mermaid

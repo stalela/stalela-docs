@@ -1,6 +1,6 @@
-# Chart of Accounts (Storo)
+# Chart of Accounts (Stalela)
 
-The **Chart of Accounts (CoA)** is the backbone of Storo’s ledger.  
+The **Chart of Accounts (CoA)** is the backbone of Stalela’s ledger.  
 It defines all account types, their normal balances, and how they roll into financial statements.  
 Based on lessons from *Accounting for Developers* and adapted to payments systems.
 

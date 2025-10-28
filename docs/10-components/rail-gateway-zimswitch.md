@@ -1,6 +1,6 @@
 # Rail Gateway — Zimswitch (Card / ISO 8583 via OPPWA)
 
-The **Zimswitch Gateway** adapts Storo canonical transfers to Zimswitch-connected acquiring via OPPWA/ISO 8583 semantics. It validates messages, transforms to processor requests, handles callbacks/settlement files, and emits domain events.
+The **Zimswitch Gateway** adapts Stalela canonical transfers to Zimswitch-connected acquiring via OPPWA/ISO 8583 semantics. It validates messages, transforms to processor requests, handles callbacks/settlement files, and emits domain events.
 
 > Note: Some Zimswitch integrations front with OPPWA JSON APIs while the underlying network uses **ISO 8583**. We model both: primary REST submission with strict **ISO field discipline** in validation and mapping.
 

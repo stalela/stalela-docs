@@ -1,6 +1,6 @@
 # CI/CD Standard (per service)
 
-Canonical GitHub Actions workflow + required checks for all Storo service repos.
+Canonical GitHub Actions workflow + required checks for all Stalela service repos.
 
 ---
 

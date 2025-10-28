@@ -1,6 +1,6 @@
 # Compliance Screening Service
 
-The **Compliance Screening Service** protects Storo by screening entities (payer, payee) against sanctions and risk lists before transfers are submitted to rails. It ensures **fast, local allow/deny decisions** and continuous re-screening as lists update.
+The **Compliance Screening Service** protects Stalela by screening entities (payer, payee) against sanctions and risk lists before transfers are submitted to rails. It ensures **fast, local allow/deny decisions** and continuous re-screening as lists update.
 
 ---
 

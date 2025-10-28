@@ -1,6 +1,6 @@
 # Ledger Service
 
-The **Ledger Service** is Storo’s **book of record**. It maintains double‑entry journals, computes balances, exposes statements, and guarantees that every money movement is represented by a **balanced set of postings**. If it isn’t posted here, it didn’t happen.
+The **Ledger Service** is Stalela’s **book of record**. It maintains double‑entry journals, computes balances, exposes statements, and guarantees that every money movement is represented by a **balanced set of postings**. If it isn’t posted here, it didn’t happen.
 
 ---
 
@@ -86,7 +86,7 @@ Create **memo/hold** journal (off‑balance or flagged):
 Core settlement postings:
 - **Debit**: `USER` — 10000  
 - **Credit**: `MERCHANT` — 9900  
-- **Credit**: `FEES` — 100   (Storo take rate)
+- **Credit**: `FEES` — 100   (Stalela take rate)
 
 If FX occurs (payer USD → merchant ZAR), split legs:
 - **Debit**: `USER` — 10000 USD  
@@ -252,4 +252,4 @@ sequenceDiagram
 
 ---
 
-**Bottom line:** The Ledger turns messy rail realities into **deterministic, balanced, auditable facts**. Everything else in Storo depends on this discipline.
+**Bottom line:** The Ledger turns messy rail realities into **deterministic, balanced, auditable facts**. Everything else in Stalela depends on this discipline.

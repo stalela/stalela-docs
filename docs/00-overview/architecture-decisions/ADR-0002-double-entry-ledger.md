@@ -7,7 +7,7 @@
 
 ## Context
 
-Storo must provide an authoritative record of money movement across rails.  
+Stalela must provide an authoritative record of money movement across rails.  
 Financial correctness requires:
 
 - Balances that always reconcile.  

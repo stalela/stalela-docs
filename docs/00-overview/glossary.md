@@ -1,6 +1,6 @@
 # Glossary
 
-Shared domain language for Storo. Sources include our design docs and Moov.io’s [terms-dictionary](https://github.com/moov-io/terms-dictionary).  
+Shared domain language for Stalela. Sources include our design docs and Moov.io’s [terms-dictionary](https://github.com/moov-io/terms-dictionary).  
 This file should be the **first stop** for new contributors.
 
 ---
@@ -9,7 +9,7 @@ This file should be the **first stop** for new contributors.
 
 **ACH**  
 Automated Clearing House. Batch-based payment network in the U.S.  
-_Not directly used in Storo, but referenced via Moov patterns._
+_Not directly used in Stalela, but referenced via Moov patterns._
 
 **Account**  
 A ledger entity that holds balances and records postings. Types include: User, Merchant, Liquidity, Fees, FX, Settlement.
@@ -18,14 +18,14 @@ A ledger entity that holds balances and records postings. Types include: User, M
 Lightweight doc capturing a key architectural choice, its context, decision, and consequences.
 
 **Authorization (AUTH)**  
-A request to place a hold on funds. In Storo, represented in the canonical transfer intent.
+A request to place a hold on funds. In Stalela, represented in the canonical transfer intent.
 
 ---
 
 ## B
 
 **BAI2**  
-Bank Administration Institute format for statement files. Used by Moov and referenced as a model for Storo’s reconciliation exports.
+Bank Administration Institute format for statement files. Used by Moov and referenced as a model for Stalela’s reconciliation exports.
 
 **Balance**  
 The net amount for an account at a given time, derived from postings.
@@ -41,7 +41,7 @@ Pub/sub system (SNS+SQS in dev) delivering domain events between services.
 ## C
 
 **Canonical Transfer Service (CTS)**  
-Front-door API and orchestrator for transfers in Storo. Ensures idempotency, normalization, compliance, and routing.
+Front-door API and orchestrator for transfers in Stalela. Ensures idempotency, normalization, compliance, and routing.
 
 **Chargeback / Return**  
 Reversal of a prior settlement, with reason codes. Modeled as state transitions in CTS and reversal postings in the Ledger.
@@ -60,7 +60,7 @@ Time of day after which payments are queued for next business day. Defined in Di
 Component maintaining authoritative data on institutions, BINs, fees, and settlement windows.
 
 **Double-entry**  
-Accounting principle: every debit has an equal credit. Enforced in Storo Ledger.
+Accounting principle: every debit has an equal credit. Enforced in Stalela Ledger.
 
 **DLQ (Dead Letter Queue)**  
 Queue for events that failed processing and need operator intervention.
@@ -96,7 +96,7 @@ Sample payload used in tests to ensure round-trip parsing and validation stabili
 Adapter for a payment rail (Zimswitch, OPPWA, USDC/Algorand). Translates canonical transfers into rail-specific requests.
 
 **GL (General Ledger)**  
-The book of record. Storo Ledger service maintains the general ledger.
+The book of record. Stalela Ledger service maintains the general ledger.
 
 **Glossary**  
 This file. Shared terms and definitions.
@@ -109,7 +109,7 @@ This file. Shared terms and definitions.
 Ensuring a request (e.g., `POST /transfers`) can be safely retried without duplication.
 
 **ISO 8583**  
-International standard for card payment messages. Zimswitch uses this; Storo validates payloads via strict schemas.
+International standard for card payment messages. Zimswitch uses this; Stalela validates payloads via strict schemas.
 
 **ISO 20022**  
 XML/JSON standard for financial messaging. Referenced for future-proofing rails.
@@ -171,7 +171,7 @@ Negative state transition; undo of a prior settlement with reason codes.
 ## S
 
 **Settlement**  
-Final movement of funds on a rail. In Storo, confirmed by events and reconciled against statements.
+Final movement of funds on a rail. In Stalela, confirmed by events and reconciled against statements.
 
 **Specs Repo**  
 Dedicated repo holding event schemas, API definitions, and fixtures (`storo-specs`). Source of truth for contracts.
@@ -184,13 +184,13 @@ Visual representation of lifecycle states and transitions (Mermaid).
 ## T
 
 **Tenant**  
-Isolated namespace for a customer/institution using Storo. All transfers are scoped by tenantId.
+Isolated namespace for a customer/institution using Stalela. All transfers are scoped by tenantId.
 
 **Trace ID**  
 Identifier used for distributed tracing across services.
 
 **Transfer**  
-Core unit of money movement in Storo, defined by canonical schema (payer, payee, amount, rail, intent, etc.).
+Core unit of money movement in Stalela, defined by canonical schema (payer, payee, amount, rail, intent, etc.).
 
 ---
 

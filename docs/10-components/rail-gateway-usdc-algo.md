@@ -1,6 +1,6 @@
 # Rail Gateway — USDC on Algorand
 
-The **USDC/Algorand Gateway** adapts Storo’s canonical transfers to on-chain USDC movements on the Algorand network. It validates requests, constructs transactions, submits to the network (via Algod/Indexer/provider), listens for confirmations, and emits domain events.
+The **USDC/Algorand Gateway** adapts Stalela’s canonical transfers to on-chain USDC movements on the Algorand network. It validates requests, constructs transactions, submits to the network (via Algod/Indexer/provider), listens for confirmations, and emits domain events.
 
 ---
 

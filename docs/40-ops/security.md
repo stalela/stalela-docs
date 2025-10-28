@@ -1,6 +1,6 @@
 # Security
 
-Standards for secrets, access, PCI scope, and PII handling in Storo.
+Standards for secrets, access, PCI scope, and PII handling in Stalela.
 
 ---
 

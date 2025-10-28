@@ -40,7 +40,7 @@ Consistent error codes across APIs.
   - Beneficiary not available → `PS_BENEFICIARY_UNAVAILABLE`
   - Timeout → `PS_TIMEOUT`
 
-> Exact partner code → Storo reason maps to be versioned per gateway.
+> Exact partner code → Stalela reason maps to be versioned per gateway.
 
 ---
 

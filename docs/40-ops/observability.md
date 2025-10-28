@@ -1,6 +1,6 @@
 # Observability
 
-Metrics, logs, and tracing conventions for Storo.
+Metrics, logs, and tracing conventions for Stalela.
 
 ---
 

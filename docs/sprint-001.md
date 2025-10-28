@@ -2,7 +2,7 @@
 
 **Dates:** YYYY‑MM‑DD → YYYY‑MM‑DD  
 **Team:** 2 devs (Sprint Master/System Design + Developer)  
-**Focus:** Bootstrapping Storo nucleus with contracts, infra scaffolding, and first end‑to‑end slice.
+**Focus:** Bootstrapping Stalela nucleus with contracts, infra scaffolding, and first end‑to‑end slice.
 
 ---
 

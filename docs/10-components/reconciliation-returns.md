@@ -1,6 +1,6 @@
 # Reconciliation & Returns Service
 
-The **Reconciliation & Returns Service** ensures Storo’s books stay aligned with rail statements and handles disputes/returns as first-class flows.
+The **Reconciliation & Returns Service** ensures Stalela’s books stay aligned with rail statements and handles disputes/returns as first-class flows.
 
 ---
 

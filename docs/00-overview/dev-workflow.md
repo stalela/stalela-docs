@@ -1,6 +1,6 @@
 # Development Workflow
 
-This document sets conventions for how we **develop, review, and deploy** Storo nucleus code.
+This document sets conventions for how we **develop, review, and deploy** Stalela nucleus code.
 
 ---
 

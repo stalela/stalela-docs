@@ -1,6 +1,6 @@
-# Storo Docs
+# Stalela Docs
 
-Welcome to the Storo payments nucleus documentation.
+Welcome to the Stalela payments nucleus documentation.
 
 - Start with the Overview to understand architecture and concepts.
 - Browse Components for service-level docs.

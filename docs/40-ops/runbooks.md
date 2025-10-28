@@ -1,6 +1,6 @@
 # Runbooks
 
-Operational procedures for Storo nucleus components. Keep these pragmatic and up to date.
+Operational procedures for Stalela nucleus components. Keep these pragmatic and up to date.
 
 ---
 

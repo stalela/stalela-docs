@@ -1,6 +1,6 @@
 # Local Development (storo‑devstack)
 
-How to run Storo locally **without** a monorepo. You’ll run the fleet via Docker and **swap one service** for your local build.
+How to run Stalela locally **without** a monorepo. You’ll run the fleet via Docker and **swap one service** for your local build.
 
 ---
 
