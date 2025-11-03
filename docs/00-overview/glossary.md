@@ -14,6 +14,9 @@ _Not directly used in Stalela, but referenced via Moov patterns._
 **Account**  
 A ledger entity that holds balances and records postings. Types include: User, Merchant, Liquidity, Fees, FX, Settlement.
 
+**AI Routing**
+AI-enhanced orchestration capability that ranks and selects rails in real time using policy weights, historical performance, cost, and risk context.
+
 **ADR (Architecture Decision Record)**  
 Lightweight doc capturing a key architectural choice, its context, decision, and consequences.
 
@@ -159,6 +162,9 @@ Mapping from transfer events to specific ledger postings (accounts, amounts, mem
 
 **Rail**  
 A payment network (e.g., Zimswitch, OPPWA, Algorand/USDC).
+
+**Risk Agents**
+AI services embedded in CTS orchestration that evaluate fraud and identity signals to assign compliance tiers and trigger adaptive controls.
 
 **Reconciliation**  
 Process of matching partner statements or on-chain events with internal transfers. Runs nightly.
