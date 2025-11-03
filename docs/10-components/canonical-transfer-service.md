@@ -368,7 +368,7 @@ graph TD
 |---|---|---|---|---|
 | Idempotency | `Idempotency-Key` + SHA256(normalized body) unique per tenant; TTL 36h | Key-only; body-only | Prevents divergent bodies on same key; aligns with retention window | Store hash; shard hot tenants |
 | Outbox Pattern | Same-DB transactional outbox; ordered per `transferId`; backoff 1s→5s→30s→2m→10m→1h→2h→4h→8h→16h; DLQ at 10 | Dedicated streaming bus (Kafka) | Simpler atomicity; avoids dual-write | Worker lag can grow → monitor/autoscale |
-| Routing | Cache TTL 5m; negative cache 45s; deterministic rules; quirks in gateways | Longer TTL | Balanced freshness vs cost | Possible staleness → admin bust |
+| Routing | AI-assisted dynamic policies + cache TTL 5m; negative cache 45s; deterministic fallback library | Longer TTL | Real-time optimization with safe degradation paths | Requires continuous model evaluation |
 | Multitenancy | Row-level scope by `tenantId`; per-tenant quotas; per-tenant secrets | DB schemas per tenant | Simpler ops; shared pool | Strong tenancy guard required |
 | Schema Evolution | Canonical SemVer; `X-Canonical-Version`; events `envelope.v` (BACKWARD) | Ad-hoc | Predictable upgrades | Maintain registry and migrations |
 | Consistency | Non-blocking settlement; POST 201/200 with `state=SUBMITTED` + Location | Synchronous settlement | Lower latency; simpler SLAs | Clients must poll/subscribe |
@@ -376,6 +376,73 @@ graph TD
 | Observability | W3C traceparent; metrics by `tenantId`,`rail`,`state`; PII-safe logs | None | Traceability and SLOs | Watch label cardinality |
 | Backpressure | Token-bucket per tenant; bounded workers; circuit breakers | Unlimited | Protects core systems | Graceful shedding under load |
 | Error Taxonomy | 4xx (validation/deny), 409 (idempotency/OCC), 429 (rate limits), 5xx (internal/502 routing) | Loose mapping | Clear client behavior | Easier debugging and SLAs |
+
+## Intelligent Orchestration Engine
+
+Stalela CTS now supports programmable orchestration logic that can dynamically evaluate, score, and select optimal payment rails based on:
+
+- Settlement speed
+- Total transaction cost (incl. FX, intermediary fees)
+- Identity compliance score
+- Rail health status
+- User preferences and behavioral context
+
+This decisioning is powered by embedded AI agents, which operate as pluggable functions in the orchestration pipeline.
+
+### Integration Model
+
+```mermaid
+flowchart TD
+    Intent[Payment Intent] --> CTS
+    CTS --> AI_Route
+    AI_Route --> Directory
+    Directory --> Routing
+    Routing --> Transfer
+```
+
+### Routing Policies
+
+CTS now accepts **dynamic policy input** with weights for tradeoffs:
+
+```json
+{
+  "policy": {
+    "optimize_for": "speed",
+    "fallbacks": ["cost", "reliability"],
+    "compliance_tier": "auto",
+    "preferred_methods": ["mobile_money", "voucher"],
+    "excluded_rails": ["card"]
+  }
+}
+```
+
+These policies are interpreted by the orchestration engine to determine the best route for a given payment context.
+
+---
+
+### 📊 AI Agent Insights
+
+Each transfer can now expose why a rail was chosen, which path was tried, and fallback behavior:
+
+```json
+{
+  "transfer_id": "abc123",
+  "selected_path": "MoMo → Voucher",
+  "score": 87.2,
+  "reason": "Cheapest + acceptable speed under fallback policy",
+  "fallback_used": true
+}
+```
+
+This data is accessible via the Orchestration Analytics API.
+
+---
+
+### ⚙️ Backwards Compatibility
+
+The orchestration engine is **backwards-compatible** with static configurations.
+
+If no dynamic policy is provided, the routing logic falls back to static Directory rules with preset fallbacks.
 
 ---
 

@@ -115,6 +115,39 @@ flowchart LR
 
 ---
 
+## AI-Enhanced Orchestration Layer
+
+The Nucleus architecture now includes a dynamic orchestration layer that leverages AI agents to optimize transaction flows in real time.
+
+This layer works alongside our existing Directory, Routing, and Compliance modules — not as replacements, but as **intelligent decision advisors** that enhance behavior based on transaction context, user risk, and infrastructure state.
+
+### Capabilities Introduced
+
+- **Smart Rail Selector Agent** — ranks and selects the optimal route across mobile money, bank, card, voucher, or crypto, based on historical performance, cost, latency, and user profile.
+- **Dynamic Risk Classifier** — applies real-time fraud and identity risk scoring to determine appropriate compliance tiering.
+- **Rail Health Monitor Agent** — observes system-wide metrics (e.g., failure rate, latency, uptime) and dynamically adjusts available routing paths.
+- **Orchestration Copilot** — exposes orchestration decisions and performance to devs and operators via CLI or natural language assistant.
+
+### Architectural Changes
+
+```mermaid
+flowchart LR
+    App[Client App] --> CTS
+    CTS --> AI_Route[Smart Rail Selector Agent]
+    AI_Route --> Directory
+    Directory --> Routing
+    Routing --> Events
+    Events --> Rail
+    Compliance --> AI_Risk[Risk Classifier]
+    Events --> AI_Health[Health Monitor]
+```
+
+Each AI agent is **stateless**, invoked via microservice or function call, and emits traceable events like:
+
+* `route.selected.via_ai`
+* `risk.assessed.via_model`
+* `rail.flagged.degraded`
+
 ## 🔄 Transfer Lifecycle (State Machine)
 
 ```mermaid
@@ -131,6 +164,21 @@ stateDiagram-v2
 ```
 
 ---
+
+## 📡 Event Model
+
+The nucleus continues to emit canonical events for lifecycle transitions, ledger postings, and reconciliation outcomes. With the AI-enhanced orchestration layer, additional signals improve observability, feedback loops, and operator insight.
+
+### New Events
+
+| Event Name                     | Payload                                        | Triggered By                         |
+|-------------------------------|-----------------------------------------------|--------------------------------------|
+| `route.selected.via_ai`       | {path, score, features used}                  | Smart Rail Selector Agent            |
+| `risk.tier.assigned`          | {user_id, risk_score, compliance_level}       | Dynamic Risk Classifier              |
+| `rail.flagged.degraded`       | {rail_id, health_metrics, timestamp}          | Rail Health Monitor Agent            |
+| `orchestration.fallback.used` | {original_path, fallback_path, reason}        | CTS fallback handler                 |
+
+These events land on the existing bus and follow the same envelope structure and retention policies as the rest of the domain model. They provide downstream services and operators with the rationale behind AI-guided actions, enabling rapid tuning, auditing, and simulation.
 
 ## 📜 Contracts
 
