@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
@@ -902,6 +902,57 @@
   <a href="#5-architecture-design" class="md-nav__link">
     <span class="md-ellipsis">
       5. Architecture &amp; Design
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intelligent-orchestration-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intelligent Orchestration Engine
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intelligent Orchestration Engine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#integration-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#routing-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Routing Policies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-agent-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 AI Agent Insights
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backwards-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚙️ Backwards Compatibility
     </span>
   </a>
   
@@ -3191,10 +3242,10 @@
 </tr>
 <tr>
 <td>Routing</td>
-<td>Cache TTL 5m; negative cache 45s; deterministic rules; quirks in gateways</td>
+<td>AI-assisted dynamic policies + cache TTL 5m; negative cache 45s; deterministic fallback library</td>
 <td>Longer TTL</td>
-<td>Balanced freshness vs cost</td>
-<td>Possible staleness → admin bust</td>
+<td>Real-time optimization with safe degradation paths</td>
+<td>Requires continuous model evaluation</td>
 </tr>
 <tr>
 <td>Multitenancy</td>
@@ -3247,6 +3298,52 @@
 </tr>
 </tbody>
 </table>
+<h2 id="intelligent-orchestration-engine">Intelligent Orchestration Engine<a class="headerlink" href="#intelligent-orchestration-engine" title="Permanent link">&para;</a></h2>
+<p>Stalela CTS now supports programmable orchestration logic that can dynamically evaluate, score, and select optimal payment rails based on:</p>
+<ul>
+<li>Settlement speed</li>
+<li>Total transaction cost (incl. FX, intermediary fees)</li>
+<li>Identity compliance score</li>
+<li>Rail health status</li>
+<li>User preferences and behavioral context</li>
+</ul>
+<p>This decisioning is powered by embedded AI agents, which operate as pluggable functions in the orchestration pipeline.</p>
+<h3 id="integration-model">Integration Model<a class="headerlink" href="#integration-model" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    Intent[Payment Intent] --&gt; CTS
+    CTS --&gt; AI_Route
+    AI_Route --&gt; Directory
+    Directory --&gt; Routing
+    Routing --&gt; Transfer</code></pre>
+<h3 id="routing-policies">Routing Policies<a class="headerlink" href="#routing-policies" title="Permanent link">&para;</a></h3>
+<p>CTS now accepts <strong>dynamic policy input</strong> with weights for tradeoffs:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;policy&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;optimize_for&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;speed&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;fallbacks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;cost&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;reliability&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;compliance_tier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;preferred_methods&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;mobile_money&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;voucher&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;excluded_rails&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;card&quot;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>These policies are interpreted by the orchestration engine to determine the best route for a given payment context.</p>
+<hr />
+<h3 id="ai-agent-insights">📊 AI Agent Insights<a class="headerlink" href="#ai-agent-insights" title="Permanent link">&para;</a></h3>
+<p>Each transfer can now expose why a rail was chosen, which path was tried, and fallback behavior:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;transfer_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;selected_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MoMo → Voucher&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">87.2</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Cheapest + acceptable speed under fallback policy&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;fallback_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>This data is accessible via the Orchestration Analytics API.</p>
+<hr />
+<h3 id="backwards-compatibility">⚙️ Backwards Compatibility<a class="headerlink" href="#backwards-compatibility" title="Permanent link">&para;</a></h3>
+<p>The orchestration engine is <strong>backwards-compatible</strong> with static configurations.</p>
+<p>If no dynamic policy is provided, the routing logic falls back to static Directory rules with preset fallbacks.</p>
 <hr />
 <h3 id="6-data-model">6. Data Model<a class="headerlink" href="#6-data-model" title="Permanent link">&para;</a></h3>
 <p>Tables</p>

@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
@@ -649,11 +649,68 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ai-enhanced-orchestration-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI-Enhanced Orchestration Layer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI-Enhanced Orchestration Layer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#capabilities-introduced" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capabilities Introduced
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architectural-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architectural Changes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#transfer-lifecycle-state-machine" class="md-nav__link">
     <span class="md-ellipsis">
       🔄 Transfer Lifecycle (State Machine)
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      📡 Event Model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📡 Event Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      New Events
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2697,6 +2754,32 @@ It orchestrates all money movement across rails (USDC/Algorand, Zimswitch/OPPWA,
   PL --- D
   PL --- R</code></pre>
 <hr />
+<h2 id="ai-enhanced-orchestration-layer">AI-Enhanced Orchestration Layer<a class="headerlink" href="#ai-enhanced-orchestration-layer" title="Permanent link">&para;</a></h2>
+<p>The Nucleus architecture now includes a dynamic orchestration layer that leverages AI agents to optimize transaction flows in real time.</p>
+<p>This layer works alongside our existing Directory, Routing, and Compliance modules — not as replacements, but as <strong>intelligent decision advisors</strong> that enhance behavior based on transaction context, user risk, and infrastructure state.</p>
+<h3 id="capabilities-introduced">Capabilities Introduced<a class="headerlink" href="#capabilities-introduced" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Smart Rail Selector Agent</strong> — ranks and selects the optimal route across mobile money, bank, card, voucher, or crypto, based on historical performance, cost, latency, and user profile.</li>
+<li><strong>Dynamic Risk Classifier</strong> — applies real-time fraud and identity risk scoring to determine appropriate compliance tiering.</li>
+<li><strong>Rail Health Monitor Agent</strong> — observes system-wide metrics (e.g., failure rate, latency, uptime) and dynamically adjusts available routing paths.</li>
+<li><strong>Orchestration Copilot</strong> — exposes orchestration decisions and performance to devs and operators via CLI or natural language assistant.</li>
+</ul>
+<h3 id="architectural-changes">Architectural Changes<a class="headerlink" href="#architectural-changes" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart LR
+    App[Client App] --&gt; CTS
+    CTS --&gt; AI_Route[Smart Rail Selector Agent]
+    AI_Route --&gt; Directory
+    Directory --&gt; Routing
+    Routing --&gt; Events
+    Events --&gt; Rail
+    Compliance --&gt; AI_Risk[Risk Classifier]
+    Events --&gt; AI_Health[Health Monitor]</code></pre>
+<p>Each AI agent is <strong>stateless</strong>, invoked via microservice or function call, and emits traceable events like:</p>
+<ul>
+<li><code>route.selected.via_ai</code></li>
+<li><code>risk.assessed.via_model</code></li>
+<li><code>rail.flagged.degraded</code></li>
+</ul>
 <h2 id="transfer-lifecycle-state-machine">🔄 Transfer Lifecycle (State Machine)<a class="headerlink" href="#transfer-lifecycle-state-machine" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>stateDiagram-v2
   [*] --&gt; INITIATED
@@ -2709,6 +2792,41 @@ It orchestrates all money movement across rails (USDC/Algorand, Zimswitch/OPPWA,
   RETURNED --&gt; [*]
   FAILED --&gt; [*]</code></pre>
 <hr />
+<h2 id="event-model">📡 Event Model<a class="headerlink" href="#event-model" title="Permanent link">&para;</a></h2>
+<p>The nucleus continues to emit canonical events for lifecycle transitions, ledger postings, and reconciliation outcomes. With the AI-enhanced orchestration layer, additional signals improve observability, feedback loops, and operator insight.</p>
+<h3 id="new-events">New Events<a class="headerlink" href="#new-events" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Event Name</th>
+<th>Payload</th>
+<th>Triggered By</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>route.selected.via_ai</code></td>
+<td>{path, score, features used}</td>
+<td>Smart Rail Selector Agent</td>
+</tr>
+<tr>
+<td><code>risk.tier.assigned</code></td>
+<td>{user_id, risk_score, compliance_level}</td>
+<td>Dynamic Risk Classifier</td>
+</tr>
+<tr>
+<td><code>rail.flagged.degraded</code></td>
+<td>{rail_id, health_metrics, timestamp}</td>
+<td>Rail Health Monitor Agent</td>
+</tr>
+<tr>
+<td><code>orchestration.fallback.used</code></td>
+<td>{original_path, fallback_path, reason}</td>
+<td>CTS fallback handler</td>
+</tr>
+</tbody>
+</table>
+<p>These events land on the existing bus and follow the same envelope structure and retention policies as the rest of the domain model. They provide downstream services and operators with the rationale behind AI-guided actions, enabling rapid tuning, auditing, and simulation.</p>
 <h2 id="contracts">📜 Contracts<a class="headerlink" href="#contracts" title="Permanent link">&para;</a></h2>
 <h3 id="event-envelope">Event Envelope<a class="headerlink" href="#event-envelope" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
