@@ -1,5 +1,6 @@
 {
-  "buildCommand": "pip install --break-system-packages -r requirements.txt && mkdocs build",
-  "outputDirectory": "site",
-  "framework": null
+  "buildCommand": "python3 -m pip install --break-system-packages -r design/requirements.txt && cd design && python3 -m mkdocs build",
+  "outputDirectory": "design/site",
+  "framework": null,
+  "installCommand": "echo skip"
 }
