@@ -1,0 +1,19 @@
+sequenceDiagram
+  participant Client
+  participant CTS as Canonical Transfer Service
+  participant CS as Compliance
+  participant DR as Directory
+  participant GW as USDC/Algorand Gateway
+  participant L as Ledger
+
+  Client->>CTS: POST /transfers (idempotency-key)
+  CTS->>CTS: dedupe & normalize
+  CTS->>CS: POST /screen (payer, payee)
+  CS-->>CTS: allow
+  CTS->>DR: GET /routes?rail=usdc-algo
+  DR-->>CTS: { endpoint, fees, window }
+  CTS->>GW: transfers.submitted.usdc
+  GW-->>CTS: transfers.accepted {txId}
+  GW-->>CTS: transfers.settled {txId, round}
+  CTS-->>L: transfers.settled
+  L-->>CTS: ledger.posting.created

@@ -1,0 +1,82 @@
+# Component: Nucleus
+
+```mermaid
+flowchart LR
+  subgraph Client/Partners
+    A[Client Apps / Merchants / WhatsApp Bot]
+  end
+
+  subgraph Core["Stalela Nucleus"]
+    direction LR
+
+    subgraph API["Canonical Transfer Service (API)"]
+      CTS[POST /transfers<br/>GET /transfers/:id<br/>Idempotency]
+    end
+
+    subgraph GW["Rail Gateways"]
+      ZG[Zimswitch Gateway]
+      OG[OPPWA Gateway]
+      UG[USDC/Algorand Gateway]
+    end
+
+    subgraph L["Ledger Service"]
+      LJ[Journal & Postings]
+      LB[Balances & Statements]
+    end
+
+    subgraph C["Compliance Screening"]
+      CS[Local Watchlist Index<br/>/screen]
+    end
+
+    subgraph D["Directory & Routing"]
+      DR[Institutions/BINs<br/>Fees & Windows]
+    end
+
+    subgraph R["Reconciliation & Returns"]
+      RC[Statement Ingest<br/>Unmatched Queue]
+    end
+
+    subgraph B["Event Bus + Outbox"]
+      EB[(Topics: transfers.*, ledger.*, recon.*)]
+    end
+
+    subgraph O["Operator Console"]
+      OC[Ops UI<br/>Returns/Recon/Flags]
+    end
+
+    subgraph PL["Platform/Base"]
+      AD[/ /live /ready /metrics /version /]
+      TM[Banking Time & Holidays]
+      IDG[ID/Tracing & Errors]
+    end
+  end
+
+  A -->|create intent| CTS
+  CTS -->|pre-screen| CS
+  CS -->|allow/deny| CTS
+  CTS -->|route| D
+  D --> CTS
+  CTS -->|submit| ZG
+  CTS -->|submit| OG
+  CTS -->|submit| UG
+
+  ZG --> EB
+  OG --> EB
+  UG --> EB
+
+  EB --> CTS
+  EB --> L
+  EB --> R
+  EB --> O
+
+  L <--> R
+  R -->|nightly ingest| EB
+
+  OC --- O
+  PL --- CTS
+  PL --- GW
+  PL --- L
+  PL --- C
+  PL --- D
+  PL --- R
+```
