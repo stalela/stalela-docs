@@ -1,5 +1,5 @@
 {
-  "buildCommand": "python -m venv /tmp/venv && /tmp/venv/bin/pip install -r requirements.txt && /tmp/venv/bin/mkdocs build",
+  "buildCommand": "pip install --break-system-packages -r requirements.txt && mkdocs build",
   "outputDirectory": "site",
   "framework": null
 }
