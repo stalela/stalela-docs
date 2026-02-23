@@ -1,279 +1,727 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://your-org.github.io/fintech-core/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/missing_items/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/missing_items/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/sprint-001/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/sprint-001/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/00-overview/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-foundation/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/00-overview/dev-workflow/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-foundation/ai-capabilities/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/00-overview/glossary/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-foundation/canonical-payloads/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/00-overview/nfrs/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-foundation/glossary/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/00-overview/nucleus/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-foundation/mobile-money/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/00-overview/risks-open-questions/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-foundation/multi-tenant-model/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/00-overview/stalela-vs-mojaloop/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-overview/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/00-overview/architecture-decisions/ADR-0001-events-outbox/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-overview/dev-workflow/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/00-overview/architecture-decisions/ADR-0002-double-entry-ledger/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-overview/glossary/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/00-overview/architecture-decisions/ADR-0003-contracts-first/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-overview/nfrs/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/canonical-transfer-service/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-overview/nucleus/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/compliance-screening/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-overview/risks-open-questions/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/directory-routing/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-overview/stalela-vs-mojaloop/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/event-bus-outbox/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-overview/architecture-decisions/ADR-0001-events-outbox/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/ledger-service/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-overview/architecture-decisions/ADR-0002-double-entry-ledger/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/operator-console/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/00-overview/architecture-decisions/ADR-0003-contracts-first/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/orchestration-ai-agents/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/canonical-transfer-service/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/platform-base/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/compliance-screening/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/rail-gateway-airtel-momo/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/directory-routing/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/rail-gateway-ecocash/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/event-bus-outbox/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/rail-gateway-eft/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/ledger-service/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/rail-gateway-mtn-momo/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/operator-console/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/rail-gateway-oppwa/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/orchestration-ai-agents/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/rail-gateway-payshap/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/platform-base/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/rail-gateway-rtgs/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/rail-gateway-airtel-momo/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/rail-gateway-template/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/rail-gateway-ecocash/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/rail-gateway-usdc-algo/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/rail-gateway-eft/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/rail-gateway-zimswitch/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/rail-gateway-mtn-momo/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/reconciliation-returns/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/rail-gateway-oppwa/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/regulatory-reporting/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/rail-gateway-payshap/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-components/woocommerce/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/rail-gateway-rtgs/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/10-mvp/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/rail-gateway-template/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/20-specs/api-canonical-transfer/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/rail-gateway-usdc-algo/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/20-specs/chart-of-accounts/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/rail-gateway-zimswitch/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/20-specs/data-retention-pii/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/reconciliation-returns/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/20-specs/error-codes/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/regulatory-reporting/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/20-specs/events/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-components/woocommerce/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/20-specs/external-integrations/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-mvp/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/20-specs/fixtures/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/adr/PAY-ADR-0001-events-outbox/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/20-specs/fx-policy/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/adr/PAY-ADR-0002-double-entry-ledger/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/20-specs/posting-rules/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/adr/PAY-ADR-0003-contracts-first/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/20-specs/regulatory-reporting/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/canonical-transfer-service/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/20-specs/risk-limits/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/compliance-screening/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/20-specs/tax-vat/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/directory-routing/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/30-diagrams/component-nucleus/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/event-bus-outbox/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/30-diagrams/lifecycle-state/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/ledger-service/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/30-diagrams/recon-matching/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/operator-console/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/30-diagrams/sequence-bop-reporting/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/orchestration-ai-agents/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/30-diagrams/sequence-eft-batch/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/platform-base/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/30-diagrams/sequence-return-oppwa/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/rail-gateway-airtel-momo/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/30-diagrams/sequence-stk-ecocash/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/rail-gateway-ecocash/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/30-diagrams/sequence-submit-payshap/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/rail-gateway-eft/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/30-diagrams/sequence-submit-usdc/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/rail-gateway-mtn-momo/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/40-ops/closing-the-books/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/rail-gateway-oppwa/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/40-ops/observability/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/rail-gateway-payshap/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/40-ops/regulatory/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/rail-gateway-rtgs/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/40-ops/runbooks/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/rail-gateway-template/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/40-ops/security/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/rail-gateway-usdc-algo/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/50-repo-structure/ci-cd/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/rail-gateway-zimswitch/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/50-repo-structure/local-dev/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/reconciliation-returns/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/50-repo-structure/multi-repo-architecture/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/regulatory-reporting/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/50-repo-structure/release-strategy/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/components/woocommerce/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/60-infra/aws-infra/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/diagrams/component-nucleus/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/70-sprints/epics-and-stories/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/diagrams/lifecycle-state/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/90-templates/TEMPLATE-adr/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/diagrams/recon-matching/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://your-org.github.io/fintech-core/90-templates/TEMPLATE-component/</loc>
-         <lastmod>2025-11-03</lastmod>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/diagrams/sequence-bop-reporting/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/diagrams/sequence-eft-batch/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/diagrams/sequence-return-oppwa/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/diagrams/sequence-stk-ecocash/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/diagrams/sequence-submit-payshap/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/diagrams/sequence-submit-usdc/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/infra/aws-infra/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/ops/closing-the-books/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/ops/observability/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/ops/regulatory/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/ops/runbooks/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/ops/security/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/overview/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/overview/dev-workflow/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/overview/glossary/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/overview/nfrs/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/overview/nucleus/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/overview/risks-open-questions/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/overview/stalela-vs-mojaloop/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/repo-structure/ci-cd/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/repo-structure/local-dev/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/repo-structure/multi-repo-architecture/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/repo-structure/release-strategy/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/specs/api-canonical-transfer/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/specs/chart-of-accounts/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/specs/data-retention-pii/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/specs/error-codes/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/specs/events/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/specs/external-integrations/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/specs/fixtures/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/specs/fx-policy/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/specs/posting-rules/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/specs/regulatory-reporting/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/specs/risk-limits/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/specs/tax-vat/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/adr/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/adr/FIS-ADR-0001/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/adr/FIS-ADR-0002/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/adr/FIS-ADR-0003/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/adr/FIS-ADR-0004/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/adr/FIS-ADR-0005/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/adr/FIS-ADR-0006/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/api/cloud/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/api/invoicing-sdk/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/architecture/10-architectural-challenges/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/architecture/components/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/architecture/data-flow/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/architecture/delegated-offline-token/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/architecture/overview/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/architecture/trust-boundary/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/cloud/architecture/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/cloud/dgi-integration/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/cloud/offline-sync/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/fiscal/invoice-lifecycle/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/fiscal/invoice-verification/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/fiscal/reports/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/fiscal/security-elements/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/fiscal/tax-engine/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/implementation/kanban/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/implementation/phase-1/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/implementation/phase-2/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/implementation/phase-3/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/implementation/phase-4/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/implementation/roadmap/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/platform/ai-capabilities/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/platform/api/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/platform/dashboard/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/platform/integrations/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/platform/multi-user/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/platform/overview/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/platform/sdk/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/regulatory/arretes/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/regulatory/legal-framework/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/regulatory/sfe-specs/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-specs/api-canonical-transfer/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-specs/chart-of-accounts/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-specs/data-retention-pii/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-specs/error-codes/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-specs/events/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-specs/external-integrations/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-specs/fixtures/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-specs/fx-policy/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-specs/posting-rules/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-specs/regulatory-reporting/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-specs/risk-limits/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/20-specs/tax-vat/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-diagrams/component-nucleus/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-diagrams/lifecycle-state/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-diagrams/recon-matching/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-diagrams/sequence-bop-reporting/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-diagrams/sequence-eft-batch/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-diagrams/sequence-return-oppwa/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-diagrams/sequence-stk-ecocash/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-diagrams/sequence-submit-payshap/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-diagrams/sequence-submit-usdc/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-integration/merchant-identity/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-integration/overview/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-integration/payment-on-invoice/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/30-integration/sequence-invoice-then-pay/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-ops/closing-the-books/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-ops/observability/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-ops/regulatory/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-ops/runbooks/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-ops/security/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/50-repo-structure/ci-cd/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/50-repo-structure/local-dev/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/50-repo-structure/multi-repo-architecture/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/50-repo-structure/release-strategy/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/60-infra/aws-infra/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/70-sprints/epics-and-stories/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/90-templates/TEMPLATE-adr/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/90-templates/TEMPLATE-component/</loc>
+         <lastmod>2026-02-23</lastmod>
     </url>
 </urlset>
