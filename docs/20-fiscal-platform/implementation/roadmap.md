@@ -30,7 +30,10 @@ timeline
         : Multi-country expansion research
 ```
 
-See the [Kanban Board](kanban.md) for the live epic-level status view with task checklists.
+See the [Kanban Board](kanban.md) for the fiscal epic quick reference, and the [**Unified Epic Board**](../../70-sprints/epics-and-stories.md) for the complete cross-pillar view.
+
+!!! info "Infrastructure"
+    All fiscal platform components run on the [Free Stack](../../60-infra/free-stack.md) (Supabase + Vercel + Alibaba KMS + Resend + GitHub Actions). See the [Sprint 001](../../sprint-001.md) kickoff for the combined Payments + Fiscal foundation sprint.
 
 ## Phase 1 — Software Invoicing
 
