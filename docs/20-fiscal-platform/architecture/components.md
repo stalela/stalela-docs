@@ -11,7 +11,7 @@ Stalela clients live in the untrusted zone (with the exception of the Fiscal Ext
 
 - `Web Dashboard (PWA)` — Tablet-friendly interface with service workers, IndexedDB queues, simplified invoice entry, and status indicators (green/yellow/red) for fiscalization progress.
 - `Stalela Fiscal Extension` — A Chrome/Edge browser extension that runs in an isolated sandbox. It holds short-lived Delegated Credentials and silently auto-signs invoices for the PWA when operating in Delegated Offline Mode.
-- `API Consumers` — Backend integrations (ERPs, e-commerce, ERP connectors) that call the Invoicing API with canonical payloads, metadata (merchant_nif, outlet_id, pos_terminal_id), and source headers.
+- `API Consumers` — Backend integrations (ERPs, e-commerce, ERP connectors) that call the Invoicing API with canonical payloads, metadata (merchant_tin, outlet_id, pos_terminal_id, jurisdiction), and source headers.
 - `SDK & Libraries` — JavaScript/Python/PHP clients that enforce canonical ordering, handle offline queues (IndexedDB/SQLite), and surface callbacks for fiscalized/queued/error states.
 - `Mobile App (future PWA)` — Mobile-first UI that reuses the dashboard experience with push notifications and offline-first behavior.
 - `POS Integrations (Phase 2 preview)` — Legacy POS systems that will plug into the SDKs and delegate signing requests to Stalela Cloud instead of local hardware.
@@ -22,7 +22,7 @@ Platform services normalize, secure, and route every request before the fiscal c
 
 - `Canonical Serializer` — Produces deterministic JSON (merchant/outlet identifiers, timestamp, client, items, tax_groups, totals, payments) so the Cloud Signing Service can reproduce hashes and ledger entries.
 - `Invoicing API (REST)` — The developer-facing surface that handles authentication (merchant/outlet-scoped API keys), rate limiting, request validation, and orchestration of tax calculation + signing.
-- `Tax Calculation Engine (14 DGI groups)` — Computes per-tax-group amounts, client classification rules, and rounding adjustments before attaching totals to the canonical payload.
+- `Tax Calculation Engine` — Loads the active jurisdiction's tax group manifest, computes per-group amounts, applies client classification rules and rounding adjustments, then attaches totals to the canonical payload. See [Tax Engine](../fiscal/tax-engine.md) and [Jurisdictions](../../40-jurisdictions/index.md).
 - `Multi-User Access Control (API keys, roles, outlet scoping)` — Enforces quotas, roles (admin, invoicer, viewer, auditor), and source metadata so only authorized users can fiscalize invoices.
 - `Receipt Delivery (email/WhatsApp/PDF/print)` — Renders sealed invoices with fiscal numbers, auth codes, timestamps, and QR payloads for immediate customer delivery.
 
@@ -38,10 +38,10 @@ The fiscal core contains the Cloud Signing Service and its supporting services t
 
 ## Cloud Infrastructure Layer
 
-Cloud infrastructure stores sealed invoices, uploads them to the DGI, and gives operators visibility while preserving backups.
+Cloud infrastructure stores sealed invoices, uploads them to the jurisdiction's tax authority, and gives operators visibility while preserving backups.
 
-- `Sync Agent + Invoice Store` — Queues sealed invoices, retries uploads to the MCF/e-MCF endpoint when connectivity returns, and keeps a copy of every fiscal response for replays or audits.
-- `DGI Integration Agent (MCF / e-MCF)` — Dedicated connector that authenticates to the tax authority, packages sealed payloads, and records acknowledgments (`queued`, `synced`, `failed`).
+- `Sync Agent + Invoice Store` — Queues sealed invoices, retries uploads to the jurisdiction's tax authority endpoint when connectivity returns, and keeps a copy of every fiscal response for replays or audits.
+- `Tax Authority Sync Agent` — Dedicated connector that authenticates to the jurisdiction's tax authority, packages sealed payloads using the authority's protocol, and records acknowledgments (`queued`, `synced`, `failed`). See [Authority Sync](../cloud/authority-sync.md).
 - `Merchant & Outlet Registry` — Tracks which merchants, outlets, API keys, and POS integrations are active, their quotas, firmware versions (for future hardware), and metadata required by the fiscal core.
 - `Dashboard & Analytics` — Observability layer for device health, backlog depth, report generation, and sync failures. It consumes metrics from the Invoicing API, Sync Agent, and ledger.
 - `Backup & Archival` — Off-site snapshots of the fiscal ledger, report payloads, and DAG metadata so compliance teams can restore or audit historical data.
@@ -63,7 +63,7 @@ flowchart LR
     subgraph "Platform Services"
         Canonical["Canonical Serializer"]
         InvoicingAPI["Invoicing API (REST)"]
-        TaxEngine["Tax Calculation Engine (14 DGI groups)"]
+        TaxEngine["Tax Calculation Engine"]
         MultiAccess["Multi-User Access Control (API keys, roles, outlets)"]
         Delivery["Receipt Delivery (email/WhatsApp/PDF/print)"]
     end
@@ -76,7 +76,7 @@ flowchart LR
     end
     subgraph "Cloud Infrastructure"
         SyncAgent["Sync Agent + Invoice Store"]
-        DGI["DGI Integration Agent (MCF / e-MCF)"]
+        AuthSync["Tax Authority Sync Agent"]
         Registry["Merchant & Outlet Registry"]
         Analytics["Dashboard & Analytics"]
         Backup["Backup & Archival"]
@@ -102,7 +102,7 @@ flowchart LR
     Reports --> Delivery
     Delivery --> Payments
     Ledger --> SyncAgent
-    SyncAgent --> DGI
+    SyncAgent --> AuthSync
     Registry --> SyncAgent
     Registry --> MultiAccess
     Ledger --> Analytics
@@ -113,7 +113,7 @@ flowchart LR
 
 ## Cloud Deployment Diagram
 
-This deployment diagram emphasizes the cloud services that fiscalize invoices, store them, and sync them to the DGI. Every client hits the Invoicing API, the Cloud Signing Service signs the payload, and the Sync Agent ships the ledger to the tax authority while analytics and payment partners observe the results.
+This deployment diagram emphasizes the cloud services that fiscalize invoices, store them, and sync them to the jurisdiction's tax authority. Every client hits the Invoicing API, the Cloud Signing Service signs the payload, and the Sync Agent ships the ledger to the tax authority while analytics and payment partners observe the results.
 
 ```mermaid
 flowchart TB
@@ -128,10 +128,10 @@ flowchart TB
         Ledger["Hash-Chained Fiscal Ledger"]
         InvoiceStore["Invoice Store"]
         Reports["Report Generator (Z/X/A + audit)"]
-        SyncAgent["Sync Agent (DGI / e-MCF)"]
+        SyncAgent["Sync Agent (Tax Authority)"]
         Analytics["Dashboard & Analytics"]
     end
-    DGI["DGI (MCF / e-MCF)"]
+    TaxAuthority["Tax Authority (jurisdiction-specific)"]
     PaymentPartners["Payment & Notification Partners"]
     Dashboard --> InvoicingAPI
     SDKs --> InvoicingAPI
@@ -143,6 +143,6 @@ flowchart TB
     Reports --> Analytics
     InvoiceStore --> Analytics
     Ledger --> SyncAgent
-    SyncAgent --> DGI
+    SyncAgent --> TaxAuthority
     Reports --> PaymentPartners
 ```

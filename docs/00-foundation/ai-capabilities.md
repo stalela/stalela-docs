@@ -77,7 +77,7 @@ These capabilities are documented in full at [AI & NL Capabilities](../20-fiscal
 | Capability | Purpose | Input | Phase |
 |---|---|---|---|
 | **NL Invoice Parser** | Create sealed invoices from natural language (French, Lingala, Swahili, Tshiluba). | WhatsApp, Chat, REST API, Voice | Phase 2 (text) / Phase 4 (voice) |
-| **Tax Auto-Classifier** | Suggest DGI tax group (TG01–TG14) from item description or HS code. | Item text, optional HS code | Phase 2 |
+| **Tax Auto-Classifier** | Suggest jurisdiction-appropriate tax group from item description or HS code. | Item text, optional HS code, jurisdiction | Phase 2 |
 | **Anomaly Detection** | Monitor Fiscal Ledger for numbering gaps, velocity spikes, void/refund anomalies, and tax group distribution shifts. | Fiscal Ledger events | Phase 2 (rules) / Phase 4 (ML) |
 | **Predictive Analytics** | Tax liability forecast, revenue projection, seasonal demand, compliance risk scoring. | Historical fiscal data | Phase 4 |
 | **OCR & Document Digitization** | Ingest paper invoices as structured data for record-keeping or purchase ledger entry. | Camera photo, scanned PDF | Phase 4 |
@@ -129,7 +129,7 @@ stalela ctl orchestration explain --transfer-id=tr_789
 | Endpoint | Method | Description | Phase |
 |---|---|---|---|
 | `/api/v1/invoices/natural` | POST | Create invoice from NL text | Phase 2 |
-| `/api/v1/tax/classify` | POST | Classify items into DGI tax groups | Phase 2 |
+| `/api/v1/tax/classify` | POST | Classify items into jurisdiction tax groups | Phase 2 |
 | `/api/v1/analytics/anomalies` | GET | List detected anomalies | Phase 2 |
 | `/api/v1/analytics/forecast` | GET | Retrieve predictive forecasts | Phase 4 |
 | `/api/v1/ocr/scan` | POST | Upload document for OCR extraction | Phase 4 |

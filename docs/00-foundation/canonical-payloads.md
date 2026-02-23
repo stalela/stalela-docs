@@ -11,7 +11,7 @@ Both pillars of the Stalela Platform use a **contract-first, deterministic paylo
 | **Purpose** | Move money between accounts across rails | Create a sealed, fiscally compliant invoice |
 | **Submitted to** | Canonical Transfer Service (CTS) | Cloud Signing Service (HSM) via Invoicing API |
 | **Result** | Transfer lifecycle (INITIATED → SETTLED) | Sealed invoice with fiscal number + signature |
-| **Identity scope** | `tenantId` | `merchant_nif` + `outlet_id` |
+| **Identity scope** | `tenantId` | `merchant_tin` + `outlet_id` + `jurisdiction` |
 | **Idempotency** | `idempotencyKey` (36h TTL) | Fiscal number (monotonic, never reused) |
 | **Offline behavior** | Outbox + DLQ retry | IndexedDB queue → flush on reconnect |
 | **Append-only** | GL Ledger postings (double-entry) | Hash-chained Fiscal Ledger (prev-hash linked) |
@@ -57,9 +57,12 @@ Both pillars of the Stalela Platform use a **contract-first, deterministic paylo
 
 ## Canonical Invoice Schema (Fiscal Platform)
 
+The invoice schema is jurisdiction-aware. The `jurisdiction` field (ISO 3166-1 alpha-2) determines which tax groups, client classifications, invoice types, and rounding rules apply. The example below shows a DRC (`CD`) invoice:
+
 ```json
 {
-  "merchant_nif": "NIF-123456",
+  "jurisdiction": "CD",
+  "merchant_tin": "NIF-123456",
   "outlet_id": "outlet-kinshasa-01",
   "pos_terminal_id": "term-001",
   "cashier_id": "cashier-jean",
@@ -67,7 +70,7 @@ Both pillars of the Stalela Platform use a **contract-first, deterministic paylo
   "timestamp": "2026-02-23T14:30:00Z",
   "client": {
     "name": "Acme SARL",
-    "nif": "NIF-789012",
+    "tin": "NIF-789012",
     "classification": "company"
   },
   "items": [
@@ -92,6 +95,9 @@ Both pillars of the Stalela Platform use a **contract-first, deterministic paylo
   ]
 }
 ```
+
+!!! note "Jurisdiction-specific fields"
+    The `tax_group` codes (e.g., `TG01`), `classification` values, `invoice_type` options, and `currency` are all defined by the active jurisdiction's [country profile](../40-jurisdictions/index.md). The schema structure is universal; the allowed values are jurisdiction-specific.
 
 **Invoice types:** `sale` | `advance` | `credit_note` | `export` | `export_credit`
 

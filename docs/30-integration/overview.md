@@ -39,7 +39,7 @@ flowchart LR
 | Page | Description |
 |---|---|
 | [Payment on Invoice](payment-on-invoice.md) | How the `payments` array on an invoice relates to actual money movement through CTS |
-| [Merchant Identity](merchant-identity.md) | How `tenantId` (Payments) maps to `merchant_nif` + `outlet_id` (Fiscal) |
+| [Merchant Identity](merchant-identity.md) | How `tenantId` (Payments) maps to `merchant_tin` + `outlet_id` (Fiscal) |
 | [End-to-End: Invoice → Pay](sequence-invoice-then-pay.md) | Full Mermaid sequence diagram showing the POS cashier flow from sale to settlement |
 
 ---

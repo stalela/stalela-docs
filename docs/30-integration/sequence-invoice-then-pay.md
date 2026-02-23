@@ -6,6 +6,9 @@ This page shows the complete sequence from a POS cashier creating an invoice to 
 
 ## Scenario
 
+!!! note "DRC Example"
+    This worked example uses a DRC (`CD`) jurisdiction scenario. The same flow applies to any supported jurisdiction — only the tax groups, currency, and authority sync protocol change.
+
 A cashier at **Outlet Kinshasa Gombe** sells 3 bags of cement to **Ets Kabila** for 135,000 CDF. The customer pays half in cash and half via Airtel Money.
 
 ---

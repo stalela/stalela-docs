@@ -19,7 +19,7 @@ Epics not yet scheduled for development.
 | **Phase** | 1 |
 | **Owner** | — |
 | **Dependencies** | EPIC-01, EPIC-02, Fiscal Ledger |
-| **Links** | [Phase 1 detail](phase-1.md#5-manual-compliance-tooling-onboarding), [DGI Integration](../cloud/dgi-integration.md), [Invoice Verification](../fiscal/invoice-verification.md) |
+| **Links** | [Phase 1 detail](phase-1.md#5-manual-compliance-tooling-onboarding), [Tax Authority Sync](../cloud/authority-sync.md), [Invoice Verification](../fiscal/invoice-verification.md) |
 | **Last updated** | 2026-02-22 |
 
 **Tasks**

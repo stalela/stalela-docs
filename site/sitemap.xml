@@ -481,7 +481,7 @@
          <lastmod>2026-02-23</lastmod>
     </url>
     <url>
-         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/cloud/dgi-integration/</loc>
+         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/cloud/authority-sync/</loc>
          <lastmod>2026-02-23</lastmod>
     </url>
     <url>
@@ -558,18 +558,6 @@
     </url>
     <url>
          <loc>https://stalela-docs.vercel.app/20-fiscal-platform/platform/sdk/</loc>
-         <lastmod>2026-02-23</lastmod>
-    </url>
-    <url>
-         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/regulatory/arretes/</loc>
-         <lastmod>2026-02-23</lastmod>
-    </url>
-    <url>
-         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/regulatory/legal-framework/</loc>
-         <lastmod>2026-02-23</lastmod>
-    </url>
-    <url>
-         <loc>https://stalela-docs.vercel.app/20-fiscal-platform/regulatory/sfe-specs/</loc>
          <lastmod>2026-02-23</lastmod>
     </url>
     <url>
@@ -670,6 +658,74 @@
     </url>
     <url>
          <loc>https://stalela-docs.vercel.app/30-integration/sequence-invoice-then-pay/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/country-profile-template/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/cd/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/cd/authority-integration/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/cd/client-classifications/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/cd/currencies/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/cd/invoice-types/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/cd/tax-groups/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/cd/regulatory/arretes/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/cd/regulatory/legal-framework/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/cd/regulatory/sfe-specs/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/ke/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/ng/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/rw/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/tz/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/za/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/40-jurisdictions/zw/</loc>
          <lastmod>2026-02-23</lastmod>
     </url>
     <url>

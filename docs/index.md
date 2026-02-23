@@ -24,10 +24,10 @@ flowchart TD
 
     subgraph FIS["Fiscal Platform"]
         INV["Invoice API"]
-        TAX["Tax Engine (14 DGI Groups)"]
+        TAX["Tax Engine (Jurisdiction-Configured)"]
         CSS["Cloud Signing Service (HSM)"]
         FL["Fiscal Ledger (Hash-Chained)"]
-        SYNC["DGI Sync Agent"]
+        SYNC["Tax Authority Sync Agent"]
     end
 
     CTS --> GL
@@ -49,7 +49,7 @@ flowchart TD
 | Pillar | Purpose | Core Abstraction | Documentation |
 |---|---|---|---|
 | **Payments Nucleus** | Move money across rails — mobile money, card, crypto, EFT, RTGS | `CanonicalTransfer` | [Payments Nucleus →](10-payments-nucleus/overview/index.md) |
-| **Fiscal Platform** | Create sealed, fiscally compliant invoices for DRC (and beyond) | `CanonicalInvoice` | [Fiscal Platform →](20-fiscal-platform/index.md) |
+| **Fiscal Platform** | Create sealed, fiscally compliant invoices across jurisdictions | `CanonicalInvoice` | [Fiscal Platform →](20-fiscal-platform/index.md) |
 
 The pillars are **decoupled by design** — no shared databases, no synchronous RPC between them. They connect through opaque references (`endUserRef`) and async events on the Event Bus.
 
@@ -61,8 +61,9 @@ The pillars are **decoupled by design** — no shared databases, no synchronous 
 |---|---|
 | [Foundation](00-foundation/index.md) | Shared concepts — glossary, canonical payloads, multi-tenant model, mobile money, AI capabilities |
 | [Payments Nucleus](10-payments-nucleus/overview/index.md) | CTS, rail gateways, GL ledger, reconciliation, compliance, operator console |
-| [Fiscal Platform](20-fiscal-platform/index.md) | Invoice API, tax engine, cloud signing (HSM), fiscal ledger, DGI sync, POS |
+| [Fiscal Platform](20-fiscal-platform/index.md) | Invoice API, tax engine, cloud signing (HSM), fiscal ledger, authority sync, POS |
 | [Integration](30-integration/overview.md) | How the two pillars interact — payment on invoice, merchant identity, end-to-end sequences |
+| [Jurisdictions](40-jurisdictions/index.md) | Country profiles — tax groups, client classifications, currencies, authority integration |
 | [Sprints](70-sprints/epics-and-stories.md) | Sprint planning and epic tracking |
 | [Templates](90-templates/TEMPLATE-adr.md) | ADR, component, sequence, and state diagram templates |
 

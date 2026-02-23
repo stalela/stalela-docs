@@ -2,23 +2,23 @@
 
 Stalela positions the **Cloud Signing Service (HSM-backed)** as the root trusted fiscal authority. However, to support offline retail compliance, the trust boundary includes a **Semi-Trusted Zone** for clients holding valid Delegated Credentials.
 
-Web dashboards, API consumers, and SDKs generally live in the untrusted zone; they author canonical payloads (`merchant_nif`, `outlet_id`, `pos_terminal_id`, `client`, `tax_groups`, `totals`, `payments`, `timestamp`) and deliver them to Stalela Cloud for validation, tax calculation, signing, and ledger storage. 
+Web dashboards, API consumers, and SDKs generally live in the untrusted zone; they author canonical payloads (`merchant_tin`, `outlet_id`, `pos_terminal_id`, `jurisdiction`, `client`, `tax_groups`, `totals`, `payments`, `timestamp`) and deliver them to Stalela Cloud for validation, tax calculation, signing, and ledger storage. 
 
 When operating in **Delegated Offline Mode**, a POS terminal equipped with the Stalela Fiscal Extension acts as a bounded, semi-trusted signer. It uses a short-lived Verifiable Credential to generate security elements locally, which are later reconciled with the Cloud Ledger.
 
 ## What crosses the boundary
 
-1. **Canonical invoice requests** — Clients send deterministic JSON through `POST /api/v1/invoices` (or direct API/SDK calls) that include the 14 DGI tax groups, client classification, outlet/scoping identifiers, and payments in the field order mandated by the spec.
+1. **Canonical invoice requests** — Clients send deterministic JSON through `POST /api/v1/invoices` (or direct API/SDK calls) that include the jurisdiction-configured tax groups, client classification, outlet/scoping identifiers, and payments in the field order mandated by the spec.
 2. **Delegated Credential Requests** — POS terminals request short-lived signing keys and block allocations from the Credential Issuer.
 3. **Locally-Sealed Invoices (Reconciliation)** — When connectivity returns, POS terminals submit invoices signed by the Fiscal Extension to the Cloud for verification and ledger appending.
 4. **Payment metadata & tracing headers** — Each request carries `X-Stalela-Merchant-ID`, `X-Stalela-Outlet-ID`, optionally `X-Stalela-User-ID`/`X-Stalela-Source`, and other telemetry.
 
 ## What the trusted zone produces
 
-- **Sealed responses** — The Cloud Signing Service returns the five mandatory elements (fiscal number, fiscal authority ID, cryptographic auth code, trusted timestamp, QR payload) plus `ledger_hash`, `dgi_status`, and the signed payload.
+- **Sealed responses** — The Cloud Signing Service returns the five mandatory elements (fiscal number, fiscal authority ID, cryptographic auth code, trusted timestamp, QR payload) plus `ledger_hash`, `authority_sync_status`, and the signed payload.
 - **Delegated Credentials (VCs)** — The Credential Issuer produces short-lived Verifiable Credentials and allocates blocks of fiscal numbers to authorized POS terminals.
 - **Ledger entries** — The hash-chained Fiscal Ledger records each fiscal event immutably.
-- **DGI upload bundles** — The Sync Agent packages sealed invoices for the DGI (MCF/e-MCF).
+- **Tax authority upload bundles** — The Sync Agent packages sealed invoices for the jurisdiction's tax authority. See [Authority Sync](../cloud/authority-sync.md).
 - **Audit-ready reports** — The Report Generator emits Z/X/A/audit exports.
 
 ## What never crosses the boundary
@@ -43,9 +43,9 @@ flowchart LR
         Counter["Monotonic Counter Manager"]
         Ledger["Hash-Chained Fiscal Ledger"]
         Reports["Report Generator (Z/X/A)"]
-        Sync["DGI Sync Agent"]
+        Sync["Tax Authority Sync Agent"]
     end
-    DGI["DGI (MCF/e-MCF)"]
+    TaxAuthority["Tax Authority (jurisdiction-specific)"]
     
     Dashboard -->|canonical invoice| Signing
     Dashboard -->|payload for local signing| FiscalExt
@@ -59,7 +59,7 @@ flowchart LR
     Counter --> Ledger
     Signing --> Ledger
     Ledger --> Reports
-    Sync --> DGI
+    Sync --> TaxAuthority
     Signing -->|sealed invoice| Dashboard
     Signing -->|sealed invoice| API
     Signing -->|sealed invoice| SDK
@@ -72,7 +72,7 @@ flowchart LR
 2. **Delegated Credential Expiry** — If a POS terminal remains offline past its credential's TTL (e.g., 12 hours) or exhausts its allocated block of fiscal numbers, it must revert to queuing unsigned drafts until it can reconnect and request a new credential.
 3. **Key rotation inside HSM** — The Cloud handles key rollovers without exposing private material. 
 4. **Counter corruption or serialization violation** — The Monotonic Counter Manager enforces serializable isolation in PostgreSQL.
-5. **DGI sync backpressure** — The Sync Agent queues outbound bundles and retries with exponential backoff.
+5. **Tax authority sync backpressure** — The Sync Agent queues outbound bundles and retries with exponential backoff.
 
 ## Trust assumptions table
 
@@ -87,4 +87,4 @@ flowchart LR
 
 ## Phase 3 note
 
-Phase 3 introduces the optional USB Fiscal Memory device as a trust anchor for DEF-homologated merchants. When that hardware is deployed, it replaces the Cloud Signing Service for the local outlet while replicating every sealed invoice back to Stalela Cloud for ledger consistency and DGI sync (`design/docs-archive/hardware/`). The documentation above keeps the cloud-first story intact but flags the archived USB specs for future reference.
+Phase 3 introduces the optional USB Fiscal Memory device as a trust anchor for DEF-homologated merchants. When that hardware is deployed, it replaces the Cloud Signing Service for the local outlet while replicating every sealed invoice back to Stalela Cloud for ledger consistency and tax authority sync (`design/docs-archive/hardware/`). The documentation above keeps the cloud-first story intact but flags the archived USB specs for future reference.

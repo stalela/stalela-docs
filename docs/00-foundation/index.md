@@ -11,7 +11,7 @@ Stalela is built as two complementary product pillars that share a common founda
 | Pillar | Purpose | Core abstraction |
 |---|---|---|
 | **Payments Nucleus** | Move money across rails (mobile money, card, crypto, EFT, RTGS) | `CanonicalTransfer` — a single API for all payment intents |
-| **Fiscal Platform** | Create, sign, and sync fiscally compliant invoices (DRC Facture Normalisée) | `CanonicalInvoice` — a sealed, HSM-signed fiscal event |
+| **Fiscal Platform** | Create, sign, and sync fiscally compliant invoices across jurisdictions | `CanonicalInvoice` — a sealed, HSM-signed fiscal event |
 
 The two pillars are **decoupled by design**. A transfer can exist without an invoice, and an invoice can exist without a transfer. When they do interact — for example, a POS sale that triggers a mobile money payment — the integration is event-driven and asynchronous.
 
@@ -24,7 +24,7 @@ The two pillars are **decoupled by design**. A transfer can exist without an inv
 | [Glossary](glossary.md) | Merged vocabulary from both pillars, with disambiguation for overloaded terms |
 | [Canonical Payloads](canonical-payloads.md) | Side-by-side comparison of `CanonicalTransfer` and `CanonicalInvoice` schemas |
 | [Mobile Money](mobile-money.md) | Airtel, MTN MoMo, M-Pesa, Orange Money — rail settlement vs. invoice payment instrument |
-| [Multi-Tenant Model](multi-tenant-model.md) | How `tenantId`, `merchant_nif`, and `outlet_id` map across both pillars |
+| [Multi-Tenant Model](multi-tenant-model.md) | How `tenantId`, `merchant_tin`, and `outlet_id` map across both pillars |
 | [AI Capabilities](ai-capabilities.md) | Smart Rail Selector, NL invoice creation, tax classification — unified AI layer |
 
 ---

@@ -44,7 +44,7 @@ For cash payments, there is **no CTS involvement**. The Fiscal Platform records 
 
 ## Split Payments
 
-DRC merchants routinely accept split payments (e.g., half cash, half mobile money):
+Merchants routinely accept split payments (e.g., half cash, half mobile money). This DRC example shows CDF:
 
 ```json
 "payments": [

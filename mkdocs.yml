@@ -153,7 +153,7 @@ nav:
           - "20-fiscal-platform/fiscal/reports.md"
       - Cloud Services:
           - "20-fiscal-platform/cloud/architecture.md"
-          - "20-fiscal-platform/cloud/dgi-integration.md"
+          - "20-fiscal-platform/cloud/authority-sync.md"
           - "20-fiscal-platform/cloud/offline-sync.md"
       - Platform:
           - "20-fiscal-platform/platform/overview.md"
@@ -166,17 +166,6 @@ nav:
       - API Reference:
           - "20-fiscal-platform/api/cloud.md"
           - "20-fiscal-platform/api/invoicing-sdk.md"
-      - Regulatory:
-          - "20-fiscal-platform/regulatory/legal-framework.md"
-          - "20-fiscal-platform/regulatory/arretes.md"
-          - "20-fiscal-platform/regulatory/sfe-specs.md"
-      - Implementation:
-          - "20-fiscal-platform/implementation/roadmap.md"
-          - "20-fiscal-platform/implementation/kanban.md"
-          - "20-fiscal-platform/implementation/phase-1.md"
-          - "20-fiscal-platform/implementation/phase-2.md"
-          - "20-fiscal-platform/implementation/phase-3.md"
-          - "20-fiscal-platform/implementation/phase-4.md"
       - ADRs:
           - "20-fiscal-platform/adr/index.md"
           - "20-fiscal-platform/adr/FIS-ADR-0001.md"
@@ -185,6 +174,38 @@ nav:
           - "20-fiscal-platform/adr/FIS-ADR-0004.md"
           - "20-fiscal-platform/adr/FIS-ADR-0005.md"
           - "20-fiscal-platform/adr/FIS-ADR-0006.md"
+      - Implementation:
+          - "20-fiscal-platform/implementation/roadmap.md"
+          - "20-fiscal-platform/implementation/kanban.md"
+          - "20-fiscal-platform/implementation/phase-1.md"
+          - "20-fiscal-platform/implementation/phase-2.md"
+          - "20-fiscal-platform/implementation/phase-3.md"
+          - "20-fiscal-platform/implementation/phase-4.md"
+  - Jurisdictions:
+      - "40-jurisdictions/index.md"
+      - "40-jurisdictions/country-profile-template.md"
+      - DRC (CD):
+          - "40-jurisdictions/cd/index.md"
+          - "40-jurisdictions/cd/tax-groups.md"
+          - "40-jurisdictions/cd/client-classifications.md"
+          - "40-jurisdictions/cd/invoice-types.md"
+          - "40-jurisdictions/cd/currencies.md"
+          - "40-jurisdictions/cd/authority-integration.md"
+          - "40-jurisdictions/cd/regulatory/legal-framework.md"
+          - "40-jurisdictions/cd/regulatory/arretes.md"
+          - "40-jurisdictions/cd/regulatory/sfe-specs.md"
+      - Zimbabwe (ZW):
+          - "40-jurisdictions/zw/index.md"
+      - Kenya (KE):
+          - "40-jurisdictions/ke/index.md"
+      - Rwanda (RW):
+          - "40-jurisdictions/rw/index.md"
+      - Tanzania (TZ):
+          - "40-jurisdictions/tz/index.md"
+      - Nigeria (NG):
+          - "40-jurisdictions/ng/index.md"
+      - South Africa (ZA):
+          - "40-jurisdictions/za/index.md"
   - Integration:
       - "30-integration/overview.md"
       - "30-integration/payment-on-invoice.md"

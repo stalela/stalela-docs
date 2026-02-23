@@ -5,7 +5,7 @@ This page distills the DGI Système de Facturation d'Entreprise (SFE) requiremen
 The official summary calls out the layered deployment (SFE → DEF → MCF/e-MCF → DGI), mandates five invoice types, demands all 14 tax groups, requires Z/X/A/audit reporting, and insists security elements come from the trusted fiscal layer—not the POS. These constraints steer the content on the fiscal engine, hardware, and reports pages.
 
 !!! warning "Trust boundary reminder"
-    In **Phase 1**, the Cloud Signing Service (HSM) is the trusted component that generates fiscal numbers, authentication codes, trusted timestamps, and QR codes. In **Phase 3**, the USB Fiscal Memory device (DEF) can assume this role for merchants needing hardware homologation. In both phases, client applications (API consumers, dashboard, SDK) must treat security elements as sealed outputs. See [Architecture Trust Boundary](../architecture/trust-boundary.md) for details.
+    In **Phase 1**, the Cloud Signing Service (HSM) is the trusted component that generates fiscal numbers, authentication codes, trusted timestamps, and QR codes. In **Phase 3**, the USB Fiscal Memory device (DEF) can assume this role for merchants needing hardware homologation. In both phases, client applications (API consumers, dashboard, SDK) must treat security elements as sealed outputs. See [Architecture Trust Boundary](../../../20-fiscal-platform/architecture/trust-boundary.md) for details.
 
 ## Mandatory Invoice Types
 
@@ -17,7 +17,7 @@ The official summary calls out the layered deployment (SFE → DEF → MCF/e-MCF
 | Export invoice | Facture d'exportation | Sales destined outside the DRC; destines the invoice to TG07 (Export Zero Rate). |
 | Export credit note | Note de crédit d'exportation | Refund tied to an export transaction, sequenced independently like all refunds. |
 
-> Each type is implemented by the same canonical flow documented in the [Invoice Lifecycle](../fiscal/invoice-lifecycle.md) page: client submits the canonical payload to the Cloud Signing Service, receives the sealed response with security elements, and delivers the receipt.
+> Each type is implemented by the same canonical flow documented in the [Invoice Lifecycle](../../../20-fiscal-platform/fiscal/invoice-lifecycle.md) page: client submits the canonical payload to the Cloud Signing Service, receives the sealed response with security elements, and delivers the receipt.
 
 ## 14 DGI Tax Groups
 
@@ -38,7 +38,7 @@ The official summary calls out the layered deployment (SFE → DEF → MCF/e-MCF
 | TG13 | Specific Tax — Telecommunications | 15% | Mobile/data/SMS packages; include telecom operator ID. |
 | TG14 | Specific Tax — Digital Services | 12% | Streaming, SaaS, online advertising delivered to DRC clients. |
 
-These codes feed the canonical `tax_groups` manifest described in `spec/schema-tax-engine-1.md` (project root) and are enforced by the [Tax Engine](../fiscal/tax-engine.md). Each invoice must carry a `tax_summary` entry per group, and the Fiscal Ledger uses these to drive the Z/X/A reports.
+These codes feed the canonical `tax_groups` manifest described in `spec/schema-tax-engine-1.md` (project root) and are enforced by the [Tax Engine](../tax-groups.md). Each invoice must carry a `tax_summary` entry per group, and the Fiscal Ledger uses these to drive the Z/X/A reports.
 
 ## Required Reports
 
@@ -49,7 +49,7 @@ These codes feed the canonical `tax_groups` manifest described in `spec/schema-t
 | A Report | Article-level detail, enumerating every line item with tax group, client classification, and invoice reference. | On-demand for audits or DGI requests. |
 | Audit Export | Full append-only journal (sales, voids, refunds, resets) sent in chunks for deep reconciliation. | Scheduled (monthly/annual) or upon DGI request. |
 
-Report design lives in [`design/docs/fiscal/reports.md`](../fiscal/reports.md). The Z/X/A outputs are produced by the Report Generator from the Fiscal Ledger's hash-chained entries and counters.
+Report design lives in [`design/docs/fiscal/reports.md`](../../../20-fiscal-platform/fiscal/reports.md). The Z/X/A outputs are produced by the Report Generator from the Fiscal Ledger's hash-chained entries and counters.
 
 ## Security Elements
 
@@ -61,19 +61,19 @@ Report design lives in [`design/docs/fiscal/reports.md`](../fiscal/reports.md). 
 | Trusted timestamp | Cloud infrastructure (NTP-synced) | DEF RTC | Anchor for chronological integrity; the Sync Agent uses it for ordering. |
 | QR code | Cloud Signing Service (encoded fiscal number + auth code + timestamp) | DEF (same encoding) | Exposed to inspectors and customers; verified by DGI and internal tools. |
 
-In Phase 1, every element comes from the Cloud Signing Service. In Phase 3, the DEF generates them locally. Client applications may only display these values — see [Security Elements](../fiscal/security-elements.md) for per-element verification rules.
+In Phase 1, every element comes from the Cloud Signing Service. In Phase 3, the DEF generates them locally. Client applications may only display these values — see [Security Elements](../../../20-fiscal-platform/fiscal/security-elements.md) for per-element verification rules.
 
 ## Offline Behavior & DGI Integration
 
 The specification emphasizes that offline operation is normal. In Phase 1, client applications queue unsigned draft payloads locally (IndexedDB / SQLite) when the cloud is unreachable. Once connectivity returns, the drafts are submitted to the Cloud Signing Service for sealing. The Sync Agent then uploads sealed invoices to the MCF/e-MCF control modules. A dedicated sync state machine ensures retries, grace periods, and conflict resolution:
 
-- [`design/docs/cloud/offline-sync.md`](../cloud/offline-sync.md) documents how drafts transition from `QUEUED` to `SEALED` (via the Cloud Signing Service) and how sealed invoices are uploaded to the DGI.
-- [`design/docs/cloud/dgi-integration.md`](../cloud/dgi-integration.md) captures the known vs unknown pieces of the MCF/e-MCF API and highlights the remaining blockers for homologation.
+- [`design/docs/cloud/offline-sync.md`](../../../20-fiscal-platform/cloud/offline-sync.md) documents how drafts transition from `QUEUED` to `SEALED` (via the Cloud Signing Service) and how sealed invoices are uploaded to the tax authority.
+- [Authority integration](../authority-integration.md) captures the known vs unknown pieces of the MCF/e-MCF API and highlights the remaining blockers for homologation.
 
 This layered behavior mirrors the core architecture: canonical payloads flow from client applications to the Cloud Signing Service (or DEF in Phase 3), then sealed invoices flow through the Sync Agent to the DGI control modules.
 
 ## Data Integrity, Immutability, and Mutations
 
-The SFE must never delete invoices. Corrections are credit notes, voids are new fiscal events, and all entries remain in the append-only Fiscal Ledger. These expectations appear in the [Invoice Lifecycle](../fiscal/invoice-lifecycle.md) narrative and the Architecture Context Map (`memory-bank/context-map.md` in the project root). Any mutation references the original invoice and is submitted as a new canonical payload to the Cloud Signing Service (or DEF in Phase 3), ensuring auditability.
+The SFE must never delete invoices. Corrections are credit notes, voids are new fiscal events, and all entries remain in the append-only Fiscal Ledger. These expectations appear in the [Invoice Lifecycle](../../../20-fiscal-platform/fiscal/invoice-lifecycle.md) narrative and the Architecture Context Map (`memory-bank/context-map.md` in the project root). Any mutation references the original invoice and is submitted as a new canonical payload to the Cloud Signing Service (or DEF in Phase 3), ensuring auditability.
 
 > This page is part of the regulatory view of the MkDocs site. For additional context, consult the [DRC Legal Framework](./legal-framework.md) overview and the [Arrêté Summaries](./arretes.md) tabs.

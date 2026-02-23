@@ -1,91 +1,91 @@
 # Tax Engine
 
-## Regulatory mandate
+## Overview
 
-The DGI SFE specification and the Stalela discussion notes are unambiguous: **the tax engine must handle all 14 DGI-defined tax groups, client classifications that drive tax selection, and precise rounding before an invoice is submitted to the Cloud Signing Service (HSM).** The `spec/schema-tax-engine-1.md` document controls the canonical schema, while this page focuses on implementation guidance and examples.
-
-!!! warning "Regulatory constraint"
-    The tax engine cannot shortcut the 14-group requirement. If the documentable tax group manifest does not list a TG## code, the invoice must fail validation before it reaches the Cloud Signing Service.
-
-## Tax Group Matrix
-
-| Code | Name | Default Rate | Typical usage |
-|------|------|--------------|---------------|
-| TG01 | Exempt | 0% | Embassies, diplomatic transfers, NGOs |
-| TG02 | Standard VAT — Goods | 16% | Domestic merchandise |
-| TG03 | Standard VAT — Services | 16% | Professional and intangible services |
-| TG04 | Reduced VAT | 9% | Essential food, medicine, medical devices |
-| TG05 | Public Financing VAT | 16% | State-sponsored programs or subsidies |
-| TG06 | Customs VAT | 16% | Import deliveries billed in CDF |
-| TG07 | Export Zero Rate | 0% | Export invoices, cross-border services |
-| TG08 | Special Regime — Agriculture | 5% | Agriculture supply chain participants |
-| TG09 | Special Regime — Mining | 10% | Mining operators with an active license |
-| TG10 | Specific Tax — Fuel | 25% | Gasoline, diesel, aviation fuel |
-| TG11 | Specific Tax — Tobacco | 30% | Cigarettes, cigars, tobacco sheets |
-| TG12 | Specific Tax — Alcohol | 20% | Distilled spirits, beer, wine |
-| TG13 | Specific Tax — Telecommunications | 15% | Mobile voice, data, SMS bundles |
-| TG14 | Specific Tax — Digital Services | 12% | SaaS, streaming, digital ads consumed in DRC |
-
-The manifest version must travel with every invoice via `tax_group_manifest_version` so that audits can map totals to the rate set that was active at issuance.
-
-## Decision Tree — Which tax group applies?
+The Tax Engine is the jurisdiction-configurable component that computes per-line-item tax amounts, validates client classifications, and applies rounding rules before an invoice reaches the Cloud Signing Service (HSM). It loads its rules from the active **jurisdiction profile** — tax group codes, rates, client classifications, and rounding rules are all defined per country.
 
 ```mermaid
-flowchart TD
-    Start[Start: classify the transaction] --> Embassy{Is the client an embassy or diplomatic mission?}
-    Embassy -- Yes --> TG1[TG01: Exempt]
-    Embassy -- No --> Export{Is the item exported or consumed outside DRC?}
-    Export -- Yes --> TG7[TG07: Export Zero Rate]
-    Export -- No --> Special{Does the catalog mark the item as special regime or excise?}
-    Special --> |Fuel| TG10[TG10: Specific Tax — Fuel]
-    Special --> |Tobacco| TG11[TG11: Specific Tax — Tobacco]
-    Special --> |Alcohol| TG12[TG12: Specific Tax — Alcohol]
-    Special --> |Telecom| TG13[TG13: Specific Tax — Telecommunications]
-    Special --> |Digital| TG14[TG14: Specific Tax — Digital Services]
-    Special --> |Agriculture| TG8[TG08: Special Regime — Agriculture]
-    Special --> |Mining| TG9[TG09: Special Regime — Mining]
-    Special --> |Public| TG5[TG05: Public Financing VAT]
-    Special --> |Customs| TG6[TG06: Customs VAT]
-    Special --> |None| Kind{Is the good tangible or a service?}
-    Kind --> |Goods| TG2[TG02: Standard VAT — Goods]
-    Kind --> |Service| TG3[TG03: Standard VAT — Services]
-    Kind --> |Reduced| TG4[TG04: Reduced VAT]
+flowchart LR
+    JP["Jurisdiction Profile\n(e.g., CD, KE, RW)"] -->|tax groups, rates,\nclassifications| TE["Tax Engine"]
+    INV["Canonical Invoice\n(items, client, jurisdiction)"] --> TE
+    TE -->|validated tax_summary| CSS["Cloud Signing Service (HSM)"]
 ```
 
-This flowchart should be embedded into the product catalog taxonomy. At each branch, the catalog metadata must flag the appropriate tax group so that the invoicing platform never guesses a code. The `special` branch also checks for catalogue flags such as `is_excise`, `use_customs_rate`, or `special_regime_code`.
+!!! warning "Regulatory constraint"
+    The tax engine must enforce the **complete** tax group manifest for the invoice's jurisdiction. If a tax group code is not present in the jurisdiction's manifest, the invoice must fail validation before it reaches the Cloud Signing Service.
 
-## Client Classification and Its Effects
+---
 
-| Classification | Description | Tax behavior |
-|----------------|-------------|--------------|
-| individual | Private person | Default to TG02/TG03 or TG04 if the catalog marks the line as an essential good. |
-| company | Registered corporation | Use any tax group; TG02/TG03 are defaults. |
-| commercial_individual | Sole trader | Same as company but carries proprietor ID. |
-| professional | Licensed professionals | Services default to TG03; specify TG04 when the Ministry authorizes the reduced regime. |
-| embassy | Diplomatic mission | Always TG01 unless DGI issues a `tax_override_reason`. |
+## How It Works
 
-!!! note
-    Classification is recorded on every invoice. Use the classification to drive the first two branches of the tax group decision tree and to populate `client_classification` in the canonical payload.
+1. **Read `jurisdiction`** from the canonical invoice payload.
+2. **Load the tax group manifest** for that jurisdiction (codes, rates, decision tree) at the version specified by `tax_group_manifest_version`.
+3. **Classify each line item** using the jurisdiction's decision tree (catalog metadata + client classification → tax group code).
+4. **Calculate `tax_amount`** as `tax_base × tax_rate` for each line.
+5. **Round** per the jurisdiction's currency rules (e.g., nearest 0.01 CDF for DRC, nearest 1 RWF for Rwanda).
+6. **Populate `tax_summary`** with one row per tax group code, including zero-amount entries for audit conformity.
+7. **Attach** the validated `tax_groups` and `tax_summary` to the canonical payload and forward to the Cloud Signing Service.
 
-## Calculation & Rounding Rules
+---
+
+## Jurisdiction-Configured Elements
+
+| Element | Description | Where Defined |
+|---|---|---|
+| **Tax Group Manifest** | Codes, names, default rates, decision tree | `40-jurisdictions/{code}/tax-groups.md` |
+| **Client Classifications** | Buyer categories and their tax behavior | `40-jurisdictions/{code}/client-classifications.md` |
+| **Invoice Types** | Permitted document types that may restrict tax groups | `40-jurisdictions/{code}/invoice-types.md` |
+| **Rounding Rules** | Minimum currency unit, rounding method, adjustment field | `40-jurisdictions/{code}/currencies.md` |
+
+---
+
+## Manifest Versioning
+
+The `tax_group_manifest_version` field travels with every invoice so that audits can map totals to the rate set that was active at issuance. When a jurisdiction's tax authority publishes new rates or adds groups, the manifest version increments and the Tax Engine loads the updated rules.
+
+```json
+{
+  "jurisdiction": "CD",
+  "tax_group_manifest_version": "CD-2026-01",
+  "tax_groups": [
+    { "code": "TG02", "base": "100000.00", "rate": "0.16", "amount": "16000.00" }
+  ]
+}
+```
+
+---
+
+## Calculation & Rounding (Generic)
 
 1. Calculate `tax_amount` as `tax_base × tax_rate`.
-2. Round each line-level tax to the nearest centime (0.01 CDF) using half-up rounding; store any delta in `tax_rounding_adjustment`.
+2. Round each line-level tax to the jurisdiction's minimum currency unit using the jurisdiction's rounding method; store any delta in `tax_rounding_adjustment`.
 3. Populate `tax_summary` with one row per tax group code, including zero-amount entries so auditors can verify conformity with the manifest.
-4. Apply TG07 (Export Zero Rate) only when the customer is outside DRC and the invoice_type is `export` or `export_service`.
-5. Do not mix TG01 with any other code in the same invoice unless the embassy provides a DGI override value that is logged in `tax_override_reason`.
+4. Apply export zero-rate groups only when the customer is outside the jurisdiction and the `invoice_type` indicates an export.
+5. Exempt classifications (e.g., embassy in DRC, diplomatic in Kenya) force the exempt tax group unless the authority provides an override logged in `tax_override_reason`.
 
-## Worked Examples
+---
 
-| Example | Item | Client classification | Tax group | Base (CDF) | Rate | Tax (CDF) | Notes |
-|---------|------|-----------------------|-----------|------------|------|-----------|-------|
-| 1 | Solar panels sold to a retailer | company | TG02 | 100000 | 16% | 16000 | Standard domestic goods example. |
-| 2 | Galenic medicine sold to a clinic | company | TG04 | 150000 | 9% | 13500 | Reduced regime triggered by catalog flag `is_essential`. |
-| 3 | Digital consultancy sold to a customer in Brussels | company | TG07 | 200000 | 0% | 0 | Export zero-rate; `tax_rounding_adjustment` remains 0. |
+## Country Profiles
 
-## Implementation guidance
+For jurisdiction-specific tax groups, decision trees, client classifications, and worked examples:
 
-1. Reference `spec/schema-tax-engine-1.md` for the authoritative TG## definitions and canonical schema fields before you add a new tax_group_code.
-2. Drive the taxonomy (export vs. local, special regime, excise) through catalog metadata and client classification.
+| Jurisdiction | Tax Groups | Client Classifications | Currencies |
+|---|---|---|---|
+| **DRC (CD)** | [14 groups (TG01–TG14)](../../40-jurisdictions/cd/tax-groups.md) | [5 categories](../../40-jurisdictions/cd/client-classifications.md) | [CDF/USD](../../40-jurisdictions/cd/currencies.md) |
+| **Zimbabwe (ZW)** | [Planned](../../40-jurisdictions/zw/index.md) | Planned | Planned |
+| **Kenya (KE)** | [Planned](../../40-jurisdictions/ke/index.md) | Planned | Planned |
+| **Rwanda (RW)** | [Planned](../../40-jurisdictions/rw/index.md) | Planned | Planned |
+| **Tanzania (TZ)** | [Planned](../../40-jurisdictions/tz/index.md) | Planned | Planned |
+| **Nigeria (NG)** | [Planned](../../40-jurisdictions/ng/index.md) | Planned | Planned |
+| **South Africa (ZA)** | [Planned](../../40-jurisdictions/za/index.md) | Planned | Planned |
+
+See [Jurisdictions](../../40-jurisdictions/index.md) for the full framework and how to add a new country.
+
+---
+
+## Implementation Guidance
+
+1. Reference `spec/schema-tax-engine-1.md` for the canonical schema fields. Tax group codes are jurisdiction-namespaced (e.g., `TG01` for DRC, `A` for Kenya).
+2. Drive the taxonomy (export vs. local, special regime, excise) through catalog metadata and client classification — both are jurisdiction-configured.
 3. When the Cloud Signing Service returns the sealed fiscal response, persist `tax_summary` so you can regenerate Z/X/A reports that align with the manifest version.
-4. Update `tax_group_manifest_version` whenever DGI publishes a new rate or adds a group; the spec file mirrors the latest manifest and should be the source of truth for the document.
+4. Update the jurisdiction's `tax_group_manifest_version` whenever the tax authority publishes new rates or groups.

@@ -24,23 +24,23 @@ Merged vocabulary for the Stalela Platform. Terms that carry different meanings 
 
 | Term | Definition |
 |---|---|
-| **Canonical Invoice** | *(Fiscal)* The deterministic JSON payload submitted to the Cloud Signing Service for fiscal sealing. Fields: `merchant_nif`, `outlet_id`, `pos_terminal_id`, `cashier_id`, `client`, `tax_groups`, `totals`, `payments`. |
+| **Canonical Invoice** | *(Fiscal)* The deterministic JSON payload submitted to the Cloud Signing Service for fiscal sealing. Fields: `merchant_tin`, `outlet_id`, `pos_terminal_id`, `jurisdiction`, `cashier_id`, `client`, `tax_groups`, `totals`, `payments`. |
 | **Canonical Transfer** | *(Payments)* The deterministic JSON payload submitted to the CTS for payment processing. Fields: `tenantId`, `intent`, `amount`, `payer`, `payee`, `railHints`, `feeModel`. |
 | **CTS** | Canonical Transfer Service — the front-door API and orchestrator for all payment intents in the Payments Nucleus. |
-| **Client Classification** | *(Fiscal)* DRC-mandated buyer category on each invoice: individual, company, commercial individual, professional, or embassy. |
+| **Client Classification** | *(Fiscal)* Jurisdiction-mandated buyer category on each invoice. DRC defines: individual, company, commercial individual, professional, embassy. Other jurisdictions define their own. See [Jurisdictions](../40-jurisdictions/index.md). |
 | **Compliance** | Overloaded term — see disambiguation below. |
 | **Counter** | *(Fiscal)* Monotonic, non-resettable sequence number assigned per outlet by the Monotonic Counter Manager. |
 
 !!! note "Disambiguation: Compliance"
     - **Payments Nucleus**: Entity screening against sanctions watchlists (OFAC, UN, EU, SA FIC) before a transfer is submitted to a rail.
-    - **Fiscal Platform**: Adherence to DRC tax law — 14 DGI tax groups, SFE specifications, Arrêtés 032/033/034, fiscal device registration.
+    - **Fiscal Platform**: Adherence to jurisdiction-specific tax law — tax groups, invoice types, fiscal device registration, and authority sync requirements. See [Jurisdictions](../40-jurisdictions/index.md).
 
 ## D
 
 | Term | Definition |
 |---|---|
-| **DEF** | Dispositif Électronique Fiscal — the DRC's fiscal memory device (USB hardware, Phase 3). |
-| **DGI** | Direction Générale des Impôts — DRC tax authority. |
+| **DEF** | Dispositif Électronique Fiscal — the DRC's fiscal memory device (USB hardware, Phase 3). DRC-specific. |
+| **DGI** | Direction Générale des Impôts — DRC tax authority. See [DRC Country Profile](../40-jurisdictions/cd/index.md). |
 | **DLQ** | Dead Letter Queue — failed events that could not be processed after retries. |
 | **Double-Entry** | *(Payments)* Every money movement records equal debits and credits in the GL Ledger. |
 | **Directory Service** | *(Payments)* Institutions, BINs, settlement cutoffs, fee windows, and routing tables. |
@@ -63,7 +63,7 @@ Merged vocabulary for the Stalela Platform. Terms that carry different meanings 
 | **GL Ledger** | *(Payments)* General Ledger with double-entry postings, balances, and chart of accounts. Distinct from Fiscal Ledger. |
 | **HSM** | Hardware Security Module — the trusted root for cryptographic signing in the Cloud Signing Service. |
 | **Idempotency Key** | Client-supplied key ensuring that retried requests produce the same result. Used in both CTS and Invoicing API. |
-| **Invoice Type** | *(Fiscal)* One of five DRC types: sale, advance, credit note, export, export credit. |
+| **Invoice Type** | *(Fiscal)* Jurisdiction-defined invoice categories. DRC defines: sale, advance, credit note, export, export credit. Other jurisdictions may define different types. |
 
 !!! note "Disambiguation: Ledger"
     - **GL Ledger** (Payments Nucleus): Financial double-entry accounting system tracking balances across accounts. Supports posting rules, chart of accounts, closing-the-books.
@@ -73,7 +73,7 @@ Merged vocabulary for the Stalela Platform. Terms that carry different meanings 
 
 | Term | Definition |
 |---|---|
-| **MCF / e-MCF** | *(Fiscal)* DGI upload protocol for fiscal data synchronization. Endpoint, auth, and schema are unresolved blockers. |
+| **MCF / e-MCF** | *(Fiscal, DRC)* DGI upload protocol for fiscal data synchronization. Endpoint, auth, and schema are unresolved blockers. DRC-specific — other jurisdictions use different authority sync protocols. See [Authority Sync](../20-fiscal-platform/cloud/authority-sync.md). |
 | **Mobile Money** | Payment rail (Payments Nucleus) and payment instrument on invoices (Fiscal Platform). See [Mobile Money](mobile-money.md). |
 | **Monotonic Counter Manager** | *(Fiscal)* Service ensuring strictly increasing fiscal numbers per outlet under multi-terminal concurrency. |
 | **Operator Console** | *(Payments)* Human UI for managing returns, recon exceptions, compliance flags, and rail health. |
@@ -93,10 +93,12 @@ Merged vocabulary for the Stalela Platform. Terms that carry different meanings 
 | Term | Definition |
 |---|---|
 | **Security Elements** | *(Fiscal)* The set of fields minted by the HSM: fiscal number, fiscal authority ID, auth code, trusted timestamp, QR payload. |
-| **SFE** | Système de Facturation d'Entreprise — DRC technical specification for compliant billing systems. |
-| **Sync Agent** | *(Fiscal)* Service that queues and retries uploads of sealed invoices to DGI via MCF/e-MCF. |
-| **Tax Engine** | *(Fiscal)* Applies the 14 DGI tax groups (TG01–TG14) and client classification rules to each invoice. |
-| **Tenant** | *(Payments)* Top-level isolation scope in CTS. Maps to `merchant_nif` + `outlet_id` in the Fiscal Platform. See [Multi-Tenant Model](multi-tenant-model.md). |
+| **SFE** | Système de Facturation d'Entreprise — DRC technical specification for compliant billing systems. DRC-specific. |
+| **Sync Agent** | *(Fiscal)* Service that queues and retries uploads of sealed invoices to the jurisdiction's tax authority. See [Authority Sync](../20-fiscal-platform/cloud/authority-sync.md). |
+| **Tax Authority** | The government agency responsible for tax collection and fiscal compliance in a given jurisdiction. DRC: DGI, Kenya: KRA, Rwanda: RRA, etc. |
+| **Tax Engine** | *(Fiscal)* Loads the active jurisdiction's tax group manifest, applies classification rules and rounding, and attaches computed totals to each invoice. See [Tax Engine](../20-fiscal-platform/fiscal/tax-engine.md). |
+| **TIN** | Taxpayer Identification Number — internationally recognized identifier for a business entity. DRC calls this NIF (Numéro d'Identification Fiscale). Stored as `merchant_tin` in the canonical invoice. |
+| **Tenant** | *(Payments)* Top-level isolation scope in CTS. Maps to `merchant_tin` + `outlet_id` in the Fiscal Platform. See [Multi-Tenant Model](multi-tenant-model.md). |
 | **Transfer** | *(Payments)* A single money-movement intent processed by the CTS. Lifecycle: INITIATED → SUBMITTED → ACCEPTED → SETTLED. |
 
 ## V–Z
