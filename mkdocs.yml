@@ -127,6 +127,7 @@ nav:
           - "10-payments-nucleus/ops/regulatory.md"
       - Infrastructure:
           - "10-payments-nucleus/infra/aws-infra.md"
+          - "60-infra/free-stack.md"
       - Repo Structure:
           - "10-payments-nucleus/repo-structure/multi-repo-architecture.md"
           - "10-payments-nucleus/repo-structure/ci-cd.md"
@@ -211,6 +212,10 @@ nav:
       - "30-integration/payment-on-invoice.md"
       - "30-integration/merchant-identity.md"
       - "30-integration/sequence-invoice-then-pay.md"
+  - Infrastructure:
+      - "60-infra/index.md"
+      - "60-infra/free-stack.md"
+      - "60-infra/aws-infra.md"
   - Sprints:
       - "sprint-001.md"
       - "70-sprints/epics-and-stories.md"

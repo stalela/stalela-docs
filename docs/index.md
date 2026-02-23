@@ -64,6 +64,7 @@ The pillars are **decoupled by design** — no shared databases, no synchronous 
 | [Fiscal Platform](20-fiscal-platform/index.md) | Invoice API, tax engine, cloud signing (HSM), fiscal ledger, authority sync, POS |
 | [Integration](30-integration/overview.md) | How the two pillars interact — payment on invoice, merchant identity, end-to-end sequences |
 | [Jurisdictions](40-jurisdictions/index.md) | Country profiles — tax groups, client classifications, currencies, authority integration |
+| [Infrastructure](60-infra/index.md) | Deployment architectures — Free Stack (Supabase + Vercel + Alibaba, $0–$20/mo) and AWS Blueprint |
 | [Sprints](70-sprints/epics-and-stories.md) | Sprint planning and epic tracking |
 | [Templates](90-templates/TEMPLATE-adr.md) | ADR, component, sequence, and state diagram templates |
 
