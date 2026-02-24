@@ -13,6 +13,10 @@
         <link rel="canonical" href="https://stalela-docs.vercel.app/60-infra/aws-infra/">
       
       
+        <link rel="prev" href="../free-stack/">
+      
+      
+        <link rel="next" href="../../sprint-001/">
       
       
         
@@ -328,6 +332,28 @@
   
   
   Integration
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Infrastructure
 
         </a>
       </li>
@@ -2603,6 +2629,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../free-stack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Free-Stack Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2668,14 +2722,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../10-payments-nucleus/repo-structure/multi-repo-architecture/" class="md-nav__link">
+      <a href="../../10-payments-nucleus/repo-structure/monorepo/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Multi‑Repo Architecture (Stalela)
+    Monorepo Architecture (Stalela)
   
 
     
@@ -2703,7 +2757,7 @@
   <span class="md-ellipsis">
     
   
-    CI/CD Standard (per service)
+    CI/CD (Monorepo)
   
 
     
@@ -2731,7 +2785,7 @@
   <span class="md-ellipsis">
     
   
-    Local Development (storo‑devstack)
+    Local Development (Monorepo)
   
 
     
@@ -4288,7 +4342,7 @@
   <span class="md-ellipsis">
     
   
-    Kanban Board — Epics
+    Kanban Board — Fiscal Epics
   
 
     
@@ -5541,31 +5595,36 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
             
   
   
   <span class="md-ellipsis">
     
   
-    Sprints
+    Infrastructure
   
 
     
@@ -5576,12 +5635,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Sprints
+    Infrastructure
   
 
           </label>
@@ -5594,14 +5653,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sprint-001/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Sprint 001 – Kickoff
+    Infrastructure
   
 
     
@@ -5622,14 +5681,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../70-sprints/epics-and-stories/" class="md-nav__link">
+      <a href="../free-stack/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    🛠 Stalela Nucleus — Kanban Board (with Repos, Langs, Infra Deps)
+    Free-Stack Architecture
   
 
     
@@ -5638,6 +5697,340 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS Infrastructure Blueprint (Stalela Nucleus)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS Infrastructure Blueprint (Stalela Nucleus)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-bus-outbox-crosscutting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Bus &amp; Outbox (cross‑cutting)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Stores
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#canonical-transfer-service-cts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canonical Transfer Service (CTS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rail-gateways-ecocash-mtnairtel-oppwa-zimswitch-payshap-usdcalgo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rail Gateways (EcoCash, MTN/Airtel, OPPWA, Zimswitch, PayShap, USDC/Algo)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ledger-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ledger Service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compliance-screening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compliance Screening
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory &amp; Routing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reconciliation-returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reconciliation &amp; Returns
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operator-console" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operator Console
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environments-regions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environments &amp; Regions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ha-dr-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HA, DR, Backups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cost-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost &amp; Scaling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networking-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Networking &amp; Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-per-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline (per service)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#serverless-pilot-option-a-lambda-api-gateway-aurora-serverless-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serverless Pilot (Option A) — Lambda + API Gateway + Aurora Serverless v2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Serverless Pilot (Option A) — Lambda + API Gateway + Aurora Serverless v2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stacks-infra-repo-cdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stacks (infra repo, CDK)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-stacks-service-repos-cdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service stacks (service repos, CDK)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eventing-ordering-dedupe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eventing (ordering &amp; dedupe)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cdk-snippets-typescript" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CDK snippets (TypeScript)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cicd-github-actions-with-oidc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD (GitHub Actions with OIDC)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment order
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-cost-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security &amp; cost notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -5678,7 +6071,7 @@
   <span class="md-ellipsis">
     
   
-    Templates
+    Sprints
   
 
     
@@ -5691,6 +6084,119 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sprints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprint-001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 001 — Foundation &amp; Free-Stack Bootstrap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../70-sprints/epics-and-stories/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stalela Platform — Unified Epic Board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Templates
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   

@@ -27,7 +27,7 @@
     
     
       
-        <title>Local Development (storo‑devstack) - Stalela Platform</title>
+        <title>Local Development (Monorepo) - Stalela Platform</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#local-development-storodevstack" class="md-skip">
+        <a href="#local-development-monorepo" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Local Development (storo‑devstack)
+              Local Development (Monorepo)
             
           </span>
         </div>
@@ -336,6 +336,26 @@
   
   
   Integration
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../60-infra/" class="md-tabs__link">
+          
+  
+  
+  Infrastructure
 
         </a>
       </li>
@@ -2616,6 +2636,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../60-infra/free-stack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Free-Stack Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2683,14 +2731,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../multi-repo-architecture/" class="md-nav__link">
+      <a href="../monorepo/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Multi‑Repo Architecture (Stalela)
+    Monorepo Architecture (Stalela)
   
 
     
@@ -2718,7 +2766,7 @@
   <span class="md-ellipsis">
     
   
-    CI/CD Standard (per service)
+    CI/CD (Monorepo)
   
 
     
@@ -2755,7 +2803,7 @@
   <span class="md-ellipsis">
     
   
-    Local Development (storo‑devstack)
+    Local Development (Monorepo)
   
 
     
@@ -2773,7 +2821,7 @@
   <span class="md-ellipsis">
     
   
-    Local Development (storo‑devstack)
+    Local Development (Monorepo)
   
 
     
@@ -2799,10 +2847,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prereqs" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prereqs
+        Prerequisites
       
     </span>
   </a>
@@ -2810,10 +2858,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#start-the-fleet" class="md-nav__link">
+  <a href="#clone-bootstrap" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Start the Fleet
+        Clone &amp; Bootstrap
       
     </span>
   </a>
@@ -2829,13 +2877,41 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Develop One Service Locally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-work-on-servicescts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: work on services/cts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smoke-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Smoke Test
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-smoke-test-usdc-happy-path" class="md-nav__link">
+  <a href="#working-with-shared-libs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example: Smoke Test (USDC Happy Path)
+        Working With Shared Libs
       
     </span>
   </a>
@@ -2843,10 +2919,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tilt-optional-live-reload" class="md-nav__link">
+  <a href="#develop-a-gateway" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tilt (optional, live reload)
+        Develop a Gateway
       
     </span>
   </a>
@@ -2854,10 +2930,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#timezone-cutoffs" class="md-nav__link">
+  <a href="#fiscal-platform-services" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Timezone &amp; Cutoffs
+        Fiscal Platform Services
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timezone-deterministic-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timezone &amp; Deterministic Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docs-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docs Development
       
     </span>
   </a>
@@ -4438,7 +4536,7 @@
   <span class="md-ellipsis">
     
   
-    Kanban Board — Epics
+    Kanban Board — Fiscal Epics
   
 
     
@@ -5715,7 +5813,7 @@
   <span class="md-ellipsis">
     
   
-    Sprints
+    Infrastructure
   
 
     
@@ -5731,7 +5829,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Sprints
+    Infrastructure
   
 
           </label>
@@ -5744,14 +5842,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../sprint-001/" class="md-nav__link">
+      <a href="../../../60-infra/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Sprint 001 – Kickoff
+    Infrastructure
   
 
     
@@ -5772,14 +5870,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../70-sprints/epics-and-stories/" class="md-nav__link">
+      <a href="../../../60-infra/free-stack/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    🛠 Stalela Nucleus — Kanban Board (with Repos, Langs, Infra Deps)
+    Free-Stack Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../60-infra/aws-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS Infrastructure Blueprint (Stalela Nucleus)
   
 
     
@@ -5828,7 +5954,7 @@
   <span class="md-ellipsis">
     
   
-    Templates
+    Sprints
   
 
     
@@ -5841,6 +5967,119 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sprints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sprint-001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 001 — Foundation &amp; Free-Stack Bootstrap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../70-sprints/epics-and-stories/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stalela Platform — Unified Epic Board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Templates
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5938,88 +6177,200 @@
   
 
 
-<h1 id="local-development-storodevstack">Local Development (storo‑devstack)<a class="headerlink" href="#local-development-storodevstack" title="Permanent link">&para;</a></h1>
-<p>How to run Stalela locally <strong>without</strong> a monorepo. You’ll run the fleet via Docker and <strong>swap one service</strong> for your local build.</p>
+<h1 id="local-development-monorepo">Local Development (Monorepo)<a class="headerlink" href="#local-development-monorepo" title="Permanent link">&para;</a></h1>
+<p>How to run Stalela locally from the monorepo. Clone once, run the fleet via Docker Compose, and swap one service for your local build.</p>
 <hr />
-<h2 id="prereqs">Prereqs<a class="headerlink" href="#prereqs" title="Permanent link">&para;</a></h2>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Docker Desktop / Colima</li>
+<li>Docker Desktop or Colima</li>
 <li>Make or Task</li>
-<li>Go 1.22 (for Go services), Node 20 (for console)</li>
-<li><code>storo-devstack</code> repo cloned</li>
+<li>Go 1.22+ (for services/gateways)</li>
+<li>Node 20+ (for <code>apps/operator-console</code>, <code>apps/fiscal-sdk</code>, <code>libs/specs</code>)</li>
+<li>Python 3.12+ (for <code>apps/fiscal-sdk</code> Python client and docs)</li>
 </ul>
-<p>Devstack provides: Postgres (multi‑DB), LocalStack (SNS/SQS), Prometheus, Grafana, and released service images.</p>
 <hr />
-<h2 id="start-the-fleet">Start the Fleet<a class="headerlink" href="#start-the-fleet" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:storo/storo-devstack.git
-<span class="nb">cd</span><span class="w"> </span>storo-devstack
+<h2 id="clone-bootstrap">Clone &amp; Bootstrap<a class="headerlink" href="#clone-bootstrap" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:stalela/stalela.git
+<span class="nb">cd</span><span class="w"> </span>stalela
+
+<span class="c1"># Start the full fleet (released images from GHCR + Postgres + LocalStack)</span>
+<span class="nb">cd</span><span class="w"> </span>tools/devstack
 docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div>
-<p>Services come up with <strong>released images</strong>. Grafana is available at http://localhost:3000 (admin/admin by default).</p>
+<p>The devstack provides:</p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>URL / Port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Postgres (per-service DBs)</td>
+<td><code>localhost:5432</code></td>
+</tr>
+<tr>
+<td>LocalStack (SNS, SQS, S3)</td>
+<td><code>http://localhost:4566</code></td>
+</tr>
+<tr>
+<td>Prometheus</td>
+<td><code>http://localhost:9090</code></td>
+</tr>
+<tr>
+<td>Grafana</td>
+<td><code>http://localhost:3000</code> (admin/admin)</td>
+</tr>
+</tbody>
+</table>
+<p>Services start with <strong>released images</strong> from GHCR. Once the fleet is up, swap one service for your local build.</p>
 <hr />
 <h2 id="develop-one-service-locally">Develop One Service Locally<a class="headerlink" href="#develop-one-service-locally" title="Permanent link">&para;</a></h2>
-<p>Example: work on <strong>storo-gw-usdc</strong> while everything else runs in containers.</p>
-<p>1) Clone your service and start it locally:
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:storo/storo-gw-usdc.git
-<span class="nb">cd</span><span class="w"> </span>storo-gw-usdc
-make<span class="w"> </span>dev<span class="w">    </span><span class="c1"># or task dev (hot reload)</span>
-</code></pre></div></p>
-<p>2) In <code>storo-devstack/docker-compose.override.example.yml</code>, copy to <code>docker-compose.override.yml</code> and <strong>disable</strong> the service container, mapping your local port:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># docker-compose.override.yml</span>
-<span class="nt">services</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">gw-usdc</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">deploy</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">  </span><span class="c1"># disable container; we&#39;ll run it locally</span>
-<span class="w">  </span><span class="c1"># If the stack expects a port:</span>
-<span class="w">  </span><span class="c1">#   ports:</span>
-<span class="w">  </span><span class="c1">#     - &quot;8085:8085&quot;  # match your local gw-usdc listen port</span>
+<p>All services follow the same pattern: navigate to the service directory, run <code>make dev</code>, disable the container in devstack.</p>
+<h3 id="example-work-on-servicescts">Example: work on <code>services/cts</code><a class="headerlink" href="#example-work-on-servicescts" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. Start your local service (hot reload via air/reflex)</span>
+<span class="nb">cd</span><span class="w"> </span>services/cts
+make<span class="w"> </span>dev
 </code></pre></div>
-<p>3) Ensure env points to devstack infra:
-- Postgres: <code>postgres://localhost:5432/gw_usdc?sslmode=disable</code>
-- SQS/SNS (LocalStack): <code>http://localhost:4566</code> with dummy creds
-- S3 (for payloads): <code>http://localhost:4566</code></p>
-<p>4) Seed data (optional):
-<div class="highlight"><pre><span></span><code>make<span class="w"> </span>seed<span class="w">   </span><span class="c1"># directory entries, holidays, test tenants</span>
-</code></pre></div></p>
-<p>You can now post a transfer to CTS in devstack and watch events reach your <strong>local</strong> gateway.</p>
-<hr />
-<h2 id="example-smoke-test-usdc-happy-path">Example: Smoke Test (USDC Happy Path)<a class="headerlink" href="#example-smoke-test-usdc-happy-path" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Create a transfer</span>
-curl<span class="w"> </span>-XPOST<span class="w"> </span>http://localhost:8080/v1/transfers<span class="w">   </span>-H<span class="w"> </span><span class="s1">&#39;Idempotency-Key: demo-1&#39;</span><span class="w">   </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;tenantId&quot;:&quot;tn_demo&quot;,</span>
-<span class="s1">    &quot;payer&quot;:{&quot;accountId&quot;:&quot;acct_payer&quot;},</span>
-<span class="s1">    &quot;payee&quot;:{&quot;accountId&quot;:&quot;acct_merchant&quot;},</span>
-<span class="s1">    &quot;amount&quot;:{&quot;value&quot;:1000,&quot;currency&quot;:&quot;USD&quot;},</span>
-<span class="s1">    &quot;rail&quot;:&quot;usdc-algo&quot;,&quot;intent&quot;:&quot;PUSH&quot;,&quot;externalRef&quot;:&quot;ext_demo&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 2. tools/devstack/docker-compose.override.yml</span>
+<span class="c1">#    (copy from docker-compose.override.example.yml)</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">cts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">deploy</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">   </span><span class="c1"># disable container; we run it locally</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># 3. Apply required env (devstack infra)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DATABASE_URL</span><span class="o">=</span><span class="s2">&quot;postgres://postgres:postgres@localhost:5432/cts?sslmode=disable&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SQS_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:4566&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SNS_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:4566&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="nb">test</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span><span class="nb">test</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AWS_REGION</span><span class="o">=</span>us-east-1
+
+<span class="c1"># 4. Apply migrations (first time or after schema changes)</span>
+make<span class="w"> </span>db
+
+<span class="c1"># 5. Seed test data (optional)</span>
+make<span class="w"> </span>seed
+</code></pre></div>
+<h3 id="smoke-test">Smoke Test<a class="headerlink" href="#smoke-test" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-XPOST<span class="w"> </span>http://localhost:8080/v1/transfers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Idempotency-Key: demo-1&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">    &quot;tenantId&quot;: &quot;tn_demo&quot;,</span>
+<span class="s1">    &quot;payer&quot;:  { &quot;accountId&quot;: &quot;acct_payer&quot; },</span>
+<span class="s1">    &quot;payee&quot;:  { &quot;accountId&quot;: &quot;acct_merchant&quot; },</span>
+<span class="s1">    &quot;amount&quot;: { &quot;value&quot;: 1000, &quot;currency&quot;: &quot;USD&quot; },</span>
+<span class="s1">    &quot;rail&quot;: &quot;usdc-algo&quot;,</span>
+<span class="s1">    &quot;intent&quot;: &quot;PUSH&quot;,</span>
+<span class="s1">    &quot;externalRef&quot;: &quot;ext_demo&quot;</span>
 <span class="s1">  }&#39;</span>
 </code></pre></div>
-<p>Verify in logs:
-- CTS emits <code>transfers.submitted.usdc</code>
-- Your local <code>gw-usdc</code> consumes and emits <code>accepted</code> then <code>settled</code>
-- Ledger in devstack posts entries</p>
-<hr />
-<h2 id="tilt-optional-live-reload">Tilt (optional, live reload)<a class="headerlink" href="#tilt-optional-live-reload" title="Permanent link">&para;</a></h2>
-<p>If you prefer <strong>Tilt</strong> for hot‑reload:
-- <code>storo-devstack/Tiltfile</code> includes services. Comment out the one you run locally.
-- Point your local service to devstack infra as above.</p>
-<hr />
-<h2 id="timezone-cutoffs">Timezone &amp; Cutoffs<a class="headerlink" href="#timezone-cutoffs" title="Permanent link">&para;</a></h2>
-<p>Business rules use <strong>Africa/Johannesburg</strong>. For predictable tests:
-- Export <code>TZ=Africa/Johannesburg</code>
-- Seed holidays via <code>platform-base</code> fixtures</p>
-<hr />
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<p>Watch the flow:</p>
 <ul>
-<li><strong>Events not flowing</strong>: check LocalStack is up (<code>awslocal sns list-topics</code>).</li>
-<li><strong>DLQ growing</strong>: open Grafana → “Event Backlogs” dashboard.</li>
-<li><strong>DB migrations</strong>: run <code>make db</code> in the service repo to apply embedded migrations.</li>
-<li><strong>CORS</strong> (console): set <code>CORS_ALLOWED_ORIGINS=http://localhost:3001</code> on services that expose HTTP APIs.</li>
+<li>Your local <code>cts</code> emits <code>transfers.submitted.usdc</code> → LocalStack SNS</li>
+<li>Devstack <code>gw-usdc</code> (container) consumes → emits <code>accepted</code> then <code>settled</code></li>
+<li>Devstack <code>ledger</code> posts entries</li>
+<li>Grafana → "Transfer Lifecycle" dashboard confirms end-to-end</li>
 </ul>
 <hr />
-<h2 id="clean-up">Clean Up<a class="headerlink" href="#clean-up" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span>-v<span class="w">  </span><span class="c1"># stop and remove volumes</span>
+<h2 id="working-with-shared-libs">Working With Shared Libs<a class="headerlink" href="#working-with-shared-libs" title="Permanent link">&para;</a></h2>
+<p>Libs are referenced via local Go module <code>replace</code> directives — no publish step needed:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// services/cts/go.mod</span>
+<span class="nx">require</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="nx">stalela</span><span class="o">/</span><span class="nx">libs</span><span class="o">/</span><span class="nx">specs</span><span class="w">    </span><span class="nx">v0</span><span class="mf">.0.0</span>
+<span class="w">    </span><span class="nx">stalela</span><span class="o">/</span><span class="nx">libs</span><span class="o">/</span><span class="nx">platform</span><span class="w"> </span><span class="nx">v0</span><span class="mf">.0.0</span>
+<span class="w">    </span><span class="nx">stalela</span><span class="o">/</span><span class="nx">libs</span><span class="o">/</span><span class="nx">outbox</span><span class="w">   </span><span class="nx">v0</span><span class="mf">.0.0</span>
+<span class="w">    </span><span class="nx">stalela</span><span class="o">/</span><span class="nx">libs</span><span class="o">/</span><span class="nx">otel</span><span class="w">     </span><span class="nx">v0</span><span class="mf">.0.0</span>
+<span class="p">)</span>
+
+<span class="nx">replace</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="nx">stalela</span><span class="o">/</span><span class="nx">libs</span><span class="o">/</span><span class="nx">specs</span><span class="w">    </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="nx">libs</span><span class="o">/</span><span class="nx">specs</span>
+<span class="w">    </span><span class="nx">stalela</span><span class="o">/</span><span class="nx">libs</span><span class="o">/</span><span class="nx">platform</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="nx">libs</span><span class="o">/</span><span class="nx">platform</span>
+<span class="w">    </span><span class="nx">stalela</span><span class="o">/</span><span class="nx">libs</span><span class="o">/</span><span class="nx">outbox</span><span class="w">   </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="nx">libs</span><span class="o">/</span><span class="nx">outbox</span>
+<span class="w">    </span><span class="nx">stalela</span><span class="o">/</span><span class="nx">libs</span><span class="o">/</span><span class="nx">otel</span><span class="w">     </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="nx">libs</span><span class="o">/</span><span class="nx">otel</span>
+<span class="p">)</span>
 </code></pre></div>
-<p>This resets your local DBs and queues.</p>
+<p>Changes to <code>libs/</code> are immediately visible — no re-publish needed.</p>
+<hr />
+<h2 id="develop-a-gateway">Develop a Gateway<a class="headerlink" href="#develop-a-gateway" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>gateways/ecocash
+make<span class="w"> </span>dev
+</code></pre></div>
+<p>Override in <code>tools/devstack/docker-compose.override.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gw-ecocash</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">deploy</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</code></pre></div>
+<p>EcoCash callbacks go to your local process; all other services stay containerized.</p>
+<hr />
+<h2 id="fiscal-platform-services">Fiscal Platform Services<a class="headerlink" href="#fiscal-platform-services" title="Permanent link">&para;</a></h2>
+<p>Fiscal services need additional env vars:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>services/fiscal-signing
+make<span class="w"> </span>dev
+
+<span class="nb">export</span><span class="w"> </span><span class="nv">HSM_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:8200&quot;</span><span class="w">   </span><span class="c1"># dev: HashiCorp Vault (devstack provides it)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">JURISDICTION</span><span class="o">=</span><span class="s2">&quot;CD&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MONOTONIC_COUNTER_DB</span><span class="o">=</span><span class="s2">&quot;postgres://postgres:postgres@localhost:5432/fiscal_signing?sslmode=disable&quot;</span>
+</code></pre></div>
+<p>The devstack Vault (<code>localhost:8200</code>) is pre-seeded with dev signing keys.</p>
+<hr />
+<h2 id="timezone-deterministic-tests">Timezone &amp; Deterministic Tests<a class="headerlink" href="#timezone-deterministic-tests" title="Permanent link">&para;</a></h2>
+<p>Business logic uses <strong>Africa/Johannesburg</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TZ</span><span class="o">=</span>Africa/Johannesburg
+make<span class="w"> </span>seed-calendars<span class="w">   </span><span class="c1"># loads holiday fixtures from libs/platform/calendars/</span>
+</code></pre></div>
+<hr />
+<h2 id="docs-development">Docs Development<a class="headerlink" href="#docs-development" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>docs
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+mkdocs<span class="w"> </span>serve
+<span class="c1"># → http://127.0.0.1:8000/</span>
+</code></pre></div>
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Events not flowing</td>
+<td><code>awslocal sns list-topics</code> — verify LocalStack is up</td>
+</tr>
+<tr>
+<td>DLQ growing</td>
+<td>Grafana → "Event Backlogs" dashboard</td>
+</tr>
+<tr>
+<td>DB migration errors</td>
+<td><code>make db</code> in service directory</td>
+</tr>
+<tr>
+<td>Port conflicts</td>
+<td>Check <code>tools/devstack/docker-compose.yml</code></td>
+</tr>
+<tr>
+<td>Vault sealed (fiscal)</td>
+<td><code>vault operator unseal</code> at <code>localhost:8200</code></td>
+</tr>
+<tr>
+<td><code>go: module not found</code></td>
+<td>Verify <code>replace</code> directives in <code>go.mod</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="clean-up">Clean Up<a class="headerlink" href="#clean-up" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>tools/devstack
+docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span>-v<span class="w">   </span><span class="c1"># stops containers and removes volumes (resets DBs + queues)</span>
+</code></pre></div>
 
 
 

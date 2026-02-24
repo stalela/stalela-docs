@@ -1,0 +1,14 @@
+flowchart TD
+  ST[(Rail Statement Files / On-chain Events)]
+  NORM[Normalize to StatementLine]
+  MATCH{Match to
+Transfers?}
+  EMIT1[Emit transfers.settled]
+  EMIT2[Emit transfers.returned]
+  EXC[Open recon.exception]
+  OP[Operator Console]
+
+  ST --> NORM --> MATCH
+  MATCH -->|Settlement| EMIT1
+  MATCH -->|Return| EMIT2
+  MATCH -->|No| EXC --> OP

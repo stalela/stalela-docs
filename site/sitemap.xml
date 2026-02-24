@@ -357,6 +357,10 @@
          <lastmod>2026-02-23</lastmod>
     </url>
     <url>
+         <loc>https://stalela-docs.vercel.app/10-payments-nucleus/repo-structure/monorepo/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
          <loc>https://stalela-docs.vercel.app/10-payments-nucleus/repo-structure/multi-repo-architecture/</loc>
          <lastmod>2026-02-23</lastmod>
     </url>
@@ -765,7 +769,15 @@
          <lastmod>2026-02-23</lastmod>
     </url>
     <url>
+         <loc>https://stalela-docs.vercel.app/60-infra/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
          <loc>https://stalela-docs.vercel.app/60-infra/aws-infra/</loc>
+         <lastmod>2026-02-23</lastmod>
+    </url>
+    <url>
+         <loc>https://stalela-docs.vercel.app/60-infra/free-stack/</loc>
          <lastmod>2026-02-23</lastmod>
     </url>
     <url>

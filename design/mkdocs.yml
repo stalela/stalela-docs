@@ -1,0 +1,224 @@
+site_name: Stalela Platform
+site_description: Unified documentation for the Stalela Platform — Payments Nucleus + Fiscal Compliance.
+site_url: https://stalela-docs.vercel.app/
+repo_url: https://github.com/stalela/stalela-docs
+repo_name: stalela/stalela-docs
+strict: false
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.tabs
+    - navigation.instant
+    - navigation.tracking
+    - content.code.copy
+    - content.action.edit
+    - toc.integrate
+  icon:
+    repo: fontawesome/brands/github
+  logo: assets/images/favicon.svg
+  favicon: assets/images/favicon.ico
+  palette:
+    - scheme: default
+      primary: black
+      accent: custom
+    - scheme: slate
+      primary: black
+      accent: custom
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - attr_list
+  - def_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra_javascript:
+  # Mermaid for diagrams in fenced ```mermaid blocks
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+  - javascripts/mermaid-init.js
+extra_css:
+  - styles/brand.css
+
+nav:
+  - Home: index.md
+  - Foundation:
+      - "00-foundation/index.md"
+      - "00-foundation/glossary.md"
+      - "00-foundation/canonical-payloads.md"
+      - "00-foundation/multi-tenant-model.md"
+      - "00-foundation/mobile-money.md"
+      - "00-foundation/ai-capabilities.md"
+  - Payments Nucleus:
+      - Overview:
+          - "10-payments-nucleus/overview/index.md"
+          - "10-payments-nucleus/overview/nucleus.md"
+          - "10-payments-nucleus/overview/glossary.md"
+          - "10-payments-nucleus/overview/stalela-vs-mojaloop.md"
+          - "10-payments-nucleus/overview/nfrs.md"
+          - "10-payments-nucleus/overview/dev-workflow.md"
+          - "10-payments-nucleus/overview/risks-open-questions.md"
+      - Components:
+          - "10-payments-nucleus/components/canonical-transfer-service.md"
+          - "10-payments-nucleus/components/rail-gateway-template.md"
+          - "10-payments-nucleus/components/rail-gateway-oppwa.md"
+          - "10-payments-nucleus/components/rail-gateway-zimswitch.md"
+          - "10-payments-nucleus/components/rail-gateway-usdc-algo.md"
+          - "10-payments-nucleus/components/rail-gateway-ecocash.md"
+          - "10-payments-nucleus/components/rail-gateway-mtn-momo.md"
+          - "10-payments-nucleus/components/rail-gateway-airtel-momo.md"
+          - "10-payments-nucleus/components/rail-gateway-payshap.md"
+          - "10-payments-nucleus/components/rail-gateway-eft.md"
+          - "10-payments-nucleus/components/rail-gateway-rtgs.md"
+          - "10-payments-nucleus/components/ledger-service.md"
+          - "10-payments-nucleus/components/compliance-screening.md"
+          - "10-payments-nucleus/components/directory-routing.md"
+          - "10-payments-nucleus/components/reconciliation-returns.md"
+          - "10-payments-nucleus/components/event-bus-outbox.md"
+          - "10-payments-nucleus/components/operator-console.md"
+          - "10-payments-nucleus/components/orchestration-ai-agents.md"
+          - "10-payments-nucleus/components/platform-base.md"
+          - "10-payments-nucleus/components/woocommerce.md"
+          - "10-payments-nucleus/components/regulatory-reporting.md"
+      - Specs:
+          - "10-payments-nucleus/specs/api-canonical-transfer.md"
+          - "10-payments-nucleus/specs/events.md"
+          - "10-payments-nucleus/specs/posting-rules.md"
+          - "10-payments-nucleus/specs/chart-of-accounts.md"
+          - "10-payments-nucleus/specs/fixtures.md"
+          - "10-payments-nucleus/specs/error-codes.md"
+          - "10-payments-nucleus/specs/risk-limits.md"
+          - "10-payments-nucleus/specs/fx-policy.md"
+          - "10-payments-nucleus/specs/tax-vat.md"
+          - "10-payments-nucleus/specs/data-retention-pii.md"
+          - "10-payments-nucleus/specs/regulatory-reporting.md"
+          - "10-payments-nucleus/specs/external-integrations.md"
+      - Diagrams:
+          - "10-payments-nucleus/diagrams/component-nucleus.md"
+          - "10-payments-nucleus/diagrams/lifecycle-state.md"
+          - "10-payments-nucleus/diagrams/sequence-submit-usdc.md"
+          - "10-payments-nucleus/diagrams/sequence-return-oppwa.md"
+          - "10-payments-nucleus/diagrams/recon-matching.md"
+          - "10-payments-nucleus/diagrams/sequence-submit-payshap.md"
+          - "10-payments-nucleus/diagrams/sequence-eft-batch.md"
+          - "10-payments-nucleus/diagrams/sequence-stk-ecocash.md"
+          - "10-payments-nucleus/diagrams/sequence-bop-reporting.md"
+      - Ops:
+          - "10-payments-nucleus/ops/runbooks.md"
+          - "10-payments-nucleus/ops/observability.md"
+          - "10-payments-nucleus/ops/security.md"
+          - "10-payments-nucleus/ops/closing-the-books.md"
+          - "10-payments-nucleus/ops/regulatory.md"
+      - Infrastructure:
+          - "10-payments-nucleus/infra/aws-infra.md"
+          - "60-infra/free-stack.md"
+      - Repo Structure:
+          - "10-payments-nucleus/repo-structure/multi-repo-architecture.md"
+          - "10-payments-nucleus/repo-structure/ci-cd.md"
+          - "10-payments-nucleus/repo-structure/local-dev.md"
+          - "10-payments-nucleus/repo-structure/release-strategy.md"
+      - ADRs:
+          - "10-payments-nucleus/adr/PAY-ADR-0001-events-outbox.md"
+          - "10-payments-nucleus/adr/PAY-ADR-0002-double-entry-ledger.md"
+          - "10-payments-nucleus/adr/PAY-ADR-0003-contracts-first.md"
+  - Fiscal Platform:
+      - "20-fiscal-platform/index.md"
+      - Architecture:
+          - "20-fiscal-platform/architecture/overview.md"
+          - "20-fiscal-platform/architecture/components.md"
+          - "20-fiscal-platform/architecture/data-flow.md"
+          - "20-fiscal-platform/architecture/trust-boundary.md"
+          - "20-fiscal-platform/architecture/delegated-offline-token.md"
+          - "20-fiscal-platform/architecture/10-architectural-challenges.md"
+      - Fiscal Core:
+          - "20-fiscal-platform/fiscal/tax-engine.md"
+          - "20-fiscal-platform/fiscal/invoice-lifecycle.md"
+          - "20-fiscal-platform/fiscal/invoice-verification.md"
+          - "20-fiscal-platform/fiscal/security-elements.md"
+          - "20-fiscal-platform/fiscal/reports.md"
+      - Cloud Services:
+          - "20-fiscal-platform/cloud/architecture.md"
+          - "20-fiscal-platform/cloud/authority-sync.md"
+          - "20-fiscal-platform/cloud/offline-sync.md"
+      - Platform:
+          - "20-fiscal-platform/platform/overview.md"
+          - "20-fiscal-platform/platform/api.md"
+          - "20-fiscal-platform/platform/sdk.md"
+          - "20-fiscal-platform/platform/dashboard.md"
+          - "20-fiscal-platform/platform/multi-user.md"
+          - "20-fiscal-platform/platform/integrations.md"
+          - "20-fiscal-platform/platform/ai-capabilities.md"
+      - API Reference:
+          - "20-fiscal-platform/api/cloud.md"
+          - "20-fiscal-platform/api/invoicing-sdk.md"
+      - ADRs:
+          - "20-fiscal-platform/adr/index.md"
+          - "20-fiscal-platform/adr/FIS-ADR-0001.md"
+          - "20-fiscal-platform/adr/FIS-ADR-0002.md"
+          - "20-fiscal-platform/adr/FIS-ADR-0003.md"
+          - "20-fiscal-platform/adr/FIS-ADR-0004.md"
+          - "20-fiscal-platform/adr/FIS-ADR-0005.md"
+          - "20-fiscal-platform/adr/FIS-ADR-0006.md"
+      - Implementation:
+          - "20-fiscal-platform/implementation/roadmap.md"
+          - "20-fiscal-platform/implementation/kanban.md"
+          - "20-fiscal-platform/implementation/phase-1.md"
+          - "20-fiscal-platform/implementation/phase-2.md"
+          - "20-fiscal-platform/implementation/phase-3.md"
+          - "20-fiscal-platform/implementation/phase-4.md"
+  - Jurisdictions:
+      - "40-jurisdictions/index.md"
+      - "40-jurisdictions/country-profile-template.md"
+      - DRC (CD):
+          - "40-jurisdictions/cd/index.md"
+          - "40-jurisdictions/cd/tax-groups.md"
+          - "40-jurisdictions/cd/client-classifications.md"
+          - "40-jurisdictions/cd/invoice-types.md"
+          - "40-jurisdictions/cd/currencies.md"
+          - "40-jurisdictions/cd/authority-integration.md"
+          - "40-jurisdictions/cd/regulatory/legal-framework.md"
+          - "40-jurisdictions/cd/regulatory/arretes.md"
+          - "40-jurisdictions/cd/regulatory/sfe-specs.md"
+      - Zimbabwe (ZW):
+          - "40-jurisdictions/zw/index.md"
+      - Kenya (KE):
+          - "40-jurisdictions/ke/index.md"
+      - Rwanda (RW):
+          - "40-jurisdictions/rw/index.md"
+      - Tanzania (TZ):
+          - "40-jurisdictions/tz/index.md"
+      - Nigeria (NG):
+          - "40-jurisdictions/ng/index.md"
+      - South Africa (ZA):
+          - "40-jurisdictions/za/index.md"
+  - Integration:
+      - "30-integration/overview.md"
+      - "30-integration/payment-on-invoice.md"
+      - "30-integration/merchant-identity.md"
+      - "30-integration/sequence-invoice-then-pay.md"
+  - Infrastructure:
+      - "60-infra/index.md"
+      - "60-infra/free-stack.md"
+      - "60-infra/aws-infra.md"
+  - Sprints:
+      - "sprint-001.md"
+      - "70-sprints/epics-and-stories.md"
+  - Templates:
+      - "90-templates/TEMPLATE-component.md"
+      - "90-templates/TEMPLATE-adr.md"

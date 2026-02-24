@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://stalela-docs.vercel.app/10-payments-nucleus/repo-structure/ci-cd/">
       
       
-        <link rel="prev" href="../multi-repo-architecture/">
+        <link rel="prev" href="../monorepo/">
       
       
         <link rel="next" href="../local-dev/">
@@ -27,7 +27,7 @@
     
     
       
-        <title>CI/CD Standard (per service) - Stalela Platform</title>
+        <title>CI/CD (Monorepo) - Stalela Platform</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cicd-standard-per-service" class="md-skip">
+        <a href="#cicd-monorepo" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CI/CD Standard (per service)
+              CI/CD (Monorepo)
             
           </span>
         </div>
@@ -336,6 +336,26 @@
   
   
   Integration
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../60-infra/" class="md-tabs__link">
+          
+  
+  
+  Infrastructure
 
         </a>
       </li>
@@ -2616,6 +2636,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../60-infra/free-stack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Free-Stack Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2683,14 +2731,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../multi-repo-architecture/" class="md-nav__link">
+      <a href="../monorepo/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Multi‑Repo Architecture (Stalela)
+    Monorepo Architecture (Stalela)
   
 
     
@@ -2727,7 +2775,7 @@
   <span class="md-ellipsis">
     
   
-    CI/CD Standard (per service)
+    CI/CD (Monorepo)
   
 
     
@@ -2745,7 +2793,7 @@
   <span class="md-ellipsis">
     
   
-    CI/CD Standard (per service)
+    CI/CD (Monorepo)
   
 
     
@@ -2771,10 +2819,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#required-checks" class="md-nav__link">
+  <a href="#workflow-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Required Checks
+        Workflow Structure
       
     </span>
   </a>
@@ -2782,10 +2830,54 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-workflow-githubworkflowsciyml" class="md-nav__link">
+  <a href="#required-checks-per-service" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example Workflow (.github/workflows/ci.yml)
+        Required Checks (per service)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#affected-detection-githubworkflowsaffectedyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Affected Detection (.github/workflows/affected.yml)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reusable-service-ci-githubworkflowsservice-ciyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reusable Service CI (.github/workflows/service-ci.yml)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release Tags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docs-ci-githubworkflowsdocsyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docs CI (.github/workflows/docs.yml)
       
     </span>
   </a>
@@ -2804,32 +2896,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deploy-via-storo-infra" class="md-nav__link">
+  <a href="#secrets-in-ci" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deploy (via storo-infra)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#secrets-tokens-in-ci" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Secrets &amp; Tokens in CI
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contract-validation-fixtures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Contract Validation &amp; Fixtures
+        Secrets in CI
       
     </span>
   </a>
@@ -2859,7 +2929,7 @@
   <span class="md-ellipsis">
     
   
-    Local Development (storo‑devstack)
+    Local Development (Monorepo)
   
 
     
@@ -4416,7 +4486,7 @@
   <span class="md-ellipsis">
     
   
-    Kanban Board — Epics
+    Kanban Board — Fiscal Epics
   
 
     
@@ -5693,7 +5763,7 @@
   <span class="md-ellipsis">
     
   
-    Sprints
+    Infrastructure
   
 
     
@@ -5709,7 +5779,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Sprints
+    Infrastructure
   
 
           </label>
@@ -5722,14 +5792,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../sprint-001/" class="md-nav__link">
+      <a href="../../../60-infra/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Sprint 001 – Kickoff
+    Infrastructure
   
 
     
@@ -5750,14 +5820,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../70-sprints/epics-and-stories/" class="md-nav__link">
+      <a href="../../../60-infra/free-stack/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    🛠 Stalela Nucleus — Kanban Board (with Repos, Langs, Infra Deps)
+    Free-Stack Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../60-infra/aws-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS Infrastructure Blueprint (Stalela Nucleus)
   
 
     
@@ -5806,7 +5904,7 @@
   <span class="md-ellipsis">
     
   
-    Templates
+    Sprints
   
 
     
@@ -5819,6 +5917,119 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sprints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sprint-001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 001 — Foundation &amp; Free-Stack Bootstrap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../70-sprints/epics-and-stories/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stalela Platform — Unified Epic Board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Templates
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5916,27 +6127,120 @@
   
 
 
-<h1 id="cicd-standard-per-service">CI/CD Standard (per service)<a class="headerlink" href="#cicd-standard-per-service" title="Permanent link">&para;</a></h1>
-<p>Canonical GitHub Actions workflow + required checks for all Stalela service repos.</p>
+<h1 id="cicd-monorepo">CI/CD (Monorepo)<a class="headerlink" href="#cicd-monorepo" title="Permanent link">&para;</a></h1>
+<p>GitHub Actions workflows for the <code>stalela</code> monorepo. Path filters ensure only affected services are rebuilt on each PR.</p>
 <hr />
-<h2 id="required-checks">Required Checks<a class="headerlink" href="#required-checks" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>lint</strong>: golangci‑lint / eslint</li>
-<li><strong>test</strong>: unit tests + golden fixtures</li>
-<li><strong>contract‑validate</strong>: ensure emitted/consumed events &amp; APIs conform to <code>storo-specs</code></li>
-<li><strong>migrations‑dry‑run</strong>: for services with DB migrations</li>
-<li><strong>build</strong>: Docker image</li>
-<li><strong>publish</strong>: tag <code>svc:X.Y.Z</code> and <code>svc:X</code></li>
-</ul>
+<h2 id="workflow-structure">Workflow Structure<a class="headerlink" href="#workflow-structure" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>.github/workflows/
+├── affected.yml        ← Detect changed packages → dispatch per-service builds
+├── service-ci.yml      ← Reusable: lint → test → contract-validate → build → push
+├── docs.yml            ← MkDocs build + Vercel deploy (triggered by docs/ changes)
+└── specs-ci.yml        ← Validate libs/specs/ schemas + fixtures (no build step)
+</code></pre></div>
 <hr />
-<h2 id="example-workflow-githubworkflowsciyml">Example Workflow (<code>.github/workflows/ci.yml</code>)<a class="headerlink" href="#example-workflow-githubworkflowsciyml" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CI</span>
+<h2 id="required-checks-per-service">Required Checks (per service)<a class="headerlink" href="#required-checks-per-service" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Tool</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lint</code></td>
+<td><code>golangci-lint</code> / <code>eslint</code></td>
+<td>Enforced before tests run</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td><code>go test</code> / <code>jest</code> / <code>pytest</code></td>
+<td>Unit + golden fixture tests</td>
+</tr>
+<tr>
+<td><code>contract-validate</code></td>
+<td><code>ajv</code> + <code>spectral</code></td>
+<td>Validates events + OpenAPI against <code>libs/specs/</code></td>
+</tr>
+<tr>
+<td><code>migrations-dry-run</code></td>
+<td><code>migrate -dry-run</code></td>
+<td>Services with embedded migrations only</td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td><code>docker build</code></td>
+<td>Only runs if lint+test+contract pass</td>
+</tr>
+<tr>
+<td><code>push</code></td>
+<td>GHCR</td>
+<td>SHA-tagged on PR merge; semver-tagged on release tag</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="affected-detection-githubworkflowsaffectedyml">Affected Detection (<code>.github/workflows/affected.yml</code>)<a class="headerlink" href="#affected-detection-githubworkflowsaffectedyml" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Detect affected packages</span>
 
 <span class="nt">on</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">push</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">main</span><span class="w"> </span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&#39;v*.*.*&#39;</span><span class="w"> </span><span class="p p-Indicator">]</span>
 <span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">detect</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">outputs</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ steps.filter.outputs.services }}</span>
+<span class="w">      </span><span class="nt">gateways</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ steps.filter.outputs.gateways }}</span>
+<span class="w">      </span><span class="nt">libs</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">${{ steps.filter.outputs.libs }}</span>
+<span class="w">      </span><span class="nt">docs</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">${{ steps.filter.outputs.docs }}</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="nv">0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dorny/paths-filter@v3</span>
+<span class="w">        </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">filter</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">filters</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">            </span><span class="no">services:</span>
+<span class="w">              </span><span class="no">- &#39;services/**&#39;</span>
+<span class="w">              </span><span class="no">- &#39;libs/**&#39;          # lib changes rebuild all dependents</span>
+<span class="w">            </span><span class="no">gateways:</span>
+<span class="w">              </span><span class="no">- &#39;gateways/**&#39;</span>
+<span class="w">              </span><span class="no">- &#39;libs/**&#39;</span>
+<span class="w">            </span><span class="no">libs:</span>
+<span class="w">              </span><span class="no">- &#39;libs/specs/**&#39;</span>
+<span class="w">            </span><span class="no">docs:</span>
+<span class="w">              </span><span class="no">- &#39;docs/**&#39;</span>
+
+<span class="w">  </span><span class="nt">service-matrix</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detect</span>
+<span class="w">    </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">needs.detect.outputs.services == &#39;true&#39;</span>
+<span class="w">    </span><span class="nt">strategy</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">matrix</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">cts</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">ledger</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">compliance</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">directory</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">recon</span><span class="p p-Indicator">,</span>
+<span class="w">                   </span><span class="nv">fiscal-signing</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">fiscal-ledger</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">tax-authority-sync</span><span class="w"> </span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./.github/workflows/service-ci.yml</span>
+<span class="w">    </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ matrix.service }}</span>
+<span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">services/${{ matrix.service }}</span>
+</code></pre></div>
+<hr />
+<h2 id="reusable-service-ci-githubworkflowsservice-ciyml">Reusable Service CI (<code>.github/workflows/service-ci.yml</code>)<a class="headerlink" href="#reusable-service-ci-githubworkflowsservice-ciyml" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service CI</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">workflow_call</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">inputs</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">      </span><span class="nt">path</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 
 <span class="nt">jobs</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">lint</span><span class="p">:</span>
@@ -5945,111 +6249,122 @@
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-go@v5</span>
 <span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> go-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;1.22&#39;</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">golangci-lint run ./...</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">golangci-lint run ./${{ inputs.path }}/...</span>
 
 <span class="w">  </span><span class="nt">test</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
 <span class="w">    </span><span class="nt">services</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">postgres</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:16</span>
-<span class="w">        </span><span class="nt">env</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">POSTGRES_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+<span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> POSTGRES_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="nv">postgres</span><span class="w"> </span><span class="p p-Indicator">}</span>
 <span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&#39;5432:5432&#39;</span><span class="w"> </span><span class="p p-Indicator">]</span>
 <span class="w">        </span><span class="nt">options</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
 <span class="w">          </span><span class="no">--health-cmd=&quot;pg_isready -U postgres&quot;</span>
-<span class="w">          </span><span class="no">--health-interval=10s</span>
-<span class="w">          </span><span class="no">--health-timeout=5s</span>
-<span class="w">          </span><span class="no">--health-retries=5</span>
+<span class="w">          </span><span class="no">--health-interval=10s --health-timeout=5s --health-retries=5</span>
 <span class="w">      </span><span class="nt">localstack</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localstack/localstack:3</span>
-<span class="w">        </span><span class="nt">env</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">SERVICES</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sns,sqs,s3</span>
+<span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> SERVICES</span><span class="p">:</span><span class="w"> </span><span class="nv">sns</span><span class="p p-Indicator">,</span><span class="nv">sqs</span><span class="p p-Indicator">,</span><span class="nv">s3</span><span class="w"> </span><span class="p p-Indicator">}</span>
 <span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&#39;4566:4566&#39;</span><span class="w"> </span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-go@v5</span>
 <span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> go-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;1.22&#39;</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">make db</span><span class="w">   </span><span class="c1"># apply embedded migrations</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">make test</span><span class="w"> </span><span class="c1"># includes golden fixture tests</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">make -C ${{ inputs.path }} db</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">make -C ${{ inputs.path }} test</span>
 
 <span class="w">  </span><span class="nt">contract-validate</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
 <span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install Node</span>
-<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-node@v4</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-node@v4</span>
 <span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> node-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;20&#39;</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npm i -D @storo/specs ajv</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npm run validate:events</span><span class="w">  </span><span class="c1"># project script validates fixtures/outbound events against envelope v=1</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npm run validate:openapi</span><span class="w"> </span><span class="c1"># if this repo exposes HTTP</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">cd libs/specs</span>
+<span class="w">          </span><span class="no">npm ci</span>
+<span class="w">          </span><span class="no">npm run validate:events</span>
+<span class="w">          </span><span class="no">npm run validate:openapi</span>
 
 <span class="w">  </span><span class="nt">build</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">lint</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">test</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">contract-validate</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">lint</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">test</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">contract-validate</span><span class="w"> </span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">permissions</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">packages</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
 <span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Docker build</span>
-<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">          </span><span class="no">docker build -t ghcr.io/storo/${{ github.event.repository.name }}:${{ github.sha }} .</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Log in to GHCR</span>
-<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker/login-action@v3</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker/login-action@v3</span>
 <span class="w">        </span><span class="nt">with</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">registry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io</span>
 <span class="w">          </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ github.actor }}</span>
 <span class="w">          </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.GITHUB_TOKEN }}</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Push SHA image</span>
-<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker push ghcr.io/storo/${{ github.event.repository.name }}:${{ github.sha }}</span>
-
-<span class="w">  </span><span class="nt">publish</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">startsWith(github.ref, &#39;refs/tags/v&#39;)</span>
-<span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">build</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">docker build \</span>
+<span class="w">            </span><span class="no">-t ghcr.io/stalela/${{ inputs.service }}:${{ github.sha }} \</span>
+<span class="w">            </span><span class="no">-f ${{ inputs.path }}/Dockerfile \</span>
+<span class="w">            </span><span class="no">--build-arg SERVICE=${{ inputs.service }} \</span>
+<span class="w">            </span><span class="no">.</span>
+<span class="w">          </span><span class="no">docker push ghcr.io/stalela/${{ inputs.service }}:${{ github.sha }}</span>
+</code></pre></div>
+<hr />
+<h2 id="release-tags">Release Tags<a class="headerlink" href="#release-tags" title="Permanent link">&para;</a></h2>
+<p>Tags are <strong>path-scoped</strong> so each service releases independently:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>services/ledger/v1.2.3
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>services/ledger/v1.2.3
+</code></pre></div>
+<p>The <code>publish</code> job re-tags the SHA image with semver:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="nt">publish</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">startsWith(github.ref, &#39;refs/tags/services/&#39;) || startsWith(github.ref, &#39;refs/tags/gateways/&#39;)</span>
+<span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">build</span><span class="w"> </span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
 <span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Tag &amp; push semver images</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Tag semver images</span>
 <span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">          </span><span class="no">IMAGE=ghcr.io/storo/${{ github.event.repository.name }}</span>
-<span class="w">          </span><span class="no">TAG=${GITHUB_REF#refs/tags/}</span>
+<span class="w">          </span><span class="no">PARTS=(${GITHUB_REF#refs/tags/})</span>
+<span class="w">          </span><span class="no">SERVICE=$(echo $PARTS | cut -d/ -f2)</span>
+<span class="w">          </span><span class="no">TAG=$(echo $PARTS | cut -d/ -f3)</span>
 <span class="w">          </span><span class="no">MAJOR=$(echo $TAG | cut -d. -f1)</span>
+<span class="w">          </span><span class="no">IMAGE=ghcr.io/stalela/$SERVICE</span>
 <span class="w">          </span><span class="no">docker pull $IMAGE:${{ github.sha }}</span>
-<span class="w">          </span><span class="no">docker tag  $IMAGE:${{ github.sha }} $IMAGE:$TAG</span>
-<span class="w">          </span><span class="no">docker tag  $IMAGE:${{ github.sha }} $IMAGE:$MAJOR</span>
+<span class="w">          </span><span class="no">docker tag $IMAGE:${{ github.sha }} $IMAGE:$TAG</span>
+<span class="w">          </span><span class="no">docker tag $IMAGE:${{ github.sha }} $IMAGE:$MAJOR</span>
 <span class="w">          </span><span class="no">docker push $IMAGE:$TAG</span>
 <span class="w">          </span><span class="no">docker push $IMAGE:$MAJOR</span>
 </code></pre></div>
 <hr />
+<h2 id="docs-ci-githubworkflowsdocsyml">Docs CI (<code>.github/workflows/docs.yml</code>)<a class="headerlink" href="#docs-ci-githubworkflowsdocsyml" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Docs</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">main</span><span class="w"> </span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&#39;docs/**&#39;</span><span class="w"> </span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&#39;docs/**&#39;</span><span class="w"> </span><span class="p p-Indicator">]</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v5</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> python-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.12&#39;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r docs/requirements.txt</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cd docs &amp;&amp; mkdocs build --strict</span>
+</code></pre></div>
+<p>Vercel deploys automatically on push to <code>main</code> via <code>docs/vercel.json</code>.</p>
+<hr />
 <h2 id="branching-protection">Branching &amp; Protection<a class="headerlink" href="#branching-protection" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Trunk‑based: short‑lived PRs to <code>main</code>, protected branch.</li>
-<li>Required status checks: all jobs above.</li>
-<li>Conventional commits recommended; changelogs generated on tag.</li>
+<li><strong>Trunk-based</strong>: short-lived feature branches → PR → <code>main</code>. No long-lived release branches.</li>
+<li>Branch protection: all required checks must pass.</li>
+<li><strong>Conventional commits</strong>: <code>docs:</code>, <code>feat:</code>, <code>fix:</code>, <code>chore:</code>, <code>refactor:</code>.</li>
+<li>Deploy during <strong>SAST Africa/Johannesburg business hours</strong>; staging soak ≥ 24 h for fiscal and payments services.</li>
 </ul>
 <hr />
-<h2 id="deploy-via-storo-infra">Deploy (via <code>storo-infra</code>)<a class="headerlink" href="#deploy-via-storo-infra" title="Permanent link">&para;</a></h2>
+<h2 id="secrets-in-ci">Secrets in CI<a class="headerlink" href="#secrets-in-ci" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Terraform pins image tags per env (dev/staging/prod).</li>
-<li>PR to bump tag = deploy. Rollback = revert tag.</li>
-<li>Deploy during <strong>SAST business hours</strong>; staging soak ≥ 24h for sensitive services.</li>
-</ul>
-<hr />
-<h2 id="secrets-tokens-in-ci">Secrets &amp; Tokens in CI<a class="headerlink" href="#secrets-tokens-in-ci" title="Permanent link">&para;</a></h2>
-<hr />
-<h2 id="contract-validation-fixtures">Contract Validation &amp; Fixtures<a class="headerlink" href="#contract-validation-fixtures" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Source of truth: see <code>Specs → Events</code> (envelope <code>v=1</code>) and <code>Specs → Fixtures</code> for golden examples.</li>
-<li>Minimum checks:</li>
-<li>Validate outbound events from providers (gateways, ledger, CTS) against envelope <code>v=1</code> and event schemas.</li>
-<li>Validate inbound consumer fixtures (e.g., ledger consuming <code>transfers.settled</code>) using AJV/<code>@storo/specs</code>.</li>
-<li>Recommended project scripts:</li>
-<li><code>validate:events</code> → runs schema checks on all event samples under <code>fixtures/events/*.json</code>.</li>
-<li>
-<p><code>validate:openapi</code> → validates OpenAPI if the repo exposes HTTP.</p>
-</li>
-<li>
-<p>Use <strong>GitHub Environments</strong> or <strong>OpenID Connect</strong> to assume AWS roles. No long‑lived keys.</p>
-</li>
-<li>Service‑specific permissions; least privilege to push images / read Secrets Manager where necessary.</li>
+<li>Use <strong>GitHub OIDC</strong> to assume AWS roles — no long-lived access keys.</li>
+<li>Service-specific IAM roles (least-privilege): push to GHCR, read Secrets Manager for integration tests.</li>
+<li>Unit-test jobs use LocalStack and in-memory mocks — no real AWS credentials needed.</li>
 </ul>
 
 

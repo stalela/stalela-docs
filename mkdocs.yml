@@ -129,7 +129,7 @@ nav:
           - "10-payments-nucleus/infra/aws-infra.md"
           - "60-infra/free-stack.md"
       - Repo Structure:
-          - "10-payments-nucleus/repo-structure/multi-repo-architecture.md"
+          - "10-payments-nucleus/repo-structure/monorepo.md"
           - "10-payments-nucleus/repo-structure/ci-cd.md"
           - "10-payments-nucleus/repo-structure/local-dev.md"
           - "10-payments-nucleus/repo-structure/release-strategy.md"

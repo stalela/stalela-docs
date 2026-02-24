@@ -1,118 +1,206 @@
-# Local Development (storo‑devstack)
+# Local Development (Monorepo)
 
-How to run Stalela locally **without** a monorepo. You’ll run the fleet via Docker and **swap one service** for your local build.
+How to run Stalela locally from the monorepo. Clone once, run the fleet via Docker Compose, and swap one service for your local build.
 
 ---
 
-## Prereqs
-- Docker Desktop / Colima
+## Prerequisites
+
+- Docker Desktop or Colima
 - Make or Task
-- Go 1.22 (for Go services), Node 20 (for console)
-- `storo-devstack` repo cloned
-
-Devstack provides: Postgres (multi‑DB), LocalStack (SNS/SQS), Prometheus, Grafana, and released service images.
+- Go 1.22+ (for services/gateways)
+- Node 20+ (for `apps/operator-console`, `apps/fiscal-sdk`, `libs/specs`)
+- Python 3.12+ (for `apps/fiscal-sdk` Python client and docs)
 
 ---
 
-## Start the Fleet
+## Clone & Bootstrap
 
 ```bash
-git clone git@github.com:storo/storo-devstack.git
-cd storo-devstack
+git clone git@github.com:stalela/stalela.git
+cd stalela
+
+# Start the full fleet (released images from GHCR + Postgres + LocalStack)
+cd tools/devstack
 docker compose up -d
 ```
 
-Services come up with **released images**. Grafana is available at http://localhost:3000 (admin/admin by default).
+The devstack provides:
+
+| Service | URL / Port |
+|---|---|
+| Postgres (per-service DBs) | `localhost:5432` |
+| LocalStack (SNS, SQS, S3) | `http://localhost:4566` |
+| Prometheus | `http://localhost:9090` |
+| Grafana | `http://localhost:3000` (admin/admin) |
+
+Services start with **released images** from GHCR. Once the fleet is up, swap one service for your local build.
 
 ---
 
 ## Develop One Service Locally
 
-Example: work on **storo-gw-usdc** while everything else runs in containers.
+All services follow the same pattern: navigate to the service directory, run `make dev`, disable the container in devstack.
 
-1) Clone your service and start it locally:
+### Example: work on `services/cts`
+
 ```bash
-git clone git@github.com:storo/storo-gw-usdc.git
-cd storo-gw-usdc
-make dev    # or task dev (hot reload)
+# 1. Start your local service (hot reload via air/reflex)
+cd services/cts
+make dev
 ```
-
-2) In `storo-devstack/docker-compose.override.example.yml`, copy to `docker-compose.override.yml` and **disable** the service container, mapping your local port:
 
 ```yaml
-# docker-compose.override.yml
+# 2. tools/devstack/docker-compose.override.yml
+#    (copy from docker-compose.override.example.yml)
 services:
-  gw-usdc:
+  cts:
     deploy:
-      replicas: 0  # disable container; we'll run it locally
-  # If the stack expects a port:
-  #   ports:
-  #     - "8085:8085"  # match your local gw-usdc listen port
+      replicas: 0   # disable container; we run it locally
 ```
 
-3) Ensure env points to devstack infra:
-- Postgres: `postgres://localhost:5432/gw_usdc?sslmode=disable`
-- SQS/SNS (LocalStack): `http://localhost:4566` with dummy creds
-- S3 (for payloads): `http://localhost:4566`
-
-4) Seed data (optional):
 ```bash
-make seed   # directory entries, holidays, test tenants
+# 3. Apply required env (devstack infra)
+export DATABASE_URL="postgres://postgres:postgres@localhost:5432/cts?sslmode=disable"
+export SQS_ENDPOINT="http://localhost:4566"
+export SNS_ENDPOINT="http://localhost:4566"
+export AWS_ACCESS_KEY_ID=test
+export AWS_SECRET_ACCESS_KEY=test
+export AWS_REGION=us-east-1
+
+# 4. Apply migrations (first time or after schema changes)
+make db
+
+# 5. Seed test data (optional)
+make seed
 ```
 
-You can now post a transfer to CTS in devstack and watch events reach your **local** gateway.
-
----
-
-## Example: Smoke Test (USDC Happy Path)
+### Smoke Test
 
 ```bash
-# Create a transfer
-curl -XPOST http://localhost:8080/v1/transfers   -H 'Idempotency-Key: demo-1'   -d '{
-    "tenantId":"tn_demo",
-    "payer":{"accountId":"acct_payer"},
-    "payee":{"accountId":"acct_merchant"},
-    "amount":{"value":1000,"currency":"USD"},
-    "rail":"usdc-algo","intent":"PUSH","externalRef":"ext_demo"
+curl -XPOST http://localhost:8080/v1/transfers \
+  -H 'Content-Type: application/json' \
+  -H 'Idempotency-Key: demo-1' \
+  -d '{
+    "tenantId": "tn_demo",
+    "payer":  { "accountId": "acct_payer" },
+    "payee":  { "accountId": "acct_merchant" },
+    "amount": { "value": 1000, "currency": "USD" },
+    "rail": "usdc-algo",
+    "intent": "PUSH",
+    "externalRef": "ext_demo"
   }'
 ```
 
-Verify in logs:
-- CTS emits `transfers.submitted.usdc`
-- Your local `gw-usdc` consumes and emits `accepted` then `settled`
-- Ledger in devstack posts entries
+Watch the flow:
+
+- Your local `cts` emits `transfers.submitted.usdc` → LocalStack SNS
+- Devstack `gw-usdc` (container) consumes → emits `accepted` then `settled`
+- Devstack `ledger` posts entries
+- Grafana → "Transfer Lifecycle" dashboard confirms end-to-end
 
 ---
 
-## Tilt (optional, live reload)
+## Working With Shared Libs
 
-If you prefer **Tilt** for hot‑reload:
-- `storo-devstack/Tiltfile` includes services. Comment out the one you run locally.
-- Point your local service to devstack infra as above.
+Libs are referenced via local Go module `replace` directives — no publish step needed:
+
+```go
+// services/cts/go.mod
+require (
+    stalela/libs/specs    v0.0.0
+    stalela/libs/platform v0.0.0
+    stalela/libs/outbox   v0.0.0
+    stalela/libs/otel     v0.0.0
+)
+
+replace (
+    stalela/libs/specs    => ../../libs/specs
+    stalela/libs/platform => ../../libs/platform
+    stalela/libs/outbox   => ../../libs/outbox
+    stalela/libs/otel     => ../../libs/otel
+)
+```
+
+Changes to `libs/` are immediately visible — no re-publish needed.
 
 ---
 
-## Timezone & Cutoffs
+## Develop a Gateway
 
-Business rules use **Africa/Johannesburg**. For predictable tests:
-- Export `TZ=Africa/Johannesburg`
-- Seed holidays via `platform-base` fixtures
+```bash
+cd gateways/ecocash
+make dev
+```
+
+Override in `tools/devstack/docker-compose.override.yml`:
+
+```yaml
+services:
+  gw-ecocash:
+    deploy:
+      replicas: 0
+```
+
+EcoCash callbacks go to your local process; all other services stay containerized.
+
+---
+
+## Fiscal Platform Services
+
+Fiscal services need additional env vars:
+
+```bash
+cd services/fiscal-signing
+make dev
+
+export HSM_ENDPOINT="http://localhost:8200"   # dev: HashiCorp Vault (devstack provides it)
+export JURISDICTION="CD"
+export MONOTONIC_COUNTER_DB="postgres://postgres:postgres@localhost:5432/fiscal_signing?sslmode=disable"
+```
+
+The devstack Vault (`localhost:8200`) is pre-seeded with dev signing keys.
+
+---
+
+## Timezone & Deterministic Tests
+
+Business logic uses **Africa/Johannesburg**:
+
+```bash
+export TZ=Africa/Johannesburg
+make seed-calendars   # loads holiday fixtures from libs/platform/calendars/
+```
+
+---
+
+## Docs Development
+
+```bash
+cd docs
+pip install -r requirements.txt
+mkdocs serve
+# → http://127.0.0.1:8000/
+```
 
 ---
 
 ## Troubleshooting
 
-- **Events not flowing**: check LocalStack is up (`awslocal sns list-topics`).
-- **DLQ growing**: open Grafana → “Event Backlogs” dashboard.
-- **DB migrations**: run `make db` in the service repo to apply embedded migrations.
-- **CORS** (console): set `CORS_ALLOWED_ORIGINS=http://localhost:3001` on services that expose HTTP APIs.
+| Symptom | Fix |
+|---|---|
+| Events not flowing | `awslocal sns list-topics` — verify LocalStack is up |
+| DLQ growing | Grafana → "Event Backlogs" dashboard |
+| DB migration errors | `make db` in service directory |
+| Port conflicts | Check `tools/devstack/docker-compose.yml` |
+| Vault sealed (fiscal) | `vault operator unseal` at `localhost:8200` |
+| `go: module not found` | Verify `replace` directives in `go.mod` |
 
 ---
 
 ## Clean Up
 
 ```bash
-docker compose down -v  # stop and remove volumes
+cd tools/devstack
+docker compose down -v   # stops containers and removes volumes (resets DBs + queues)
 ```
-
-This resets your local DBs and queues.

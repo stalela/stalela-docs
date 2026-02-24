@@ -1,0 +1,18 @@
+:root {
+  /* Stalela brand colors */
+  --md-primary-fg-color: #000000;
+  --md-primary-fg-color--light: #1f1f1f;
+  --md-primary-fg-color--dark: #000000;
+
+  --md-accent-fg-color: #4AB7E5;
+  --md-accent-fg-color--transparent: rgba(74, 183, 229, 0.15);
+
+  /* Text on primary */
+  --md-primary-bg-color: #ffffff;
+  --md-typeset-a-color: #4AB7E5;
+}
+
+/* Header logo sizing if added */
+.md-header__button.md-logo img {
+  height: 28px;
+}
