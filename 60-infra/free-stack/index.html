@@ -2829,22 +2829,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cicd-pipeline-github-actions" class="md-nav__link">
+  <a href="#cicd-pipeline-github-actions-vercel" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CI/CD Pipeline — GitHub Actions
+        CI/CD Pipeline — GitHub Actions + Vercel
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="CI/CD Pipeline — GitHub Actions">
+    <nav class="md-nav" aria-label="CI/CD Pipeline — GitHub Actions + Vercel">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#flyio-deployment" class="md-nav__link">
+  <a href="#vercel-deployment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Fly.io Deployment
+        Vercel Deployment
       
     </span>
   </a>
@@ -6115,22 +6115,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cicd-pipeline-github-actions" class="md-nav__link">
+  <a href="#cicd-pipeline-github-actions-vercel" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CI/CD Pipeline — GitHub Actions
+        CI/CD Pipeline — GitHub Actions + Vercel
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="CI/CD Pipeline — GitHub Actions">
+    <nav class="md-nav" aria-label="CI/CD Pipeline — GitHub Actions + Vercel">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#flyio-deployment" class="md-nav__link">
+  <a href="#vercel-deployment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Fly.io Deployment
+        Vercel Deployment
       
     </span>
   </a>
@@ -6489,13 +6489,25 @@
 <td><strong>Supabase</strong></td>
 <td>Free</td>
 <td>500 MB Postgres, 50 K MAU, 1 GB storage, 2 GB bandwidth</td>
-<td>Database (all schemas), Auth, Webhooks, Cron</td>
+<td>Database (all schemas), Auth (GoTrue JWT), Edge Functions, Cron</td>
 </tr>
 <tr>
-<td><strong>Fly.io</strong></td>
+<td><strong>Vercel</strong></td>
 <td>Free (Hobby)</td>
-<td>3 shared-cpu-1x VMs, 256 MB RAM each, 3 GB persistent volumes</td>
-<td>Go service containers (CTS, Ledger, Fiscal)</td>
+<td>100 GB bandwidth, 1 000 serverless invocations/day, 10 s function timeout</td>
+<td>Next.js API + SSR, edge middleware, preview deploys</td>
+</tr>
+<tr>
+<td><strong>Inngest</strong></td>
+<td>Free</td>
+<td>25 K events/month, 5 concurrent functions</td>
+<td>Background jobs: outbox relay, fiscal sync, reconciliation</td>
+</tr>
+<tr>
+<td><strong>Upstash</strong></td>
+<td>Free</td>
+<td>10 K commands/day, 256 MB</td>
+<td>Rate limiting (Redis), future Kafka/QStash</td>
 </tr>
 <tr>
 <td><strong>Alibaba Cloud</strong></td>
@@ -6512,25 +6524,32 @@
 <tr>
 <td><strong>GitHub Enterprise</strong></td>
 <td>Already licensed</td>
-<td>Unlimited Actions minutes (self-hosted), Packages, Dependabot</td>
-<td>CI/CD, container registry, security scanning</td>
+<td>Unlimited Actions minutes, Packages, Dependabot</td>
+<td>CI/CD, security scanning</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2 id="deployment-topology">Deployment Topology<a class="headerlink" href="#deployment-topology" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>graph TB
-    subgraph "Fly.io (Go Containers)"
-        CTS["CTS Service&lt;br/&gt;:8080 go-chi"]
-        LEDGER["Ledger Service&lt;br/&gt;:8081 go-chi"]
-        FISCAL["Fiscal Service&lt;br/&gt;:8082 go-chi"]
+    subgraph "Vercel (Serverless)"
+        API["Next.js API Routes&lt;br/&gt;Serverless Functions"]
+        MW["Edge Middleware&lt;br/&gt;Auth · Rate Limit"]
     end
 
     subgraph "Supabase"
         DB[("PostgreSQL 15&lt;br/&gt;All schemas")]
         AUTH["Auth (GoTrue)&lt;br/&gt;JWT"]
-        CRON["pg_cron&lt;br/&gt;2 scheduled jobs"]
-        PGNET["pg_net&lt;br/&gt;HTTP from SQL"]
+        CRON["pg_cron&lt;br/&gt;Scheduled jobs"]
+        EDGE["Edge Functions&lt;br/&gt;Outbox relay"]
+    end
+
+    subgraph "Inngest"
+        BG["Background Functions&lt;br/&gt;Outbox · Sync · Recon"]
+    end
+
+    subgraph "Upstash"
+        REDIS["Redis&lt;br/&gt;Rate limiting"]
     end
 
     subgraph "Alibaba Cloud"
@@ -6544,22 +6563,23 @@
 
     subgraph "GitHub"
         GHA["Actions CI/CD"]
-        GHCR["Container Registry"]
     end
 
-    CTS --&gt; DB
-    LEDGER --&gt; DB
-    FISCAL --&gt; DB
-    FISCAL --&gt; KMS
-    CTS --&gt; LEDGER
-    CRON --&gt; PGNET
-    PGNET --&gt; CTS &amp; FISCAL &amp; OSS &amp; EMAIL
-    GHA --&gt; GHCR
-    GHCR --&gt; CTS &amp; LEDGER &amp; FISCAL</code></pre>
+    MW --&gt; API
+    API --&gt; DB
+    API --&gt; AUTH
+    API --&gt; REDIS
+    API --&gt; BG
+    EDGE --&gt; DB
+    BG --&gt; DB
+    BG --&gt; KMS
+    BG --&gt; EMAIL
+    CRON --&gt; EDGE
+    GHA --&gt; API</code></pre>
 <hr />
 <h2 id="component-mapping-payments-nucleus">Component Mapping — Payments Nucleus<a class="headerlink" href="#component-mapping-payments-nucleus" title="Permanent link">&para;</a></h2>
-<p>Every Nucleus component is a Go service deployed as a Docker container on Fly.io,
-backed by Supabase Postgres.</p>
+<p>All Nucleus components are TypeScript modules deployed as Vercel serverless functions
+(Next.js API routes), backed by Supabase Postgres via Drizzle ORM.</p>
 <table>
 <thead>
 <tr>
@@ -6573,59 +6593,59 @@ backed by Supabase Postgres.</p>
 <tbody>
 <tr>
 <td><strong>Canonical Transfer Service</strong></td>
-<td>Go container on Fly.io <code>:8080</code></td>
+<td>Vercel serverless <code>/api/transfers</code></td>
 <td><code>payments.transfers</code>, <code>payments.transfer_events</code>, <code>payments.outbox</code></td>
-<td>Outbox → SNS (LocalStack dev) / pg_net (prod)</td>
-<td>go-chi router, JWT auth, rate-limit middleware</td>
+<td>Outbox → Inngest / Supabase Edge Function</td>
+<td>Next.js route handlers, Supabase JWT auth, Upstash rate limiting</td>
 </tr>
 <tr>
 <td><strong>Outbox Publisher</strong></td>
-<td>Goroutine in CTS process</td>
+<td>Supabase Edge Function + Inngest</td>
 <td><code>payments.outbox</code> table</td>
-<td>Exponential backoff 1 s → 16 h; DLQ at 10 attempts</td>
-<td>Replaces external message broker</td>
+<td>Exponential backoff; DLQ at 10 attempts</td>
+<td>Replaces Go goroutine + SNS/SQS</td>
 </tr>
 <tr>
 <td><strong>Rail Gateways</strong></td>
-<td>Go modules in <code>gateways/</code></td>
+<td>Future: Inngest functions or Edge Functions</td>
 <td><code>payments.transfers</code></td>
 <td>Called by CTS via internal routing</td>
 <td>ZimSwitch, OPPWA, M-Pesa, EcoCash, Algorand</td>
 </tr>
 <tr>
 <td><strong>Ledger Service</strong></td>
-<td>Go container on Fly.io <code>:8081</code></td>
+<td>Vercel serverless <code>/api/ledger</code></td>
 <td><code>ledger.journal_entries</code>, <code>ledger.balances</code></td>
-<td>SQS consumer (dev) / pg_net webhook (prod)</td>
+<td>Inngest event consumer</td>
 <td>Double-entry, balance validation</td>
 </tr>
 <tr>
 <td><strong>Compliance Screening</strong></td>
-<td>Go service <code>services/compliance/</code></td>
+<td>Vercel serverless <code>/api/compliance</code></td>
 <td><code>compliance.screening_results</code></td>
-<td>Circuit-breaker adapter (gobreaker)</td>
-<td>Sanctions list cached in-memory</td>
+<td>Fetch + retry adapter</td>
+<td>Sanctions list cached in Upstash Redis</td>
 </tr>
 <tr>
 <td><strong>Directory &amp; Routing</strong></td>
-<td>Go module in CTS</td>
+<td>In-process module</td>
 <td><code>directory.directory_entries</code></td>
 <td>—</td>
-<td>Route cache TTL 5 m, negative-cache TTL 45 s</td>
+<td>Route cache via Upstash Redis (TTL 5 m)</td>
 </tr>
 <tr>
 <td><strong>Reconciliation</strong></td>
-<td>pg_cron trigger → Go endpoint</td>
+<td>Inngest scheduled function</td>
 <td><code>payments.recon_sessions</code></td>
 <td>Scheduled (daily)</td>
 <td>Match internal vs bank statement</td>
 </tr>
 <tr>
 <td><strong>Platform Base</strong></td>
-<td>JWT middleware in Go</td>
+<td>Edge middleware</td>
 <td><code>public.tenants</code>, <code>public.users</code></td>
 <td>—</td>
-<td>Multi-tenant via <code>tenant_id</code> in JWT claims</td>
+<td>Multi-tenant via <code>tenant_id</code> in Supabase JWT claims</td>
 </tr>
 </tbody>
 </table>
@@ -6644,84 +6664,84 @@ backed by Supabase Postgres.</p>
 <tbody>
 <tr>
 <td><strong>Invoicing API</strong></td>
-<td>Go container on Fly.io <code>:8082</code></td>
+<td>Vercel serverless <code>/api/fiscal</code></td>
 <td><code>fiscal.invoices</code>, <code>fiscal.invoice_items</code></td>
 <td>Internal event after signing</td>
 <td>Canonical payload validation</td>
 </tr>
 <tr>
 <td><strong>Serializer</strong></td>
-<td>In Fiscal Service (same process)</td>
+<td>In-process (domain package)</td>
 <td>—</td>
 <td>—</td>
 <td>JSON → canonical byte string (deterministic key order)</td>
 </tr>
 <tr>
 <td><strong>Tax Engine</strong></td>
-<td>Go module <code>internal/tax/</code></td>
+<td>Domain package <code>@stalela/domain</code></td>
 <td><code>tax.jurisdiction_profiles</code>, <code>tax.tax_groups</code></td>
 <td>—</td>
 <td>14 tax groups (DRC TG01–TG14), 5 client classifications</td>
 </tr>
 <tr>
 <td><strong>Cloud Signing Service</strong></td>
-<td>Go module <code>internal/signing/</code> → Alibaba KMS</td>
+<td>Domain package → Alibaba KMS</td>
 <td><code>signing.signing_log</code></td>
 <td>Called after serialization</td>
-<td>Local RSA for dev, Alibaba KMS for prod</td>
+<td>Web Crypto API for dev, Alibaba KMS for prod</td>
 </tr>
 <tr>
 <td><strong>Monotonic Counter</strong></td>
-<td>Go module <code>internal/counter/</code></td>
+<td>Domain package</td>
 <td><code>fiscal.fiscal_counters</code></td>
 <td>—</td>
-<td><code>pg_advisory_xact_lock</code> per outlet</td>
+<td><code>pg_advisory_xact_lock</code> per outlet via Supabase RPC</td>
 </tr>
 <tr>
 <td><strong>Hash-Chained Ledger</strong></td>
-<td>Go module <code>internal/ledger/</code></td>
+<td>Domain package</td>
 <td><code>fiscal.fiscal_ledger</code></td>
 <td>—</td>
 <td><code>prev_hash</code> column; append-only, tamper-evident</td>
 </tr>
 <tr>
 <td><strong>Report Generator</strong></td>
-<td>pg_cron → Go endpoint</td>
+<td>Inngest scheduled function</td>
 <td><code>fiscal.reports</code></td>
 <td>Scheduled (daily)</td>
 <td>Z-reports, periodic summaries</td>
 </tr>
 <tr>
 <td><strong>Tax Authority Sync</strong></td>
-<td>Go service <code>services/sync/</code></td>
+<td>Inngest scheduled function</td>
 <td><code>sync.authority_sync_queue</code></td>
 <td>Scheduled (every 5 min)</td>
 <td>DGI protocol (DRC); jurisdiction-specific</td>
 </tr>
 <tr>
 <td><strong>Receipt Delivery</strong></td>
-<td>Go via <code>libs/email/</code> → Resend API</td>
+<td><code>@stalela/email</code> package → Resend API</td>
 <td><code>fiscal.receipt_log</code></td>
 <td>After signing completes</td>
 <td>Email receipt link</td>
 </tr>
 <tr>
 <td><strong>Verification Portal</strong></td>
-<td>Future: static site or Go handler</td>
+<td>Future: Next.js page or API route</td>
 <td><code>fiscal.invoices</code> (public read)</td>
 <td>—</td>
 <td>QR code → verify endpoint</td>
 </tr>
 <tr>
 <td><strong>Merchant Registry</strong></td>
-<td>Go CRUD in Fiscal Service</td>
+<td>Vercel serverless CRUD</td>
 <td><code>fiscal.merchants</code>, <code>fiscal.outlets</code></td>
 <td>—</td>
 <td>Managed via API</td>
 </tr>
 <tr>
 <td><strong>Archival / Backup</strong></td>
-<td>pg_cron → pg_net → Alibaba OSS</td>
+<td>Inngest scheduled function → Alibaba OSS</td>
 <td>OSS bucket</td>
 <td>Nightly</td>
 <td>10-year retention for fiscal data</td>
@@ -6838,23 +6858,25 @@ backed by Supabase Postgres.</p>
 </ul>
 <hr />
 <h2 id="event-flow-outbox-pattern">Event Flow — Outbox Pattern<a class="headerlink" href="#event-flow-outbox-pattern" title="Permanent link">&para;</a></h2>
-<p>Go services use the transactional outbox pattern. In the free stack,
-pg_net replaces SNS/SQS for inter-service communication:</p>
+<p>The TypeScript stack uses the transactional outbox pattern. Supabase Edge Functions
+and Inngest replace pg_net/SNS/SQS for inter-service communication:</p>
 <pre class="mermaid"><code>sequenceDiagram
     participant Client
-    participant CTS as CTS (Fly.io :8080)
+    participant API as Next.js API (Vercel)
     participant DB as Supabase Postgres
-    participant PGNET as pg_net (pg_cron)
-    participant Ledger as Ledger (Fly.io :8081)
+    participant INNGEST as Inngest
+    participant EDGE as Supabase Edge Function
 
-    Client-&gt;&gt;CTS: POST /v1/transfers
-    CTS-&gt;&gt;DB: INSERT transfer + outbox row (single tx)
+    Client-&gt;&gt;API: POST /api/transfers
+    API-&gt;&gt;DB: INSERT transfer + outbox row (single tx)
     Note over DB: pg_cron fires every 60 s
-    DB-&gt;&gt;PGNET: SELECT unsent outbox rows
-    PGNET-&gt;&gt;Ledger: POST /v1/events (HTTP)
-    Ledger-&gt;&gt;DB: INSERT journal_entries + balances (single tx)
-    Ledger--&gt;&gt;PGNET: 200 OK
-    PGNET-&gt;&gt;DB: UPDATE outbox SET delivered</code></pre>
+    DB-&gt;&gt;EDGE: SELECT unsent outbox rows
+    EDGE-&gt;&gt;INNGEST: Send event (transfers.settled)
+    INNGEST-&gt;&gt;API: Invoke ledger handler
+    API-&gt;&gt;DB: INSERT journal_entries + balances (single tx)
+    API--&gt;&gt;INNGEST: 200 OK
+    INNGEST-&gt;&gt;EDGE: Confirm delivery
+    EDGE-&gt;&gt;DB: UPDATE outbox SET delivered</code></pre>
 <h3 id="delivery-guarantees">Delivery Guarantees<a class="headerlink" href="#delivery-guarantees" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -6917,17 +6939,17 @@ pg_net replaces SNS/SQS for inter-service communication:</p>
 <hr />
 <h2 id="signing-service-alibaba-kms">Signing Service — Alibaba KMS<a class="headerlink" href="#signing-service-alibaba-kms" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>sequenceDiagram
-    participant API as Fiscal Service (Fly.io :8082)
-    participant SER as internal/signing
+    participant API as Next.js API (Vercel)
+    participant SIGN as @stalela/domain signing
     participant KMS as Alibaba KMS
     participant DB as Supabase Postgres
 
-    API-&gt;&gt;SER: Canonical payload → byte string
-    SER-&gt;&gt;KMS: kms:Sign(keyId, digest, algorithm)
-    KMS--&gt;&gt;SER: Signature (base64)
-    SER-&gt;&gt;DB: INSERT fiscal_ledger (prev_hash chain)
-    SER-&gt;&gt;DB: INSERT signing_log (audit)
-    SER--&gt;&gt;API: Signed invoice response</code></pre>
+    API-&gt;&gt;SIGN: Canonical payload → byte string
+    SIGN-&gt;&gt;KMS: kms:Sign(keyId, digest, algorithm)
+    KMS--&gt;&gt;SIGN: Signature (base64)
+    SIGN-&gt;&gt;DB: INSERT fiscal_ledger (prev_hash chain)
+    SIGN-&gt;&gt;DB: INSERT signing_log (audit)
+    SIGN--&gt;&gt;API: Signed invoice response</code></pre>
 <ul>
 <li><strong>Key type</strong>: RSA_2048 or EC_P256 (jurisdiction-dependent)</li>
 <li><strong>Key rotation</strong>: Annually; old key versions kept for verification</li>
@@ -6937,76 +6959,62 @@ pg_net replaces SNS/SQS for inter-service communication:</p>
 <hr />
 <h2 id="monorepo-structure">Monorepo Structure<a class="headerlink" href="#monorepo-structure" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>stalela/
-├── services/
-│   ├── transfer/               # CTS — go-chi :8080
-│   │   ├── cmd/server/         # main.go entrypoint
-│   │   ├── internal/           # api, state, outbox, normalizer, etc.
-│   │   ├── migrations/         # golang-migrate SQL files
-│   │   ├── Dockerfile          # Multi-stage build
-│   │   └── fly.toml            # Fly.io deployment config
-│   ├── ledger/                 # Ledger Service — go-chi :8081
-│   │   ├── cmd/server/
-│   │   ├── internal/           # consumer, posting, journal, balance, etc.
-│   │   ├── migrations/
-│   │   ├── Dockerfile
-│   │   └── fly.toml
-│   ├── fiscal/                 # Fiscal Service — go-chi :8082
-│   │   ├── cmd/server/
-│   │   ├── internal/           # signing, counter, ledger, tax, etc.
-│   │   ├── migrations/
-│   │   ├── Dockerfile
-│   │   └── fly.toml
-│   ├── compliance/             # Compliance screening (stub)
-│   └── sync/                   # Tax Authority Sync Agent (stub)
-├── gateways/
-│   ├── zimswitch/              # ZimSwitch rail adapter
-│   ├── oppwa/                  # OPPWA (card) adapter
-│   ├── mpesa/                  # M-Pesa adapter
-│   ├── ecocash/                # EcoCash adapter
-│   └── algorand/               # Algorand adapter
-├── libs/
-│   ├── crypto/                 # PII encryption, HMAC
-│   ├── logging/                # Structured logging (slog)
-│   └── email/                  # Resend client wrapper
 ├── apps/
-│   └── gateway/                # API gateway (future)
-├── tests/                      # Cross-service integration tests
-├── tools/devstack/             # docker-compose (Postgres, LocalStack)
-├── .github/workflows/          # CI: ci.yml, transfer-ci.yml, etc.
-├── go.work                     # Go workspace (15 modules)
-└── Makefile                    # build-all, test-all, lint-all, migrate-all
+│   └── api/                    # Next.js 16 — API routes + SSR
+│       ├── app/
+│       │   └── api/            # Route handlers (transfers, ledger, fiscal)
+│       ├── middleware.ts        # Auth + rate limiting (edge)
+│       └── vitest.config.ts    # Integration + e2e test config
+├── packages/
+│   ├── domain/                 # Pure TS domain logic (no framework deps)
+│   │   └── src/
+│   │       ├── transfer/       # Normalizer, state machine, idempotency
+│   │       ├── ledger/         # Posting engine, journal, balance, statements
+│   │       └── fiscal/         # Tax engine, signing, hash chain, counter
+│   ├── db/                     # Drizzle ORM schemas + Supabase client
+│   ├── config/                 # Env validation (Zod)
+│   ├── crypto/                 # PII encryption, HMAC (Web Crypto API)
+│   └── email/                  # Resend client wrapper
+├── libs/
+│   └── specs/                  # Language-neutral JSON Schema contracts
+├── supabase/
+│   └── migrations/             # SQL migrations (Supabase CLI)
+├── tools/devstack/             # Docker Compose (Postgres for local dev)
+├── .github/workflows/          # CI: pnpm → turbo lint/test/build
+├── turbo.json                  # Turborepo pipeline config
+├── vercel.json                 # Vercel deployment config
+└── pnpm-workspace.yaml         # pnpm workspace definition
 </code></pre></div>
-<p><strong>Tech stack</strong>: Go 1.24 · go-chi/chi · pgx/v5 · golang-migrate · OpenTelemetry · Prometheus · testcontainers-go</p>
+<p><strong>Tech stack</strong>: TypeScript 5 · Next.js 16 · Drizzle ORM · Supabase · Vitest · Turborepo · pnpm</p>
 <hr />
-<h2 id="cicd-pipeline-github-actions">CI/CD Pipeline — GitHub Actions<a class="headerlink" href="#cicd-pipeline-github-actions" title="Permanent link">&para;</a></h2>
+<h2 id="cicd-pipeline-github-actions-vercel">CI/CD Pipeline — GitHub Actions + Vercel<a class="headerlink" href="#cicd-pipeline-github-actions-vercel" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>graph LR
-    PR["Pull Request"] --&gt; LINT["golangci-lint"]
-    LINT --&gt; TEST["Unit Tests (race)"]
-    TEST --&gt; INTEG["Integration Tests&lt;br/&gt;(testcontainers)"]
-    INTEG --&gt; MIG["Migration Check&lt;br/&gt;(up/down pairs)"]
-    MIG --&gt; GATE["CI Status Gate"]
+    PR["Pull Request"] --&gt; INSTALL["pnpm install"]
+    INSTALL --&gt; LINT["turbo lint"]
+    LINT --&gt; TYPE["turbo typecheck"]
+    TYPE --&gt; TEST["turbo test&lt;br/&gt;(Vitest)"]
+    TEST --&gt; BUILD["turbo build&lt;br/&gt;(Next.js)"]
+    BUILD --&gt; GATE["CI Status Gate"]
     GATE --&gt; MERGE["Merge to main"]
-    MERGE --&gt; BUILD["Docker Build&lt;br/&gt;(GHCR)"]
-    BUILD --&gt; DEPLOY["fly deploy&lt;br/&gt;(per service)"]
-    DEPLOY --&gt; SMOKE["Health Check"]</code></pre>
+    MERGE --&gt; VERCEL["Vercel Deploy&lt;br/&gt;(automatic)"]
+    VERCEL --&gt; SMOKE["Health Check"]</code></pre>
 <p>Key pipeline steps:</p>
 <ol>
-<li><strong>PR opened</strong> → golangci-lint, unit tests with <code>-race</code>, integration tests via testcontainers</li>
-<li><strong>Migration check</strong> → validate all <code>.up.sql</code> have matching <code>.down.sql</code></li>
+<li><strong>PR opened</strong> → <code>pnpm install --frozen-lockfile</code>, then <code>turbo lint</code>, <code>turbo typecheck</code>, <code>turbo test</code></li>
+<li><strong>Schema check</strong> → validate JSON schemas in <code>libs/specs/</code></li>
 <li><strong>CI Status Gate</strong> → all jobs must pass before merge</li>
-<li><strong>Merge to main</strong> → Docker multi-stage build → push to GitHub Container Registry</li>
-<li><strong>Deploy</strong> → <code>fly deploy</code> per service (CTS, Ledger, Fiscal)</li>
-<li><strong>Smoke tests</strong> → <code>/healthz</code> and <code>/readyz</code> endpoint checks</li>
+<li><strong>Merge to main</strong> → Vercel auto-deploys (zero-config for Next.js)</li>
+<li><strong>Preview deploys</strong> → every PR gets a preview URL from Vercel</li>
+<li><strong>Smoke tests</strong> → <code>/api/health</code> and <code>/api/health/ready</code> endpoint checks</li>
 </ol>
-<h3 id="flyio-deployment">Fly.io Deployment<a class="headerlink" href="#flyio-deployment" title="Permanent link">&para;</a></h3>
-<p>Each service has a <code>fly.toml</code> that defines:</p>
+<h3 id="vercel-deployment">Vercel Deployment<a class="headerlink" href="#vercel-deployment" title="Permanent link">&para;</a></h3>
+<p>The <code>vercel.json</code> at root configures:</p>
 <ul>
-<li><strong>VM size</strong>: <code>shared-cpu-1x</code> (free tier)</li>
-<li><strong>Memory</strong>: 256 MB</li>
-<li><strong>Internal port</strong>: service-specific (8080, 8081, 8082)</li>
-<li><strong>Health check</strong>: <code>/healthz</code> HTTP endpoint</li>
-<li><strong>Env vars</strong>: <code>CTS_DATABASE_URL</code>, <code>LEDGER_DATABASE_URL</code>, etc. (set via <code>fly secrets</code>)</li>
-<li><strong>Region</strong>: <code>iad</code> (US East) to match Supabase region</li>
+<li><strong>Framework</strong>: Next.js (auto-detected)</li>
+<li><strong>Build command</strong>: <code>pnpm turbo build --filter=api...</code></li>
+<li><strong>Install command</strong>: <code>pnpm install --frozen-lockfile</code></li>
+<li><strong>Ignore command</strong>: <code>npx turbo-ignore api</code> (skip deploys if api unchanged)</li>
+<li><strong>Environment variables</strong>: <code>SUPABASE_URL</code>, <code>SUPABASE_ANON_KEY</code>, <code>SUPABASE_SERVICE_ROLE_KEY</code>, etc. (set via Vercel dashboard)</li>
 </ul>
 <hr />
 <h2 id="cost-breakdown">Cost Breakdown<a class="headerlink" href="#cost-breakdown" title="Permanent link">&para;</a></h2>
@@ -7027,10 +7035,22 @@ pg_net replaces SNS/SQS for inter-service communication:</p>
 <td>Pro $25/mo</td>
 </tr>
 <tr>
-<td>Fly.io</td>
-<td>3 shared VMs, 256 MB each</td>
-<td>&gt; 3 VMs or need dedicated CPU</td>
-<td>~$5 – $15/mo per extra VM</td>
+<td>Vercel</td>
+<td>100 GB bandwidth, serverless functions</td>
+<td>&gt; hobby limits or need team features</td>
+<td>Pro $20/mo</td>
+</tr>
+<tr>
+<td>Inngest</td>
+<td>25 K events/month</td>
+<td>&gt; 25 K events</td>
+<td>$25/mo (100 K events)</td>
+</tr>
+<tr>
+<td>Upstash</td>
+<td>10 K Redis commands/day</td>
+<td>&gt; 10 K commands</td>
+<td>Pay-as-you-go ~$0.20/100 K</td>
 </tr>
 <tr>
 <td>Alibaba KMS</td>
@@ -7060,7 +7080,7 @@ pg_net replaces SNS/SQS for inter-service communication:</p>
 <td><strong>Total</strong></td>
 <td><strong>$0</strong></td>
 <td><strong>Pilot traffic</strong></td>
-<td><strong>$25 – $70 /mo</strong></td>
+<td><strong>$25 – $90 /mo</strong></td>
 </tr>
 </tbody>
 </table>
@@ -7071,7 +7091,7 @@ pg_net replaces SNS/SQS for inter-service communication:</p>
 <li><strong>1 000 transfers/day</strong> (CTS + ledger + outbox)</li>
 <li><strong>500 fiscal invoices/day</strong> (signing + hash chain + authority sync)</li>
 <li><strong>100 email receipts/day</strong> (Resend)</li>
-<li><strong>3 concurrent Go services</strong> on Fly.io free tier</li>
+<li><strong>Unlimited</strong> serverless cold starts (Vercel auto-scales)</li>
 </ul>
 </div>
 <hr />
@@ -7092,9 +7112,14 @@ pg_net replaces SNS/SQS for inter-service communication:</p>
 <td>+$25/mo</td>
 </tr>
 <tr>
-<td>Need dedicated CPU</td>
-<td>Upgrade Fly.io VMs</td>
-<td>+$5 – $30/mo</td>
+<td>Need team features</td>
+<td>Upgrade Vercel to Pro</td>
+<td>+$20/mo</td>
+</tr>
+<tr>
+<td>Events &gt; 25 K/mo</td>
+<td>Upgrade Inngest plan</td>
+<td>+$25/mo</td>
 </tr>
 <tr>
 <td>Signing &gt; 20 K/mo</td>
@@ -7124,7 +7149,7 @@ pg_net replaces SNS/SQS for inter-service communication:</p>
 </tbody>
 </table>
 <p>The architecture is designed so that <strong>each component can migrate independently</strong> —
-start with Supabase + Fly.io, move individual services to AWS ECS Fargate as needed.</p>
+start with Supabase + Vercel, move individual services to AWS as needed.</p>
 <hr />
 <h2 id="comparison-aws-vs-free-stack">Comparison: AWS vs Free Stack<a class="headerlink" href="#comparison-aws-vs-free-stack" title="Permanent link">&para;</a></h2>
 <table>
@@ -7138,7 +7163,7 @@ start with Supabase + Fly.io, move individual services to AWS ECS Fargate as nee
 <tbody>
 <tr>
 <td><strong>Monthly cost</strong></td>
-<td>$0 – $70</td>
+<td>$0 – $90</td>
 <td>$800 – $2 500+</td>
 </tr>
 <tr>
@@ -7148,12 +7173,12 @@ start with Supabase + Fly.io, move individual services to AWS ECS Fargate as nee
 </tr>
 <tr>
 <td><strong>Operational burden</strong></td>
-<td>Minimal (managed services)</td>
+<td>Minimal (fully managed, serverless)</td>
 <td>High (VPC, IAM, monitoring)</td>
 </tr>
 <tr>
 <td><strong>Runtime</strong></td>
-<td>Fly.io Docker containers</td>
+<td>Vercel serverless functions</td>
 <td>ECS Fargate</td>
 </tr>
 <tr>
@@ -7163,7 +7188,7 @@ start with Supabase + Fly.io, move individual services to AWS ECS Fargate as nee
 </tr>
 <tr>
 <td><strong>Events</strong></td>
-<td>Outbox + pg_cron/pg_net</td>
+<td>Outbox + Inngest / Edge Functions</td>
 <td>SNS/SQS FIFO</td>
 </tr>
 <tr>
@@ -7173,27 +7198,27 @@ start with Supabase + Fly.io, move individual services to AWS ECS Fargate as nee
 </tr>
 <tr>
 <td><strong>Auth</strong></td>
-<td>JWT middleware in Go</td>
+<td>Supabase Auth (GoTrue JWT)</td>
 <td>Cognito / custom</td>
 </tr>
 <tr>
 <td><strong>CDN/Edge</strong></td>
-<td>Fly.io Anycast</td>
+<td>Vercel Edge Network</td>
 <td>CloudFront + WAF</td>
 </tr>
 <tr>
 <td><strong>CI/CD</strong></td>
-<td>GitHub Actions → Fly.io</td>
+<td>GitHub Actions → Vercel</td>
 <td>GitHub Actions + CDK</td>
 </tr>
 <tr>
 <td><strong>Multi-AZ HA</strong></td>
-<td>Fly.io multi-region (paid)</td>
+<td>Vercel global edge (automatic)</td>
 <td>Self-configured</td>
 </tr>
 <tr>
 <td><strong>Data residency</strong></td>
-<td>Supabase region + Fly.io region</td>
+<td>Supabase region + Vercel region</td>
 <td>af-south-1 (Cape Town)</td>
 </tr>
 <tr>
