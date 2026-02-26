@@ -6,8 +6,8 @@
 
 | Service | Tier | Key Limits | Role in Stalela |
 |---------|------|-----------|-----------------|
-| **Supabase** | Free | 500 MB Postgres, 50 K MAU, 500 K Edge invocations, 1 GB storage, 2 GB bandwidth | Database, Auth, Webhooks, Cron, Realtime, Storage |
-| **Vercel** | Hobby / Pro ($20) | 100 GB bandwidth, 1 000 images, Serverless & Edge functions | API surface, frontends, Edge Middleware, Cron |
+| **Supabase** | Free | 500 MB Postgres, 50 K MAU, 1 GB storage, 2 GB bandwidth | Database (all schemas), Auth, Webhooks, Cron |
+| **Fly.io** | Free (Hobby) | 3 shared-cpu-1x VMs, 256 MB RAM each, 3 GB persistent volumes | Go service containers (CTS, Ledger, Fiscal) |
 | **Alibaba Cloud** | Free trial → pay-as-you-go | KMS 20 K API calls/mo free, OSS 5 GB | HSM-backed fiscal signing, archival/backup |
 | **Resend** | Free | 100 emails/day, 3 000/month | Receipts, DLQ/SLO alerts |
 | **GitHub Enterprise** | Already licensed | Unlimited Actions minutes (self-hosted), Packages, Dependabot | CI/CD, container registry, security scanning |
@@ -18,24 +18,17 @@
 
 ```mermaid
 graph TB
-    subgraph "Vercel Edge Network"
-        EDGE["Edge Middleware<br/>Auth · Rate-limit · CORS"]
-        API_CTS["POST /api/transfers<br/>CTS API"]
-        API_FISCAL["POST /api/invoices<br/>Invoicing API"]
-        API_DIR["GET /api/directory<br/>Directory Lookup"]
-        API_RECON["POST /api/recon<br/>Recon Trigger"]
-        DASH["Operator Console<br/>Next.js SSR"]
-        PORTAL["Verification Portal<br/>Static + API Routes"]
+    subgraph "Fly.io (Go Containers)"
+        CTS["CTS Service<br/>:8080 go-chi"]
+        LEDGER["Ledger Service<br/>:8081 go-chi"]
+        FISCAL["Fiscal Service<br/>:8082 go-chi"]
     end
 
     subgraph "Supabase"
         DB[("PostgreSQL 15<br/>All schemas")]
-        AUTH["Auth (GoTrue)<br/>JWT · RLS"]
-        WH["Database Webhooks<br/>Event Bus"]
+        AUTH["Auth (GoTrue)<br/>JWT"]
         CRON["pg_cron<br/>2 scheduled jobs"]
         PGNET["pg_net<br/>HTTP from SQL"]
-        RT["Realtime<br/>WebSocket push"]
-        STOR["Storage<br/>Attachments"]
     end
 
     subgraph "Alibaba Cloud"
@@ -49,44 +42,37 @@ graph TB
 
     subgraph "GitHub"
         GHA["Actions CI/CD"]
-        PKG["Packages Registry"]
+        GHCR["Container Registry"]
     end
 
-    EDGE --> API_CTS & API_FISCAL & API_DIR & API_RECON & DASH & PORTAL
-    API_CTS --> DB
-    API_FISCAL --> DB
-    API_FISCAL --> KMS
-    API_DIR --> DB
-    API_RECON --> DB
-    DASH --> DB
-    PORTAL --> DB
-    DB --> WH
-    WH --> API_CTS & API_FISCAL
+    CTS --> DB
+    LEDGER --> DB
+    FISCAL --> DB
+    FISCAL --> KMS
+    CTS --> LEDGER
     CRON --> PGNET
-    PGNET --> API_RECON & OSS & EMAIL
-    AUTH --> DB
-    GHA --> API_CTS & API_FISCAL
+    PGNET --> CTS & FISCAL & OSS & EMAIL
+    GHA --> GHCR
+    GHCR --> CTS & LEDGER & FISCAL
 ```
 
 ---
 
 ## Component Mapping — Payments Nucleus
 
-Every Nucleus component maps to a Vercel serverless function backed by Supabase tables.
+Every Nucleus component is a Go service deployed as a Docker container on Fly.io,
+backed by Supabase Postgres.
 
 | Component | Runtime | Storage | Events | Notes |
 |-----------|---------|---------|--------|-------|
-| **Canonical Transfer Service** | Vercel Function `POST /api/transfers` | `transfers`, `transfer_events`, `outbox` | DB Webhook → rail gateway | State machine in SQL function |
-| **Outbox Publisher** | pg_cron (every 60 s) + pg_net | `outbox` table | Publishes pending rows via HTTP | Replaces SNS/SQS; at-least-once delivery |
-| **Rail Gateways** (M-Pesa, EcoCash, MTN, Airtel, OPPWA, PayShap, EFT, RTGS) | Vercel Functions per rail | `transfers`, `rail_callbacks` | DB Webhook on `transfer_events` | Each rail has `POST /api/rails/{code}/callback` |
-| **Ledger Service** | SQL functions (triggers) | `journal_entries`, `balances` | Triggered by transfer state changes | Double-entry via Postgres triggers |
-| **Compliance Screening** | Vercel Function middleware | `screening_results` | Pre-transfer hook | Sanctions list cached in `screening_lists` table |
-| **Directory & Routing** | Vercel Function `GET /api/directory` | `directory_entries` | — | Lookup by alias → rail + account |
-| **Reconciliation** | Vercel Cron (daily) + Function | `recon_sessions`, `recon_lines` | Cron trigger | Match internal vs bank statement |
-| **Event Bus** | Supabase Database Webhooks | `outbox` | Row INSERT triggers webhook | Webhook targets are Vercel Function URLs |
-| **Operator Console** | Next.js on Vercel | All tables (read via RLS) | Realtime subscriptions | Protected by Supabase Auth + RLS |
-| **AI Agents** | Vercel Function + external LLM API | `agent_logs` | On-demand | Optional; uses Supabase context |
-| **Platform Base** | Supabase Auth + Edge Middleware | `tenants`, `users`, `roles` | — | Multi-tenant via RLS `tenant_id` |
+| **Canonical Transfer Service** | Go container on Fly.io `:8080` | `payments.transfers`, `payments.transfer_events`, `payments.outbox` | Outbox → SNS (LocalStack dev) / pg_net (prod) | go-chi router, JWT auth, rate-limit middleware |
+| **Outbox Publisher** | Goroutine in CTS process | `payments.outbox` table | Exponential backoff 1 s → 16 h; DLQ at 10 attempts | Replaces external message broker |
+| **Rail Gateways** | Go modules in `gateways/` | `payments.transfers` | Called by CTS via internal routing | ZimSwitch, OPPWA, M-Pesa, EcoCash, Algorand |
+| **Ledger Service** | Go container on Fly.io `:8081` | `ledger.journal_entries`, `ledger.balances` | SQS consumer (dev) / pg_net webhook (prod) | Double-entry, balance validation |
+| **Compliance Screening** | Go service `services/compliance/` | `compliance.screening_results` | Circuit-breaker adapter (gobreaker) | Sanctions list cached in-memory |
+| **Directory & Routing** | Go module in CTS | `directory.directory_entries` | — | Route cache TTL 5 m, negative-cache TTL 45 s |
+| **Reconciliation** | pg_cron trigger → Go endpoint | `payments.recon_sessions` | Scheduled (daily) | Match internal vs bank statement |
+| **Platform Base** | JWT middleware in Go | `public.tenants`, `public.users` | — | Multi-tenant via `tenant_id` in JWT claims |
 
 ---
 
@@ -94,20 +80,17 @@ Every Nucleus component maps to a Vercel serverless function backed by Supabase 
 
 | Component | Runtime | Storage | Events | Notes |
 |-----------|---------|---------|--------|-------|
-| **Invoicing API** | Vercel Function `POST /api/invoices` | `invoices`, `invoice_items` | DB Webhook → signing | Canonical payload validation |
-| **Serializer** | In Vercel Function (same request) | — | — | JSON → canonical byte string |
-| **Tax Engine** | SQL function or Vercel middleware | `jurisdiction_profiles`, `tax_groups` | — | Jurisdiction-configured tax calculation |
-| **Cloud Signing Service** | Vercel Function → Alibaba KMS | `signing_log` | Called after serialization | `kms:Sign` with RSA-2048 or ECDSA |
-| **Monotonic Counter** | Postgres `SERIAL` + advisory lock | `fiscal_counters` | — | `SELECT nextval()` under `pg_advisory_xact_lock` |
-| **Hash-Chained Ledger** | SQL trigger on `fiscal_ledger` | `fiscal_ledger` | — | `prev_hash` column; append-only |
-| **Report Generator** | Vercel Cron (daily) + Function | `reports` | Cron trigger | Z-reports, periodic summaries |
-| **Tax Authority Sync** | pg_cron + pg_net | `authority_sync_queue` | Scheduled (every 5 min) | pg_net HTTP POST to DGI/authority endpoint |
-| **Invoice Store** | Supabase Storage (buckets) | `invoices` bucket | — | Signed PDF/JSON archival |
-| **Receipt Delivery** | Vercel Function → Resend API | `receipt_log` | After signing completes | Email / WhatsApp receipt link |
-| **Dashboard** | Next.js PWA on Vercel | All fiscal tables via RLS | Realtime | Merchant-facing analytics |
-| **Verification Portal** | Static + API route on Vercel | `invoices` (public read) | — | QR code → verify endpoint |
-| **Merchant Registry** | Supabase Auth + `merchants` table | `merchants`, `outlets`, `terminals` | — | CRUD via Operator Console |
-| **Multi-User Access** | Supabase Auth + RLS policies | `users`, `roles`, `permissions` | — | Role-based per outlet/merchant |
+| **Invoicing API** | Go container on Fly.io `:8082` | `fiscal.invoices`, `fiscal.invoice_items` | Internal event after signing | Canonical payload validation |
+| **Serializer** | In Fiscal Service (same process) | — | — | JSON → canonical byte string (deterministic key order) |
+| **Tax Engine** | Go module `internal/tax/` | `tax.jurisdiction_profiles`, `tax.tax_groups` | — | 14 tax groups (DRC TG01–TG14), 5 client classifications |
+| **Cloud Signing Service** | Go module `internal/signing/` → Alibaba KMS | `signing.signing_log` | Called after serialization | Local RSA for dev, Alibaba KMS for prod |
+| **Monotonic Counter** | Go module `internal/counter/` | `fiscal.fiscal_counters` | — | `pg_advisory_xact_lock` per outlet |
+| **Hash-Chained Ledger** | Go module `internal/ledger/` | `fiscal.fiscal_ledger` | — | `prev_hash` column; append-only, tamper-evident |
+| **Report Generator** | pg_cron → Go endpoint | `fiscal.reports` | Scheduled (daily) | Z-reports, periodic summaries |
+| **Tax Authority Sync** | Go service `services/sync/` | `sync.authority_sync_queue` | Scheduled (every 5 min) | DGI protocol (DRC); jurisdiction-specific |
+| **Receipt Delivery** | Go via `libs/email/` → Resend API | `fiscal.receipt_log` | After signing completes | Email receipt link |
+| **Verification Portal** | Future: static site or Go handler | `fiscal.invoices` (public read) | — | QR code → verify endpoint |
+| **Merchant Registry** | Go CRUD in Fiscal Service | `fiscal.merchants`, `fiscal.outlets` | — | Managed via API |
 | **Archival / Backup** | pg_cron → pg_net → Alibaba OSS | OSS bucket | Nightly | 10-year retention for fiscal data |
 
 ---
@@ -163,27 +146,27 @@ Every table has RLS enabled. Policies enforce:
 
 ---
 
-## Event Flow — Database Webhooks
+## Event Flow — Outbox Pattern
 
-With no message broker, Supabase Database Webhooks replace SNS/SQS:
+Go services use the transactional outbox pattern. In the free stack,
+pg_net replaces SNS/SQS for inter-service communication:
 
 ```mermaid
 sequenceDiagram
     participant Client
-    participant CTS as CTS API (Vercel)
+    participant CTS as CTS (Fly.io :8080)
     participant DB as Supabase Postgres
-    participant WH as Database Webhook
-    participant Rail as Rail Gateway (Vercel)
-    participant Ledger as Ledger Trigger (SQL)
+    participant PGNET as pg_net (pg_cron)
+    participant Ledger as Ledger (Fly.io :8081)
 
-    Client->>CTS: POST /api/transfers
+    Client->>CTS: POST /v1/transfers
     CTS->>DB: INSERT transfer + outbox row (single tx)
-    DB->>Ledger: AFTER INSERT trigger → journal entry
-    DB->>WH: outbox INSERT fires webhook
-    WH->>Rail: POST /api/rails/{code}/submit
-    Rail->>DB: UPDATE transfer_events (callback)
-    DB->>WH: transfer_events INSERT fires webhook
-    WH->>CTS: POST /api/transfers/settle (state advance)
+    Note over DB: pg_cron fires every 60 s
+    DB->>PGNET: SELECT unsent outbox rows
+    PGNET->>Ledger: POST /v1/events (HTTP)
+    Ledger->>DB: INSERT journal_entries + balances (single tx)
+    Ledger-->>PGNET: 200 OK
+    PGNET->>DB: UPDATE outbox SET delivered
 ```
 
 ### Delivery Guarantees
@@ -194,7 +177,7 @@ sequenceDiagram
 | Idempotency | `idempotency_key` on transfers; `event_id` on events |
 | Ordering | Single DB, sequential `event_id` per transfer |
 | Dead letters | `outbox.retry_count`; after 5 failures → `status = 'dead'`, alert via Resend |
-| Webhook failure | Supabase retries with exponential backoff (3 attempts) |
+| Webhook failure | pg_net retries; pg_cron re-processes unsent rows |
 
 ---
 
@@ -215,10 +198,10 @@ The second job checks a `cron_tasks` table to decide which sub-task to run, enab
 
 ```mermaid
 sequenceDiagram
-    participant API as Invoicing API (Vercel)
-    participant SER as Serializer
+    participant API as Fiscal Service (Fly.io :8082)
+    participant SER as internal/signing
     participant KMS as Alibaba KMS
-    participant DB as Supabase
+    participant DB as Supabase Postgres
 
     API->>SER: Canonical payload → byte string
     SER->>KMS: kms:Sign(keyId, digest, algorithm)
@@ -239,37 +222,47 @@ sequenceDiagram
 
 ```
 stalela/
+├── services/
+│   ├── transfer/               # CTS — go-chi :8080
+│   │   ├── cmd/server/         # main.go entrypoint
+│   │   ├── internal/           # api, state, outbox, normalizer, etc.
+│   │   ├── migrations/         # golang-migrate SQL files
+│   │   ├── Dockerfile          # Multi-stage build
+│   │   └── fly.toml            # Fly.io deployment config
+│   ├── ledger/                 # Ledger Service — go-chi :8081
+│   │   ├── cmd/server/
+│   │   ├── internal/           # consumer, posting, journal, balance, etc.
+│   │   ├── migrations/
+│   │   ├── Dockerfile
+│   │   └── fly.toml
+│   ├── fiscal/                 # Fiscal Service — go-chi :8082
+│   │   ├── cmd/server/
+│   │   ├── internal/           # signing, counter, ledger, tax, etc.
+│   │   ├── migrations/
+│   │   ├── Dockerfile
+│   │   └── fly.toml
+│   ├── compliance/             # Compliance screening (stub)
+│   └── sync/                   # Tax Authority Sync Agent (stub)
+├── gateways/
+│   ├── zimswitch/              # ZimSwitch rail adapter
+│   ├── oppwa/                  # OPPWA (card) adapter
+│   ├── mpesa/                  # M-Pesa adapter
+│   ├── ecocash/                # EcoCash adapter
+│   └── algorand/               # Algorand adapter
+├── libs/
+│   ├── crypto/                 # PII encryption, HMAC
+│   ├── logging/                # Structured logging (slog)
+│   └── email/                  # Resend client wrapper
 ├── apps/
-│   ├── api/                    # Vercel Functions (Next.js API routes)
-│   │   ├── transfers/          # CTS endpoints
-│   │   ├── invoices/           # Fiscal endpoints
-│   │   ├── rails/              # Rail gateway callbacks
-│   │   ├── directory/          # Directory lookups
-│   │   ├── recon/              # Reconciliation triggers
-│   │   └── middleware.ts       # Edge: auth, rate-limit, CORS
-│   ├── console/                # Operator Console (Next.js)
-│   └── portal/                 # Verification Portal (Next.js)
-├── packages/
-│   ├── db/                     # Supabase migrations, seed, types
-│   ├── domain/                 # Shared domain logic (transfer SM, tax engine)
-│   ├── signing/                # Alibaba KMS client wrapper
-│   ├── email/                  # Resend client wrapper
-│   └── config/                 # ESLint, TypeScript, Tailwind configs
-├── supabase/
-│   ├── migrations/             # SQL migrations (managed by Supabase CLI)
-│   ├── functions/              # Supabase Edge Functions (if needed)
-│   └── seed.sql                # Dev seed data
-├── .github/
-│   └── workflows/
-│       ├── ci.yml              # Lint, test, type-check
-│       ├── deploy-preview.yml  # PR preview deployments
-│       ├── deploy-prod.yml     # Production deployment
-│       └── db-migrate.yml      # Schema migration pipeline
-├── turbo.json                  # Turborepo config
-└── package.json                # Workspace root
+│   └── gateway/                # API gateway (future)
+├── tests/                      # Cross-service integration tests
+├── tools/devstack/             # docker-compose (Postgres, LocalStack)
+├── .github/workflows/          # CI: ci.yml, transfer-ci.yml, etc.
+├── go.work                     # Go workspace (15 modules)
+└── Makefile                    # build-all, test-all, lint-all, migrate-all
 ```
 
-**Tech stack**: TypeScript · Next.js 14 (App Router) · Turborepo · Supabase JS v2 · Tailwind CSS
+**Tech stack**: Go 1.24 · go-chi/chi · pgx/v5 · golang-migrate · OpenTelemetry · Prometheus · testcontainers-go
 
 ---
 
@@ -277,23 +270,36 @@ stalela/
 
 ```mermaid
 graph LR
-    PR["Pull Request"] --> LINT["Lint + Type-check"]
-    LINT --> TEST["Unit + Integration Tests"]
-    TEST --> MIGRATE["DB Migration (staging)"]
-    MIGRATE --> PREVIEW["Vercel Preview Deploy"]
-    PREVIEW --> APPROVE["Manual Approval"]
-    APPROVE --> PROD_MIG["DB Migration (prod)"]
-    PROD_MIG --> PROD["Vercel Prod Deploy"]
-    PROD --> SMOKE["Smoke Tests"]
+    PR["Pull Request"] --> LINT["golangci-lint"]
+    LINT --> TEST["Unit Tests (race)"]
+    TEST --> INTEG["Integration Tests<br/>(testcontainers)"]
+    INTEG --> MIG["Migration Check<br/>(up/down pairs)"]
+    MIG --> GATE["CI Status Gate"]
+    GATE --> MERGE["Merge to main"]
+    MERGE --> BUILD["Docker Build<br/>(GHCR)"]
+    BUILD --> DEPLOY["fly deploy<br/>(per service)"]
+    DEPLOY --> SMOKE["Health Check"]
 ```
 
 Key pipeline steps:
 
-1. **PR opened** → lint, type-check, unit tests (GitHub Actions)
-2. **DB migrations** → `supabase db push` against staging project
-3. **Preview deploy** → Vercel builds preview URL automatically
-4. **Merge to main** → migration against prod Supabase → Vercel prod deploy
-5. **Smoke tests** → health check endpoints, sample transfer creation
+1. **PR opened** → golangci-lint, unit tests with `-race`, integration tests via testcontainers
+2. **Migration check** → validate all `.up.sql` have matching `.down.sql`
+3. **CI Status Gate** → all jobs must pass before merge
+4. **Merge to main** → Docker multi-stage build → push to GitHub Container Registry
+5. **Deploy** → `fly deploy` per service (CTS, Ledger, Fiscal)
+6. **Smoke tests** → `/healthz` and `/readyz` endpoint checks
+
+### Fly.io Deployment
+
+Each service has a `fly.toml` that defines:
+
+- **VM size**: `shared-cpu-1x` (free tier)
+- **Memory**: 256 MB
+- **Internal port**: service-specific (8080, 8081, 8082)
+- **Health check**: `/healthz` HTTP endpoint
+- **Env vars**: `CTS_DATABASE_URL`, `LEDGER_DATABASE_URL`, etc. (set via `fly secrets`)
+- **Region**: `iad` (US East) to match Supabase region
 
 ---
 
@@ -302,20 +308,20 @@ Key pipeline steps:
 | Service | Free Tier | When You Pay | Estimated at Scale |
 |---------|-----------|-------------|-------------------|
 | Supabase | 500 MB DB, 50 K MAU, 2 GB bandwidth | > 500 MB DB or > 50 K MAU | Pro $25/mo |
-| Vercel | 100 GB bandwidth, serverless functions | > 100 GB bandwidth or team features | Pro $20/mo |
+| Fly.io | 3 shared VMs, 256 MB each | > 3 VMs or need dedicated CPU | ~$5 – $15/mo per extra VM |
 | Alibaba KMS | 20 K sign calls/month | > 20 K calls | ~$0.03 / 10 K calls |
 | Alibaba OSS | 5 GB storage | > 5 GB | ~$0.02 / GB / month |
 | Resend | 3 000 emails/month | > 3 000 emails | $20/mo (50 K emails) |
 | GitHub Enterprise | Unlimited (licensed) | — | Already paid |
-| **Total** | **$0** | **Pilot traffic** | **$20 – $65 /mo** |
+| **Total** | **$0** | **Pilot traffic** | **$25 – $70 /mo** |
 
 !!! info "Pilot Capacity"
     At free-tier limits, you can handle approximately:
 
-    - **1 000 transfers/day** (CTS + ledger + webhooks)
+    - **1 000 transfers/day** (CTS + ledger + outbox)
     - **500 fiscal invoices/day** (signing + hash chain + authority sync)
     - **100 email receipts/day** (Resend)
-    - **50 concurrent users** on operator console (Supabase Realtime)
+    - **3 concurrent Go services** on Fly.io free tier
 
 ---
 
@@ -326,14 +332,15 @@ When free-tier limits are exceeded, services can be upgraded independently:
 | Trigger | Action | Cost Impact |
 |---------|--------|-------------|
 | DB > 500 MB | Upgrade Supabase to Pro | +$25/mo |
-| Bandwidth > 100 GB | Upgrade Vercel to Pro | +$20/mo |
+| Need dedicated CPU | Upgrade Fly.io VMs | +$5 – $30/mo |
 | Signing > 20 K/mo | Alibaba KMS pay-as-you-go | +$3 – $10/mo |
 | Emails > 3 K/mo | Resend Growth plan | +$20/mo |
 | Need message broker | Add Upstash Kafka or QStash | +$10 – $30/mo |
 | Need dedicated DB | Migrate to Supabase Pro or Neon | +$25 – $69/mo |
 | Regulatory/compliance | Migrate to AWS (see [AWS Blueprint](../10-payments-nucleus/infra/aws-infra.md)) | $800+ /mo |
 
-The architecture is designed so that **each component can migrate independently** — start with Supabase + Vercel, move individual services to AWS as needed.
+The architecture is designed so that **each component can migrate independently** —
+start with Supabase + Fly.io, move individual services to AWS ECS Fargate as needed.
 
 ---
 
@@ -341,17 +348,18 @@ The architecture is designed so that **each component can migrate independently*
 
 | Dimension | Free Stack | AWS Blueprint |
 |-----------|-----------|---------------|
-| **Monthly cost** | $0 – $65 | $800 – $2 500+ |
+| **Monthly cost** | $0 – $70 | $800 – $2 500+ |
 | **Setup time** | Hours | Weeks |
 | **Operational burden** | Minimal (managed services) | High (VPC, IAM, monitoring) |
+| **Runtime** | Fly.io Docker containers | ECS Fargate |
 | **Database** | Supabase Postgres (shared) | RDS Multi-AZ per service |
-| **Events** | Database Webhooks + pg_cron | SNS/SQS FIFO |
+| **Events** | Outbox + pg_cron/pg_net | SNS/SQS FIFO |
 | **Signing** | Alibaba KMS | AWS CloudHSM |
-| **Auth** | Supabase Auth (GoTrue) | Cognito / custom |
-| **CDN/Edge** | Vercel Edge Network | CloudFront + WAF |
-| **CI/CD** | GitHub Actions + Vercel | GitHub Actions + CDK |
-| **Multi-AZ HA** | Supabase-managed | Self-configured |
-| **Data residency** | Supabase region choice | af-south-1 (Cape Town) |
+| **Auth** | JWT middleware in Go | Cognito / custom |
+| **CDN/Edge** | Fly.io Anycast | CloudFront + WAF |
+| **CI/CD** | GitHub Actions → Fly.io | GitHub Actions + CDK |
+| **Multi-AZ HA** | Fly.io multi-region (paid) | Self-configured |
+| **Data residency** | Supabase region + Fly.io region | af-south-1 (Cape Town) |
 | **Best for** | Pilot, MVP, < 10 K txn/day | Regulated production, > 10 K txn/day |
 
 !!! warning "Production Readiness"
