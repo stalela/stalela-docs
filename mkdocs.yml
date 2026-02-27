@@ -137,6 +137,7 @@ nav:
           - "10-payments-nucleus/adr/PAY-ADR-0001-events-outbox.md"
           - "10-payments-nucleus/adr/PAY-ADR-0002-double-entry-ledger.md"
           - "10-payments-nucleus/adr/PAY-ADR-0003-contracts-first.md"
+          - "10-payments-nucleus/adr/PAY-ADR-0004-outbox-relay-supabase.md"
   - Fiscal Platform:
       - "20-fiscal-platform/index.md"
       - Architecture:
@@ -175,6 +176,7 @@ nav:
           - "20-fiscal-platform/adr/FIS-ADR-0004.md"
           - "20-fiscal-platform/adr/FIS-ADR-0005.md"
           - "20-fiscal-platform/adr/FIS-ADR-0006.md"
+          - "20-fiscal-platform/adr/FIS-ADR-0007-cloud-signing.md"
       - Implementation:
           - "20-fiscal-platform/implementation/roadmap.md"
           - "20-fiscal-platform/implementation/kanban.md"
