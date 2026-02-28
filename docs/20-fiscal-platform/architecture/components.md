@@ -42,7 +42,7 @@ Cloud infrastructure stores sealed invoices, uploads them to the jurisdiction's 
 
 - `Sync Agent + Invoice Store` — Queues sealed invoices, retries uploads to the jurisdiction's tax authority endpoint when connectivity returns, and keeps a copy of every fiscal response for replays or audits.
 - `Tax Authority Sync Agent` — Dedicated connector that authenticates to the jurisdiction's tax authority, packages sealed payloads using the authority's protocol, and records acknowledgments (`queued`, `synced`, `failed`). See [Authority Sync](../cloud/authority-sync.md).
-- `Merchant & Outlet Registry` — Tracks which merchants, outlets, API keys, and POS integrations are active, their quotas, firmware versions (for future hardware), and metadata required by the fiscal core.
+- `Merchant & Outlet Registry` — Tracks which merchants, outlets, API keys, and POS integrations are active, their quotas, firmware versions (for future hardware), and metadata required by the fiscal core. Identity management (KYB verification, user provisioning, credential issuance) is delegated to the [Customer Identity Service (CIS)](../../15-identity/index.md); the registry consumes CIS data to enforce outlet-scoped access.
 - `Dashboard & Analytics` — Observability layer for device health, backlog depth, report generation, and sync failures. It consumes metrics from the Invoicing API, Sync Agent, and ledger.
 - `Backup & Archival` — Off-site snapshots of the fiscal ledger, report payloads, and DAG metadata so compliance teams can restore or audit historical data.
 

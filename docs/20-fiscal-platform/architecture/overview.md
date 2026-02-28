@@ -16,11 +16,13 @@ flowchart LR
     Developer["Developer / Integration"]
     Auditor["Auditor / Regulator"]
     Stalela["Stalela Platform\n(Invoicing API + Dashboard + Cloud Signing + Sync)"]
+    CIS["CIS (Identity Service)"]
     DGI["DGI (MCF / e-MCF)"]
     Payment["Payment Providers"]
     Merchant -->|Creates invoices & monitors dashboards| Stalela
     Developer -->|Builds API/SDK integrations| Stalela
     Auditor -->|Requests Z/X/A/audit exports| Stalela
+    CIS -->|KYB verification, credential issuance| Stalela
     Stalela -->|Sealed invoice + security elements| DGI
     Stalela -->|Payment status, webhooks, receipts| Payment
 ```

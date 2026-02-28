@@ -9,8 +9,8 @@ The Stalela Platform is a unified fintech infrastructure for **moving money** an
 ```mermaid
 flowchart TD
     subgraph Foundation["Shared Foundation"]
-        ID["Identity Registry"]
-        EB["Event Bus"]
+        ID["CIS (Identity Service)"]
+        EB["Event Bus (Outbox)"]
         OBS["Observability (OTel)"]
         AI["AI Layer"]
     end
@@ -51,6 +51,8 @@ flowchart TD
 | **Payments Nucleus** | Move money across rails — mobile money, card, crypto, EFT, RTGS | `CanonicalTransfer` | [Payments Nucleus →](10-payments-nucleus/overview/index.md) |
 | **Fiscal Platform** | Create sealed, fiscally compliant invoices across jurisdictions | `CanonicalInvoice` | [Fiscal Platform →](20-fiscal-platform/index.md) |
 
+> **Identity layer** — The [Customer Identity Service (CIS)](15-identity/index.md) underpins both pillars, providing KYC/KYB verification, consent management, and credential issuance. CIS is the platform's source of truth for who a payer, payee, merchant, or cashier actually is.
+
 The pillars are **decoupled by design** — no shared databases, no synchronous RPC between them. They connect through opaque references (`endUserRef`) and async events on the Event Bus.
 
 ---
@@ -60,6 +62,7 @@ The pillars are **decoupled by design** — no shared databases, no synchronous 
 | Section | What's Inside |
 |---|---|
 | [Foundation](00-foundation/index.md) | Shared concepts — glossary, canonical payloads, multi-tenant model, mobile money, AI capabilities |
+| [Identity (CIS)](15-identity/index.md) | Customer Identity Service — KYC/KYB, verification, consent, RBAC, events, schemas |
 | [Payments Nucleus](10-payments-nucleus/overview/index.md) | CTS, rail gateways, GL ledger, reconciliation, compliance, operator console |
 | [Fiscal Platform](20-fiscal-platform/index.md) | Invoice API, tax engine, cloud signing (HSM), fiscal ledger, authority sync, POS |
 | [Integration](30-integration/overview.md) | How the two pillars interact — payment on invoice, merchant identity, end-to-end sequences |

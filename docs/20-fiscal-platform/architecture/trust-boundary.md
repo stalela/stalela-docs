@@ -11,7 +11,7 @@ When operating in **Delegated Offline Mode**, a POS terminal equipped with the S
 1. **Canonical invoice requests** — Clients send deterministic JSON through `POST /api/v1/invoices` (or direct API/SDK calls) that include the jurisdiction-configured tax groups, client classification, outlet/scoping identifiers, and payments in the field order mandated by the spec.
 2. **Delegated Credential Requests** — POS terminals request short-lived signing keys and block allocations from the Credential Issuer.
 3. **Locally-Sealed Invoices (Reconciliation)** — When connectivity returns, POS terminals submit invoices signed by the Fiscal Extension to the Cloud for verification and ledger appending.
-4. **Payment metadata & tracing headers** — Each request carries `X-Stalela-Merchant-ID`, `X-Stalela-Outlet-ID`, optionally `X-Stalela-User-ID`/`X-Stalela-Source`, and other telemetry.
+4. **Payment metadata & tracing headers** — Each request carries `X-Stalela-Merchant-ID`, `X-Stalela-Outlet-ID`, optionally `X-Stalela-User-ID`/`X-Stalela-Source`, and other telemetry. The [CIS](../../15-identity/index.md)-issued JWT validates the identity claims in these headers — the middleware verifies the token signature and extracts `tenantId`, `merchant_tin`, `outlet_id`, and `kycTier` before forwarding to the Cloud Signing Service.
 
 ## What the trusted zone produces
 

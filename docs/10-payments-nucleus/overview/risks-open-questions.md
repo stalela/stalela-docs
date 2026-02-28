@@ -8,8 +8,7 @@ This is a **living list** of risks and unknowns that need clarity.
 - Settlement liquidity ownership: who pre-funds? merchant vs Stalela vs bank?
 - How to handle returns when rail semantics don’t map 1:1?
 - Which rails are **priority for MVP** (EcoCash, USDC, OPPWA)?
-- Is PayShap integration required in Phase 1?
-
+- Is PayShap integration required in Phase 1?- CIS identity verification latency under load — cache warm-up strategy?
 ---
 
 ## ⚠️ Risks
@@ -18,6 +17,7 @@ This is a **living list** of risks and unknowns that need clarity.
 - **Telco politics**: MNOs may resist third-party integrations.
 - **Crypto volatility**: reliance on USDC requires hedging & liquidity planning.
 - **Fraud risk**: high potential for SIM swaps and social engineering.
+- **CIS dependency**: all T0+ transfers require CIS identity resolution — CIS outage blocks transfer submission. Mitigate with aggressive caching and graceful degradation for low-value transfers.
 
 ---
 

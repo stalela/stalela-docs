@@ -20,6 +20,7 @@ See the full [Jurisdictions Framework](../40-jurisdictions/index.md) for details
 
 ## Key sections
 - **Architecture:** System overview, trust boundary, component map, and data flows that explain how client applications interact with the Cloud Signing Service, fiscal ledger, and tax authority sync agent.
+- **Identity:** Merchant identity management, KYB verification, and user/API key provisioning are handled by the [Customer Identity Service (CIS)](../15-identity/index.md), which is the source of truth for `merchant_tin` assignment and credential issuance across both pillars.
 - **Invoicing Platform:** Product overview, API walkthrough, web dashboard experience, SDKs, multi-user controls, and [AI-powered capabilities](platform/ai-capabilities.md) including natural language invoice creation, tax auto-classification, and anomaly detection.
 - **Fiscal Engine:** Invoice lifecycle rules, jurisdiction-configured tax groups, canonical payload schema, mandatory security elements, reports (Z/X/A/audit), and [public invoice verification](fiscal/invoice-verification.md) via QR code or fiscal number.
 - **Cloud & Sync:** Cloud architecture, offline-first sync logic, resilience to connectivity loss, and [tax authority integration](cloud/authority-sync.md) requirements.

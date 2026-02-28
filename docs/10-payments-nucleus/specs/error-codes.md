@@ -19,6 +19,13 @@ Consistent error codes across APIs.
   - `40902` Idempotency conflict (same key, different body hash)
   - `42201` Compliance screening: denied
   - `42202` Directory route not found
+  - `42203` Identity verification required — [CIS](../../15-identity/index.md) entity not yet verified
+  - `42204` KYC tier insufficient — CIS tier too low for the requested corridor/amount
+  - `42205` Identity not found — `cisEntityId` does not resolve to a known CIS entity
+
+- **4xx — Auth / Identity Errors**
+  - `40301` Auth token invalid — CIS-issued JWT expired, malformed, or signature mismatch
+  - `40302` Tenant not onboarded — `tenantId` not linked to a verified CIS entity
 
 - **5xx — Server Errors**
   - `50001` Rail adapter unavailable

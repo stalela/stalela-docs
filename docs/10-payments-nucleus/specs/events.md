@@ -29,6 +29,7 @@ The **Event model** defines the envelope and catalog of all domain events emitte
     "amount": { "value": "1000.00", "currency": "USD" },
     "payerRef": "payer-1",
     "payeeRef": "payee-9",
+    "cisEntityId": "id_abc123",
     "endUserRef": "end-7"
   }
 }
@@ -46,7 +47,8 @@ The **Event model** defines the envelope and catalog of all domain events emitte
 - `payload` – type-specific content (PII-free; only stable references).
 
 **Optional enrichment (additive)**
-- `kycTier` – KYC tier for context (T0|T1|T2).  
+- `kycTier` – KYC tier sourced from [CIS](../../15-identity/index.md) (T0|T1|T2). CIS is the single authority for tier assignment.
+- `cisEntityId` – CIS entity identifier for payer/payee (links transfer to verified identity).
 - `riskScore` – screening risk score (0-100).  
 - `exchangeControlRef` – reference for exchange control/BoP.  
 - `taxCode` – tax/VAT code for fee lines.  
@@ -72,6 +74,13 @@ The **Event model** defines the envelope and catalog of all domain events emitte
 
 ### Compliance
 - `compliance.entity.flagged`  
+
+### Identity (CIS)
+- `identity.verified` – emitted by [CIS](../../15-identity/index.md) when KYC/KYB verification completes. Payload includes `cisEntityId`, `kycTier`, `verificationMethod`.
+- `identity.tier.changed` – emitted when a CIS entity’s KYC tier is upgraded or downgraded. Payload includes `cisEntityId`, `previousTier`, `newTier`.
+- `identity.suspended` – emitted when an identity is suspended (e.g., failed re-verification). CTS consumers should block new transfers for the affected entity.
+
+> See [CIS Events](../../15-identity/events/identity-events.md) for the full CIS event catalog.
 
 ### Reconciliation
 - `recon.statement.ingested`  

@@ -15,6 +15,9 @@ The **Operator Console** is the human-facing interface for resolving exceptions,
 - Display transfer timelines (events, postings).  
 - Show queues: returns, reconciliation exceptions, compliance hits.  
 - Allow manual resolution: assign unmatched, trigger return, freeze/unfreeze entity.  
+- **CIS entity detail panel**: display identity summary (`cisEntityId`, `kycTier`, verification status) inline with transfer details. Operators do not access CIS directly — the console fetches identity context via CIS read APIs.  
+- **Freeze / unfreeze coordination**: `POST /entity/freeze` and `POST /entity/unfreeze` propagate to CIS to suspend the identity across all pillars. See [Identity State Machines](../../15-identity/architecture/state-machines.md).  
+- **Re-verification trigger**: operator can request CIS to re-verify an identity (e.g., after document expiry or suspicious activity).  
 - Surface system health and metrics dashboards.  
 
 ---

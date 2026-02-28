@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stalela.dev/schemas/canonical-identity.v1.json",
+  "title": "Canonical Identity v1",
+  "type": "object",
+  "required": [
+    "identityId",
+    "tenantId",
+    "type",
+    "status",
+    "createdAt"
+  ],
+  "properties": {
+    "identityId": {
+      "type": "string",
+      "pattern": "^id_[a-zA-Z0-9]+$"
+    },
+    "tenantId": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "INDIVIDUAL",
+        "DEVELOPER",
+        "MERCHANT_ADMIN",
+        "STAFF"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending_verification",
+        "verified",
+        "rejected",
+        "suspended"
+      ]
+    },
+    "trustTier": {
+      "type": "string",
+      "enum": [
+        "TRUST_NONE",
+        "TRUST_KYC_BASIC",
+        "TRUST_KYC_ENHANCED",
+        "TRUST_KYB_VERIFIED"
+      ]
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "null"]
+      }
+    }
+  },
+  "additionalProperties": false
+}

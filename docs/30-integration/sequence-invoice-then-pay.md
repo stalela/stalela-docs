@@ -51,7 +51,7 @@ sequenceDiagram
     Note over POS,GL: 3. Initiate payment (Payments Nucleus)
 
     POS->>CTS: POST /transfers
-    Note right of POS: intent: PUSH, amount: 78300 CDF<br/>payer: Ets Kabila (Airtel)<br/>payee: Merchant settlement account<br/>endUserRef: "001-2026-004821"<br/>railHints: ["airtel_momo"]
+    Note right of POS: intent: PUSH, amount: 78300 CDF<br/>payer: Ets Kabila (cisEntityId: id_xyz)<br/>payee: Merchant settlement account<br/>endUserRef: "001-2026-004821"<br/>railHints: ["airtel_momo"]
 
     CTS->>DIR: Route transfer
     DIR-->>CTS: Selected rail: airtel_momo (score: 0.92)

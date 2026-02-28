@@ -223,7 +223,9 @@ flowchart LR
 
 ## 10) Configuration & Onboarding
 
-* **API Keys**: Tenant‑scoped key from Stalela Console.
+> **CIS merchant onboarding prerequisite**: Before a WooCommerce merchant can obtain API keys and activate the plugin, they must complete KYB verification through CIS. The onboarding flow is: CIS registration → KYB document upload → CIS verification → `cisEntityId` + tenant provisioned → API key issued. See [Merchant Onboarding](../../15-identity/howtos/onboard-merchant.md).
+
+* **API Keys**: Tenant-scoped key issued by CIS after KYB verification.
 * **Merchant Wallet (USDC)**: Provided during onboarding; validated against network.
 * **Webhook Secret**: Rotate via plugin UI; validate on each callback.
 * **Test Mode**: Sandboxed CTS tenant & USDC test network.

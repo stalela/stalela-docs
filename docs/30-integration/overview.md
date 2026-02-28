@@ -48,8 +48,10 @@ flowchart LR
 
 | I want to… | Call… | Pillar |
 |---|---|---|
+| Register a merchant / create credentials | `POST /api/identities` → `POST /api/identities/:id/verify` | [CIS](../15-identity/index.md) |
 | Create a sealed invoice | `POST /api/v1/invoices` | Fiscal Platform |
 | Collect payment for an invoice | `POST /transfers` | Payments Nucleus |
 | Check if an invoice has been paid | `GET /api/v1/invoices/{id}` → `payment_status` | Fiscal Platform (updated by event listener) |
 | Check transfer settlement status | `GET /transfers/{id}` | Payments Nucleus |
+| Check identity/KYC status | `GET /api/identities/:id` | [CIS](../15-identity/index.md) |
 | Reconcile payments against invoices | Custom reconciliation logic using `endUserRef` | Client / integration layer |

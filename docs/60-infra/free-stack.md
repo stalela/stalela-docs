@@ -83,6 +83,7 @@ All Nucleus components are TypeScript modules deployed as Vercel serverless func
 | **Directory & Routing** | In-process module | `directory.directory_entries` | — | Route cache via Upstash Redis (TTL 5 m) |
 | **Reconciliation** | Inngest scheduled function | `payments.recon_sessions` | Scheduled (daily) | Match internal vs bank statement |
 | **Platform Base** | Edge middleware | `public.tenants`, `public.users` | — | Multi-tenant via `tenant_id` in Supabase JWT claims |
+| **[CIS (Identity Service)](../15-identity/index.md)** | Vercel serverless `/api/identities` | `cis.identities`, `cis.credentials`, `cis.consents` | Identity events via outbox | KYC/KYB verification, credential issuance, consent management. Source of truth for `tenantId` ↔ `merchant_tin` binding |
 
 ---
 
@@ -112,6 +113,7 @@ All services share a **single Postgres database** organized by schema:
 ```
 stalela_db (Supabase project)
 ├── public                    # Shared: tenants, users, auth helpers
+├── cis                       # CIS: identities, orgs, credentials, consents, verification
 ├── payments                  # CTS: transfers, transfer_events, outbox
 ├── ledger                    # Journal entries, balances, chart of accounts
 ├── compliance                # Screening results, sanctions lists
@@ -132,6 +134,9 @@ stalela_db (Supabase project)
 | Schema | Table | Purpose |
 |--------|-------|---------|
 | `payments` | `transfers` | Transfer lifecycle (state machine) |
+| `cis` | `identities` | CIS identity records (KYC/KYB verified entities) |
+| `cis` | `credentials` | API keys, OAuth tokens, WebAuthn factors |
+| `cis` | `consents` | User consent records (POPIA/GDPR) |
 | `payments` | `transfer_events` | Append-only event log per transfer |
 | `payments` | `outbox` | Transactional outbox for at-least-once delivery |
 | `ledger` | `journal_entries` | Double-entry postings |
@@ -151,6 +156,7 @@ stalela_db (Supabase project)
 Every table has RLS enabled. Policies enforce:
 
 - **Tenant isolation**: `WHERE tenant_id = auth.jwt() ->> 'tenant_id'`
+- **KYC tier gating**: `WHERE (auth.jwt() ->> 'kycTier')::text IN ('T1','T2')` for routes requiring verified identity
 - **Role-based access**: `USING (role_check(auth.uid(), required_role))`
 - **Outlet scoping**: Fiscal tables additionally filter by `outlet_id`
 

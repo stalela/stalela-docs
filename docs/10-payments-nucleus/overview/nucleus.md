@@ -22,6 +22,7 @@ The nucleus exists to:
 - **Rail Gateways** → adapters for each rail, strict spec validation, submit & emit rail outcomes.  
 - **Ledger Service** → double-entry postings, balances, statements.  
 - **Compliance Screening** → fast local allow/deny; pre-submit & delta re-screens.  
+- **Identity (CIS)** → identity resolution, KYC tier gating, `cisEntityId` enrichment. See [Identity (CIS)](../../15-identity/index.md).  
 - **Directory & Routing** → institutions, BINs, fees, settlement windows.  
 - **Reconciliation & Returns** → ingest statements, match transfers, manage returns/exceptions.  
 - **Event Bus + Outbox** → exactly-once event delivery; glue between services.  
@@ -60,6 +61,10 @@ flowchart LR
       CS[Local Watchlist Index<br/>/screen]
     end
 
+    subgraph ID["Identity (CIS)"]
+      CIS[cisEntityId Resolution<br/>KYC Tier Gating]
+    end
+
     subgraph D["Directory & Routing"]
       DR[Institutions/BINs<br/>Fees & Windows]
     end
@@ -84,6 +89,8 @@ flowchart LR
   end
 
   A -->|create intent| CTS
+  CTS -->|resolve identity| CIS
+  CIS -->|cisEntityId + kycTier| CTS
   CTS -->|pre-screen| CS
   CS -->|allow/deny| CTS
   CTS -->|route| D

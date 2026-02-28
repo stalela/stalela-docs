@@ -65,8 +65,9 @@ The cross-reference between an invoice and a transfer uses two opaque fields:
 |---|---|---|
 | `endUserRef` | On the CTS `CanonicalTransfer` | Set to the `fiscal_number` of the invoice |
 | `transfer_id` | On the invoice's `payments[].transfer_id` | Set to the CTS `transferId` after initiation |
+| `cisEntityId` | On the CTS payer/payee objects | [CIS](../15-identity/index.md) identity reference for payer/payee |
 
-Neither system queries the other's database. The POS client holds both identifiers and writes them to the appropriate payload.
+Neither system queries the other's database. The POS client holds both identifiers and writes them to the appropriate payload. For transfers exceeding Tier 0 limits, [CIS](../15-identity/index.md) KYC verification of the payer is mandatory before CTS accepts the transfer.
 
 ---
 

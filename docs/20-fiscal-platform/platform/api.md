@@ -4,7 +4,7 @@ Stalela is fiscal invoicing infrastructure for the DRC. The Invoicing API is the
 
 ## Authentication
 
-Requests require an outbound API key scoped to a merchant and an outlet. Send `Authorization: Bearer <token>` plus `X-Stalela-Merchant-ID` and `X-Stalela-Outlet-ID` headers so the Cloud can enforce multi-tenant quotas. Optional headers such as `X-Stalela-User-ID` or `X-Stalela-Source` help auditors trace which dashboard user, SDK, or future POS terminal produced a fiscal request. The platform enforces rate limits per outlet and per API key (e.g., 60 requests/min); honor `Retry-After` in `429` responses and back off accordingly.
+Requests require a [CIS](../../15-identity/index.md)-issued Bearer token (JWT) scoped to a merchant and outlet. Send `Authorization: Bearer <token>` plus `X-Stalela-Merchant-ID` and `X-Stalela-Outlet-ID` headers so the Cloud can enforce multi-tenant quotas. The JWT includes `tenantId`, `merchant_tin`, `outlet_id`, and `kycTier` claims issued after CIS KYB verification. Optional headers such as `X-Stalela-User-ID` or `X-Stalela-Source` help auditors trace which dashboard user, SDK, or future POS terminal produced a fiscal request. The platform enforces rate limits per outlet and per API key (e.g., 60 requests/min); honor `Retry-After` in `429` responses and back off accordingly.
 
 ## Core endpoints
 
@@ -134,7 +134,7 @@ The `dgi_status` field tracks whether the Sync Agent has uploaded the sealed inv
 
 - `400 Invalid canonical payload` — missing fields, incorrect ordering, or mismatched tax totals.
 - `401 Unauthorized` — missing or invalid bearer token.
-- `403 Forbidden` — the API key lacks scope for the merchant/outlet requested.
+- `403 Forbidden` — the API key lacks scope for the merchant/outlet requested, or [CIS](../../15-identity/index.md) KYB verification is incomplete for this merchant.
 - `422 Fiscalization failed` — the Cloud Signing Service rejected the payload (totals, tax group mismatch, unsupported invoice type).
 - `429 Too many requests` — rate limit exceeded; honor the `Retry-After` header before resubmitting.
 - `500 Internal server error` — transient HSM, ledger, or Sync Agent failure; retry with exponential backoff.

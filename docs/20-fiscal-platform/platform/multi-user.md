@@ -4,8 +4,11 @@ Stalela supports multiple users, API keys, and roles within a single merchant ac
 
 ## Identity model
 
+The [Customer Identity Service (CIS)](../../15-identity/index.md) is the source of truth for merchant and user identities. CIS manages KYB verification, user provisioning, role assignment, and API key issuance. The fiscal platform consumes CIS-issued credentials (Bearer JWTs) and enforces outlet-scoped permissions locally.
+
 ```mermaid
 flowchart TD
+    CIS["CIS (Identity Service)"] --> Merchant
     Merchant["Merchant (NIF)"] --> Outlet1["Outlet A"]
     Merchant --> Outlet2["Outlet B"]
     Outlet1 --> User1["User: Cashier 1\n(dashboard login)"]
@@ -13,6 +16,8 @@ flowchart TD
     Outlet1 --> Key1["API Key: ERP Integration\n(server-to-server)"]
     Outlet2 --> User3["User: Manager\n(dashboard login)"]
     Outlet2 --> Key2["API Key: Mobile App\n(SDK)"]
+
+    style CIS fill:#4AB7E5,color:#000
 ```
 
 | Entity | Description | Identifier |
@@ -87,7 +92,7 @@ For API key submissions, `submitted_by` contains `"type": "api_key"` and the key
 
 ## API key management
 
-- **Creation:** Owners and Managers create API keys scoped to a specific outlet via the dashboard or API.
+- **Creation:** Owners and Managers create API keys scoped to a specific outlet via the dashboard or API. Keys are issued by [CIS](../../15-identity/index.md) and carry outlet-scoped claims.
 - **Rotation:** Keys can be rotated without downtime — the old key remains valid for a configurable grace period (default: 24 hours).
 - **Revocation:** Immediate revocation is available. Revoked keys return `401 Unauthorized`.
 - **Scoping:** Each API key specifies which operations it can perform (e.g., create invoices only, or create + view reports).

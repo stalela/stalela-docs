@@ -7,7 +7,7 @@ The AI orchestration layer augments Canonical Transfer Service (CTS) decisioning
 | Agent | Primary Goal | Inputs | Outputs | Invocation Path |
 |---|---|---|---|---|
 | Smart Rail Selector | Rank available rails against policy weights and runtime health | Transfer intent, policy weights, rail metrics | Ranked rail list, selected rail, scoring metadata | CTS orchestration pipeline prior to Directory call |
-| Dynamic Risk Classifier | Assign adaptive compliance tiers | Payer/payee metadata, device signals, historical incidents | Risk tier, confidence, contributing features | CTS compliance step (pre-screen and re-evaluate on state changes) |
+| Dynamic Risk Classifier | Assign adaptive compliance tiers | Payer/payee metadata (inc. [CIS](../../15-identity/index.md)-sourced `kycTier`, `cisEntityId`), device signals, historical incidents | Risk tier, confidence, contributing features | CTS compliance step (pre-screen and re-evaluate on state changes) |
 | Rail Health Monitor | Track infrastructure health and flag degraded rails | Events, rail telemetry (latency, failure rate, uptime), incident feed | Health state, recommended throttles, events (`rail.flagged.degraded`) | Continuous streaming microservice subscribed to Event Bus |
 | Orchestration Copilot | Provide human-friendly explanations and diagnostics | Agent event history, policy configuration, observability data | Natural language summaries, CLI responses, remediation guidance | On-demand via CLI (`stalela ctl orchestration explain`) or chat assistant |
 
@@ -54,8 +54,8 @@ Response fragment published via `route.selected.via_ai`:
   "transfer_id": "tr_789",
   "tenant_id": "tn_55",
   "entities": {
-    "payer": { "type": "WALLET", "country": "ZA", "device_fingerprint": "abc" },
-    "payee": { "type": "BANK", "country": "NG", "kyc_level": "basic" }
+    "payer": { "type": "WALLET", "country": "ZA", "device_fingerprint": "abc", "cisEntityId": "id_abc123" },
+    "payee": { "type": "BANK", "country": "NG", "kyc_level": "basic", "cisEntityId": "id_xyz789" }
   },
   "behavioral_signals": { "lifetime_volume": 12000, "chargeback_rate": 0.01 }
 }
@@ -96,6 +96,8 @@ Subscribed to `events.transfers.*` plus telemetry topics. Emits `rail.flagged.de
 - **Invocation**: CTS invokes Smart Rail Selector and Dynamic Risk Classifier synchronously within orchestration. Rail Health Monitor runs continuously, while Orchestration Copilot is invoked on demand.
 - **Observability**: OpenTelemetry traces span CTS and agent calls. Structured logs include `trace_id`, `transfer_id`, and `policy_id` for joinability.
 - **Configuration**: Policies stored in the Directory/Config service are versioned; agents consume updates via feature flag streams.
+
+> **Identity data source**: The `kyc_level` and `cisEntityId` fields consumed by the Dynamic Risk Classifier are sourced from [CIS](../../15-identity/index.md). CIS is the single authority for KYC/KYB tier assignment; agents never independently assess identity verification status.
 
 ## Testing & Simulation
 

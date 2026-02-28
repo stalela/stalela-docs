@@ -6,8 +6,11 @@ Both pillars of the Stalela Platform enforce strict tenant isolation. This page 
 
 ## Identity Hierarchy
 
+The [Customer Identity Service (CIS)](../15-identity/index.md) is the source of truth for every actor in this hierarchy. CIS manages KYC/KYB verification, credential issuance, and consent for each entity.
+
 ```mermaid
 flowchart TD
+    CIS["CIS (Identity Service)"] --> T
     T["Stalela Account (tenantId)"] --> M["Merchant (merchant_tin)"]
     M --> O1["Outlet 1 (outlet_id)"]
     M --> O2["Outlet 2 (outlet_id)"]
@@ -15,6 +18,8 @@ flowchart TD
     O1 --> T2["POS Terminal 2 (pos_terminal_id)"]
     O1 --> C1["Cashier A (cashier_id)"]
     O1 --> C2["Cashier B (cashier_id)"]
+
+    style CIS fill:#4AB7E5,color:#000
 ```
 
 ---
@@ -35,9 +40,10 @@ flowchart TD
 
 When a merchant signs up for the Stalela Platform:
 
-1. **Account creation** → a `tenantId` is minted in the Payments Nucleus and a `merchant_tin` is registered in the Fiscal Platform.
-2. **Outlet registration** → each physical location gets an `outlet_id` in the Fiscal Platform. The Payments Nucleus doesn't require outlet-level scoping, but the `outlet_id` can be passed as `metadata` on transfers for reconciliation.
-3. **API keys** → each API key is scoped to both a `tenantId` (Payments) and a `merchant_tin` + `outlet_id` (Fiscal). A single Bearer token authenticates to both pillars.
+1. **CIS registration** — the merchant (individual or organisation) is created in [CIS](../15-identity/index.md) and undergoes KYB verification. CIS assigns an `identityId` / `orgId` and a KYC tier.
+2. **Account creation** — once CIS verification passes, a `tenantId` is minted in the Payments Nucleus and a `merchant_tin` is registered in the Fiscal Platform, both linked to the CIS entity.
+3. **Outlet registration** — each physical location gets an `outlet_id` in the Fiscal Platform. The Payments Nucleus doesn’t require outlet-level scoping, but the `outlet_id` can be passed as `metadata` on transfers for reconciliation.
+4. **Credential issuance** — CIS issues API keys scoped to both a `tenantId` (Payments) and a `merchant_tin` + `outlet_id` (Fiscal). A single Bearer token authenticates to both pillars.
 
 ---
 
@@ -50,6 +56,8 @@ When a merchant signs up for the Stalela Platform:
 | `X-Stalela-Merchant-ID` | *(optional, metadata)* | Required |
 | `X-Stalela-Outlet-ID` | *(optional, metadata)* | Required |
 | `X-Stalela-User-ID` | *(optional, audit trail)* | *(optional, audit trail)* |
+| `X-Stalela-Identity-ID` | *(optional, CIS entity)* | *(optional, CIS entity)* |
+| `X-Stalela-KYC-Tier` | *(injected by middleware)* | *(injected by middleware)* |
 | `X-Stalela-Source` | *(optional: dashboard, sdk, pos)* | *(optional: dashboard, api, sdk, pos)* |
 
 ---

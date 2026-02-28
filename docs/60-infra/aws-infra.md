@@ -26,6 +26,14 @@
 - RDS `storo_cts` (transfers, transfer_events, outbox).
 - NAT egress for partners as needed; prefer VPC endpoints for AWS services.
 
+## CIS (Customer Identity Service)
+- ECS Fargate behind internal ALB; exposed via API Gateway for public registration/auth endpoints.
+- RDS `storo_cis` (identities, orgs, credentials, consents, verification_sessions).
+- NAT egress for external identity verification providers (MOSIP, DHA, ZIMRA, credit bureaus, SIM-swap APIs).
+- IAM roles scoped to KMS for PII encryption at rest (field-level).
+- Emits `identity.*` events to SNS; CTS, Compliance, and Fiscal subscribe via SQS.
+- See [CIS Architecture](../15-identity/architecture/container.md) for the full container diagram.
+
 ## Rail Gateways (EcoCash, MTN/Airtel, OPPWA, Zimswitch, PayShap, USDC/Algo)
 - ECS Fargate per gateway in private subnets; internal ALB.
 - Public webhooks via dedicated public ALB + WAF, path `/webhooks/<rail>`.

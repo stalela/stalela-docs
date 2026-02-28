@@ -52,6 +52,12 @@ Reversal of a prior settlement, with reason codes. Modeled as state transitions 
 **Compliance Screening**  
 Process of checking payer/payee against watchlists (OFAC, UN, EU, SA FIC). Implemented as a local fast index.
 
+**CIS (Customer Identity Service)**  
+Cross-pillar identity service providing KYC/KYB verification, tier assignment, and `cisEntityId` resolution for all Stalela transfers. See [Identity (CIS)](../../15-identity/index.md).
+
+**cisEntityId**  
+Opaque identifier assigned by CIS to each verified identity (individual or organisation). Carried in `payer`/`payee` on every canonical transfer.
+
 **Cutoff**  
 Time of day after which payments are queued for next business day. Defined in Directory service.
 
@@ -110,6 +116,19 @@ This file. Shared terms and definitions.
 
 **Idempotency**  
 Ensuring a request (e.g., `POST /transfers`) can be safely retried without duplication.
+
+---
+
+## K
+
+**KYB (Know Your Business)**  
+Identity verification process for organisations/merchants, managed by CIS. Required before fiscal credential issuance.
+
+**KYC (Know Your Customer)**  
+Identity verification process for individuals, managed by CIS. Determines the `kycTier` that governs transfer limits.
+
+**KYC Tier**  
+Graduated verification level (UNVERIFIED → BASIC → ENHANCED → FULL) assigned by CIS. Controls permitted transfer amounts and corridor access per [risk limits](../specs/risk-limits.md).
 
 **ISO 8583**  
 International standard for card payment messages. Zimswitch uses this; Stalela validates payloads via strict schemas.

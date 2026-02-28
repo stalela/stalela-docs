@@ -7,7 +7,7 @@ The Canonical Transfer Service (CTS) is the front door and conductor of Stalela.
 ### 1. Introduction
 
 - Purpose: Define an actionable, auditable, and operable System Design for CTS.
-- Scope: CTS handles submission and tracking of transfers; it does not execute rail-specific protocols directly, compute ledger postings, or perform KYC—those are delegated to Gateways, Ledger, and Compliance.
+- Scope: CTS handles submission and tracking of transfers; it does not execute rail-specific protocols directly, compute ledger postings, or perform KYC—those are delegated to Gateways, Ledger, [CIS (identity/KYC)](../../15-identity/index.md), and Compliance.
 - Audience: Backend engineers, SRE/Platform, Security/Compliance, Product.
 
 ---
@@ -15,7 +15,7 @@ The Canonical Transfer Service (CTS) is the front door and conductor of Stalela.
 ### 2. Background & Context
 
 - Multi-tenant, regulated data, event-driven architecture with transactional outbox and eventual consistency for downstream consumers.
-- CTS upstream: clients/integrators. Downstream: Compliance, Directory & Routing, Rail Gateways, Ledger (via events), Observability stack.
+- CTS upstream: clients/integrators. Downstream: [CIS](../../15-identity/index.md) (identity resolution/KYC), Compliance, Directory & Routing, Rail Gateways, Ledger (via events), Observability stack.
 
 Mermaid Context (C4 Level 1)
 ```mermaid
@@ -26,6 +26,7 @@ graph TD
 
   subgraph Stalela Core
     B[CTS API]
+    CIS[CIS — Identity Service]
     C[Compliance Service]
     D[Directory & Routing]
     E[Rail Gateways]
@@ -36,6 +37,7 @@ graph TD
   end
 
   A -- HTTPS sync --> B
+  B -- resolve identity --> CIS
   B -- screen sync --> C
   B -- route sync --> D
   B -- persist sync --> G
@@ -47,7 +49,7 @@ graph TD
 
 Assumptions/Constraints
 - Eventual consistency for downstream consumers; synchronous path returns latest known state.
-- Per-tenant authentication and authorization.
+- Per-tenant authentication and authorization — Bearer tokens issued by [CIS](../../15-identity/index.md).
 - Exactly-once event publishing via transactional outbox.
 - PII encrypted at rest; PII exclusion in logs.
 
@@ -79,8 +81,8 @@ Canonical Request (excerpt)
   "sourceCurrency": "USD",
   "targetCurrency": "USD",
   "fxStrategy": "NOT_APPLICABLE",
-  "payer": { "type": "WALLET", "id": "payer-abc" },
-  "payee": { "type": "BANK", "id": "payee-xyz" },
+  "payer": { "type": "WALLET", "id": "payer-abc", "cisEntityId": "id_abc123" },
+  "payee": { "type": "BANK", "id": "payee-xyz", "cisEntityId": "id_xyz789" },
   "railHints": ["usdc-algo"],
   "feeModel": "STORO_STANDARD",
   "endUserRef": "end-user-55",
@@ -102,7 +104,7 @@ Prod targets
 | Availability | 99.95% monthly SLO; error budget 21.6m/mo | Excludes third-party outages beyond retry budget |
 | Throughput | Baseline 200 TPS; burst 1,000 TPS (5 min) | HPA + queue smoothing |
 | Scalability | Horizontal scale by stateless API; partition by tenantId/transferId | Stickiness not required |
-| Security & Privacy | OAuth2 client-cred or HMAC per tenant; TLS 1.2+; PII encrypted at rest | Logs redact PII |
+| Security & Privacy | [CIS](../../15-identity/index.md)-issued OAuth2 client-cred or HMAC per tenant; TLS 1.2+; PII encrypted at rest | Logs redact PII |
 | Reliability | Idempotency (36h TTL); transactional outbox with retries; DLQ | Exactly-once publish semantics |
 | Compliance/Audit | Immutable events; correlation IDs; retention ≥ 7 years (configurable) | WORM storage optional |
 
@@ -216,6 +218,7 @@ sequenceDiagram
   autonumber
   participant Client
   participant API as CTS/API
+  participant CIS as CIS (Identity)
   participant Cmp as Compliance
   participant Dir as Directory
   participant DB as CTS/DB
@@ -225,7 +228,9 @@ sequenceDiagram
 
   Client->>API: POST /transfers {Idempotency-Key, Authorization}
   API->>API: validate + canonicalize (hash, X-Canonical-Version)
-  API->>Cmp: screen(payer,payee) [timeout 800ms, 2x retry]
+  API->>CIS: resolve payer/payee identity (cisEntityId, kycTier)
+  CIS-->>API: identities resolved (tier=FULL)
+  API->>Cmp: screen(payer,payee,cisEntityId) [timeout 800ms, 2x retry]
   Cmp-->>API: allow
   API->>Dir: route(intent, payee) [timeout 400ms]
   Dir-->>API: rail=usdc, endpoint

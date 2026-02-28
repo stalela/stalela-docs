@@ -19,6 +19,9 @@ The **Directory & Routing Service** is Stalela’s authoritative source of rails
 - Circuit-breaker fallback to cached versions.  
 - Version data for audit and rollback.  
 - Maintain ZA bank codes and PayShap proxy rules (cell/email/id) for resolution.  
+
+> **PayShap proxy validation**: When resolving a PayShap proxy (cell number, email, or national ID) the Directory Service calls CIS to confirm the proxy is bound to a verified identity (`cisEntityId`). This prevents transfers to unverified recipients. See [Identity (CIS)](../../15-identity/index.md).
+
 - Publish settlement calendars (ZA/ZW) and cutoffs for consumers.
 
 ---

@@ -14,6 +14,8 @@ This document captures the **performance, availability, security, and compliance
 - API latency (P99):
   - POST /transfers: ≤ 250 ms (excluding external rail).
   - Balance queries: ≤ 100 ms.
+  - CIS identity resolution (cache hit): ≤ 200 ms.
+  - CIS identity resolution (cache miss / verification): ≤ 1 s.
 - Event bus publish lag (P99): ≤ 1 s.
 - Ledger posting confirmation: ≤ 1 s after settlement.
 

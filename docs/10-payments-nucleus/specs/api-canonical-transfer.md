@@ -19,7 +19,7 @@ Creates a new transfer.
 **Headers**
 - `Idempotency-Key`: unique key per client request (unique on `(tenantId, idempotencyKey, bodyHash)` for **36h**).
 - `X-Canonical-Version`: currently fixed to `1`; bump when schema revs.
-- `Authorization`: OAuth2 client-credentials bearer token by default; HMAC signature supported for partners that cannot use OAuth.
+- `Authorization`: OAuth2 client-credentials bearer token issued by [CIS](../../15-identity/index.md); HMAC signature supported for partners that cannot use OAuth. The JWT includes `tenantId`, `kycTier`, and optional `cisEntityId` claims.
 
 **Request Body**
 ```json
@@ -30,8 +30,8 @@ Creates a new transfer.
   "sourceCurrency": "USD",
   "targetCurrency": "USD",
   "fxStrategy": "NOT_APPLICABLE",
-  "payer": { "type": "WALLET", "id": "acct_001" },
-  "payee": { "type": "BANK", "id": "acct_999" },
+  "payer": { "type": "WALLET", "id": "acct_001", "cisEntityId": "id_abc123" },
+  "payee": { "type": "BANK", "id": "acct_999", "cisEntityId": "id_xyz789" },
   "railHints": ["usdc-algo"],
   "feeModel": "STORO_STANDARD",
   "endUserRef": "end_abc123",
@@ -53,6 +53,7 @@ Creates a new transfer.
 Errors
 - `409 IdempotencyConflict` – same key, different `bodyHash`.
 - `422 EntityDenied` – compliance block.
+- `403 KycTierInsufficient` – [CIS](../../15-identity/index.md) KYC tier too low for the requested corridor/amount.
 - `502 RoutingUnavailable` – directory lookup failed; includes `retryAfter` when a route window is closed.
 - `503 DependencyUnavailable` – downstream dependency outage (e.g., Compliance, Directory).
 - `500 RailUnavailable` – rail gateway issue.
@@ -161,7 +162,8 @@ Returns transfer details and event timeline.
       "required": ["type", "id"],
       "properties": {
         "type": { "type": "string", "enum": ["WALLET", "BANK", "CARD", "MOBILE_MONEY", "EXTERNAL"] },
-        "id": { "type": "string", "minLength": 1 }
+        "id": { "type": "string", "minLength": 1 },
+        "cisEntityId": { "type": "string", "description": "CIS identity reference for the payer" }
       },
       "additionalProperties": true
     },
@@ -170,7 +172,8 @@ Returns transfer details and event timeline.
       "required": ["type", "id"],
       "properties": {
         "type": { "type": "string", "enum": ["WALLET", "BANK", "CARD", "MOBILE_MONEY", "EXTERNAL"] },
-        "id": { "type": "string", "minLength": 1 }
+        "id": { "type": "string", "minLength": 1 },
+        "cisEntityId": { "type": "string", "description": "CIS identity reference for the payee" }
       },
       "additionalProperties": true
     },

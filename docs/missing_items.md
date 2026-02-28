@@ -87,6 +87,31 @@ This document tracks gaps to make the Stalela nucleus production-ready for South
 
 ## KYC, Identity, Fraud
 
+- **CIS ↔ CTS identity resolution**
+  - Description: CTS must resolve `cisEntityId` to a verified identity before screening. Define the resolution API contract, caching strategy (JWT claims vs. API call), and fallback when CIS is unavailable.
+  - Suggested docs: `docs/15-identity/api/identities.md`, `docs/10-payments-nucleus/components/canonical-transfer-service.md`
+  - Status: Partially complete — CIS docs created; CTS doc updated with CIS references. Resolution API contract still needs formal OpenAPI spec.
+
+- **CIS-issued credentials lifecycle**
+  - Description: Document full lifecycle of CIS-issued API keys and JWTs: creation, rotation, revocation, grace periods. Define claim schema (`tenantId`, `merchant_tin`, `outlet_id`, `kycTier`, `cisEntityId`).
+  - Suggested docs: `docs/15-identity/api/api-keys.md`, `docs/15-identity/api/auth.md`
+  - Status: Completed (CIS Phase 1 docs)
+
+- **CIS merchant onboarding flow**
+  - Description: End-to-end onboarding: merchant registration → KYB verification → tier assignment → `tenantId` + `merchant_tin` minting → credential issuance.
+  - Suggested docs: `docs/15-identity/howtos/onboard-merchant.md`, `docs/30-integration/merchant-identity.md`
+  - Status: Completed (CIS Phase 1 + Phase 2 integration docs)
+
+- **CIS consent management (POPIA/GDPR)**
+  - Description: Consent collection, storage, withdrawal, and DSAR flows through CIS. Define which services must check consent before processing PII.
+  - Suggested docs: `docs/15-identity/compliance/privacy-gdpr-popia.md`, `docs/15-identity/api/consents.md`
+  - Status: Completed (CIS Phase 1 docs)
+
+- **CIS as KYC tier authority**
+  - Description: CIS is the single source of truth for KYC tier assignment. CTS, Compliance, and Fiscal cache the tier but never independently verify. Document tier change events (`identity.tier.changed`) and cache invalidation.
+  - Suggested docs: `docs/15-identity/concepts/verification-and-policies.md`, `docs/10-payments-nucleus/specs/risk-limits.md`
+  - Status: Completed (CIS Phase 1 + Phase 2 specs updated)
+
 - **Tiered limits and velocity controls by KYC level**
   - Description: Policy matrix and enforcement points in CTS/compliance.
   - Suggested docs: `docs/20-specs/risk-limits.md`

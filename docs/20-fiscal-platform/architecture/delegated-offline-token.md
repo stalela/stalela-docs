@@ -13,7 +13,7 @@ To solve this, we need a way for Point of Sale (POS) terminals to sign invoices 
 We introduce the **Delegated Offline Token Architecture** as a Phase 1.5 fast-follow. This model combines principles from Self-Sovereign Identity (Verifiable Credentials), Browser Extensions (the MetaMask pattern), and HOTP (Block Allocation).
 
 ### 1. Delegated Credential Issuance
-Instead of the POS holding the master Cloud HSM key, the Cloud HSM issues a short-lived (e.g., 12-hour) "Delegated Private Key" to the POS terminal when it is online. This key is packaged as a Verifiable Credential (VC) that says:
+Instead of the POS holding the master Cloud HSM key, the Cloud HSM issues a short-lived (e.g., 12-hour) "Delegated Private Key" to the POS terminal when it is online. The POS terminal must first be authenticated by [CIS](../../15-identity/index.md) as a valid cashier/terminal identity, with a current KYC tier. The key is then packaged as a Verifiable Credential (VC) that says:
 > *"I, Stalela Cloud (Trusted Authority), certify that Public Key [XYZ] belongs to POS Terminal #12, and is authorized to sign Invoices #1000 to #1500 until Midnight tonight."*
 
 ### 2. Local Signing (The Fiscal Extension)

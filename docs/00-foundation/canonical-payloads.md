@@ -11,7 +11,7 @@ Both pillars of the Stalela Platform use a **contract-first, deterministic paylo
 | **Purpose** | Move money between accounts across rails | Create a sealed, fiscally compliant invoice |
 | **Submitted to** | Canonical Transfer Service (CTS) | Cloud Signing Service (HSM) via Invoicing API |
 | **Result** | Transfer lifecycle (INITIATED → SETTLED) | Sealed invoice with fiscal number + signature |
-| **Identity scope** | `tenantId` | `merchant_tin` + `outlet_id` + `jurisdiction` |
+| **Identity scope** | `tenantId` + `cisEntityId` (payer/payee) | `merchant_tin` + `outlet_id` + `jurisdiction` |
 | **Idempotency** | `idempotencyKey` (36h TTL) | Fiscal number (monotonic, never reused) |
 | **Offline behavior** | Outbox + DLQ retry | IndexedDB queue → flush on reconnect |
 | **Append-only** | GL Ledger postings (double-entry) | Hash-chained Fiscal Ledger (prev-hash linked) |
@@ -33,12 +33,14 @@ Both pillars of the Stalela Platform use a **contract-first, deterministic paylo
   "payer": {
     "accountId": "acc_sender",
     "name": "Sender Corp",
-    "institutionId": "inst_001"
+    "institutionId": "inst_001",
+    "cisEntityId": "id_abc123"
   },
   "payee": {
     "accountId": "acc_receiver",
     "name": "Receiver Ltd",
-    "institutionId": "inst_002"
+    "institutionId": "inst_002",
+    "cisEntityId": "id_xyz789"
   },
   "railHints": ["payshap", "eft"],
   "feeModel": "SENDER_PAYS",

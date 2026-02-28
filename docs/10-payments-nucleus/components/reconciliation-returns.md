@@ -97,7 +97,7 @@ sequenceDiagram
 
 ## 🧭 Runbooks
 - **Unmatched backlog** → operator assigns manually.  
-- **High return rate** → throttle merchant, investigate risk.  
+- **High return rate** → throttle merchant, investigate risk. Emit `identity.tier.review_requested` to CIS so the identity's KYC tier can be reassessed. See [Identity State Machines](../../15-identity/architecture/state-machines.md).  
 - **File delivery gap** → contact partner, reconcile manually.  
 
 ---

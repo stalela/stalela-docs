@@ -138,6 +138,78 @@ nav:
           - "10-payments-nucleus/adr/PAY-ADR-0002-double-entry-ledger.md"
           - "10-payments-nucleus/adr/PAY-ADR-0003-contracts-first.md"
           - "10-payments-nucleus/adr/PAY-ADR-0004-outbox-relay-supabase.md"
+  - Identity (CIS):
+      - "15-identity/index.md"
+      - Overview:
+          - "15-identity/overview/architecture.md"
+          - "15-identity/overview/cis-vs-cts.md"
+          - "15-identity/overview/glossary.md"
+          - "15-identity/overview/cis-integration-map.md"
+      - Concepts:
+          - "15-identity/concepts/identities.md"
+          - "15-identity/concepts/organizations.md"
+          - "15-identity/concepts/credentials-and-factors.md"
+          - "15-identity/concepts/verification-and-policies.md"
+          - "15-identity/concepts/consent-and-privacy.md"
+          - "15-identity/concepts/rbac-and-scopes.md"
+      - API:
+          - "15-identity/api/auth.md"
+          - "15-identity/api/identities.md"
+          - "15-identity/api/orgs.md"
+          - "15-identity/api/consents.md"
+          - "15-identity/api/verification.md"
+          - "15-identity/api/api-keys.md"
+          - "15-identity/api/search.md"
+      - SDKs:
+          - "15-identity/sdks/js.md"
+          - "15-identity/sdks/python.md"
+      - Events:
+          - "15-identity/events/envelope.md"
+          - "15-identity/events/identity-events.md"
+          - "15-identity/events/org-events.md"
+          - "15-identity/events/auth-events.md"
+          - "15-identity/events/versioning-and-compat.md"
+      - Schemas:
+          - "15-identity/schemas/canonical-identity-v1.md"
+          - "15-identity/schemas/canonical-org-v1.md"
+          - "15-identity/schemas/consent-v1.md"
+          - "15-identity/schemas/event-envelope-v1.md"
+          - "15-identity/schemas/policy-v1.md"
+      - Architecture:
+          - "15-identity/architecture/container.md"
+          - "15-identity/architecture/components.md"
+          - "15-identity/architecture/data-model.md"
+          - "15-identity/architecture/state-machines.md"
+          - "15-identity/architecture/security-and-pii.md"
+          - "15-identity/architecture/code-structure.md"
+      - Ops:
+          - "15-identity/ops/deployments.md"
+          - "15-identity/ops/config.md"
+          - "15-identity/ops/observability.md"
+          - "15-identity/ops/runbooks.md"
+          - "15-identity/ops/sla-slo.md"
+      - Compliance:
+          - "15-identity/compliance/kyc-kyb-flows.md"
+          - "15-identity/compliance/data-retention.md"
+          - "15-identity/compliance/regional-policies-za-zw.md"
+          - "15-identity/compliance/privacy-gdpr-popia.md"
+      - How-To Guides:
+          - "15-identity/howtos/signup-individual.md"
+          - "15-identity/howtos/onboard-merchant.md"
+          - "15-identity/howtos/enroll-webauthn.md"
+          - "15-identity/howtos/oauth-client-cred.md"
+          - "15-identity/howtos/link-to-cts.md"
+      - Reference:
+          - "15-identity/reference/errors.md"
+          - "15-identity/reference/idempotency.md"
+          - "15-identity/reference/pagination.md"
+          - "15-identity/reference/rate-limits.md"
+          - "15-identity/reference/changelog.md"
+      - ADRs:
+          - "15-identity/adrs/CIS-ADR-0001-cis-owns-identity.md"
+          - "15-identity/adrs/CIS-ADR-0002-event-envelope-and-bus.md"
+          - "15-identity/adrs/CIS-ADR-0003-pii-encryption.md"
+          - "15-identity/adrs/CIS-ADR-0004-policy-engine-json-logic.md"
   - Fiscal Platform:
       - "20-fiscal-platform/index.md"
       - Architecture:
@@ -214,6 +286,8 @@ nav:
       - "30-integration/payment-on-invoice.md"
       - "30-integration/merchant-identity.md"
       - "30-integration/sequence-invoice-then-pay.md"
+      - "30-integration/identity-to-payments.md"
+      - "30-integration/identity-to-fiscal.md"
   - Infrastructure:
       - "60-infra/index.md"
       - "60-infra/free-stack.md"

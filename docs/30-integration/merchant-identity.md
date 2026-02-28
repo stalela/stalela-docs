@@ -33,7 +33,7 @@ The Fiscal Platform requires outlet-level granularity because fiscal regulations
 
 | Payments Nucleus | Fiscal Platform | Created During | Notes |
 |---|---|---|---|
-| `tenantId` | `merchant_tin` | Merchant onboarding | 1:1 binding. Stored in a shared identity registry. |
+| `tenantId` | `merchant_tin` | Merchant onboarding | 1:1 binding. Stored in CIS (`cisEntityId` links both). |
 | — | `outlet_id` | Outlet registration | Payments doesn't need this but it can be passed as `metadata.outlet_id` on transfers. |
 | — | `pos_terminal_id` | Terminal provisioning | Irrelevant to Payments. |
 | — | `cashier_id` | Staff management | Irrelevant to Payments. |
@@ -42,29 +42,37 @@ The Fiscal Platform requires outlet-level granularity because fiscal regulations
 
 ## Onboarding Flow
 
+The [Customer Identity Service (CIS)](../15-identity/index.md) is the single source of truth for merchant identity. CIS manages KYB verification, tier assignment, and credential issuance. The onboarding flow is:
+
 ```mermaid
 sequenceDiagram
     participant Admin as Platform Admin
-    participant REG as Identity Registry
+    participant CIS as CIS (Identity Service)
     participant PAY as Payments Nucleus
     participant FIS as Fiscal Platform
 
-    Admin->>REG: Register merchant (business_name, nif, ...)
-    REG->>PAY: Create tenant (tenantId = "tn_55")
-    REG->>FIS: Create merchant (merchant_tin = "NIF-123456")
-    REG->>REG: Store binding (tn_55 ↔ NIF-123456)
-    REG-->>Admin: Merchant created — tenantId + merchant_tin
+    Admin->>CIS: Register merchant (business_name, nif, documents)
+    CIS->>CIS: KYB verification (ID docs, business registration)
+    CIS->>CIS: Assign KYC tier (T0/T1/T2)
+    CIS->>PAY: Create tenant (tenantId = "tn_55")
+    CIS->>FIS: Create merchant (merchant_tin = "NIF-123456")
+    CIS->>CIS: Store binding (tn_55 ↔ NIF-123456, cisEntityId)
+    CIS->>CIS: Issue Bearer token (JWT with tenantId + merchant_tin + kycTier)
+    CIS-->>Admin: Merchant verified — tenantId + merchant_tin + credentials
 
     Admin->>FIS: Add outlet (outlet_id = "OUT-KIN-01")
     Admin->>FIS: Add terminal (pos_terminal_id = "TERM-001")
-    Admin->>FIS: Add cashier (cashier_id = "cashier-jean")
+    Admin->>CIS: Add cashier (cashier_id = "cashier-jean")
+    CIS->>CIS: Provision cashier identity + role
 ```
+
+> See [CIS Merchant Onboarding](../15-identity/howtos/onboard-merchant.md) for the full how-to guide.
 
 ---
 
 ## API Key Scoping
 
-A single API key (Bearer token) encodes both identities:
+A single [CIS](../15-identity/index.md)-issued API key (Bearer JWT) encodes both pillar identities:
 
 ```json
 {
@@ -90,4 +98,4 @@ When a POS client creates an invoice and then initiates a payment:
 1. The Fiscal Platform validates `merchant_tin` + `outlet_id` from the token.
 2. The POS client calls `POST /transfers` on CTS. The token's `sub` claim provides `tenantId`.
 3. The POS client sets `endUserRef` = `fiscal_number` and optionally `metadata.outlet_id` = `OUT-KIN-01`.
-4. Neither service queries the other's identity store. The shared identity registry is consulted only during onboarding and token issuance.
+4. Neither service queries the other's identity store. [CIS](../15-identity/index.md) is the shared identity authority consulted during onboarding and token issuance.

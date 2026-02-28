@@ -11,6 +11,8 @@ Adapt canonical transfers to the rail; strict schema validation; webhooks/file i
 - Map reason/return codes; emit `accepted/settled/returned/failed`.
 - Persist artifacts (redacted) for audit/recon; use outbox for events.
 
+> **Identity note**: Payer/payee identity resolution is performed by CIS *before* the transfer reaches the gateway. Gateways receive a resolved `cisEntityId` and do not call CIS directly.
+
 ## Interfaces
 ### Inputs
 - Events: `transfers.submitted.<rail>`

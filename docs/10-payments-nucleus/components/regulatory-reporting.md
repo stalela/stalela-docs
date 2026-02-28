@@ -13,6 +13,7 @@ Prepare and submit statutory reports (BoP, goAML) for ZA/ZW; manage schedules, r
 ### Inputs
 - Events: `transfers.*` (as needed), ledger postings (read-only API).  
 - Internal reads: CTS/Ledger/Compliance summaries.
+- **CIS identity data**: STR/CTR and BoP filings require payer/payee identity details (name, national ID, address). The reporting service resolves these from CIS using `cisEntityId`. CIS is the single source of truth for identity attributes — the reporting service never stores raw PII locally.
 
 ### Outputs
 - Files/APIs: BoP to SARB authorized dealer; goAML to FIC/FIU.  

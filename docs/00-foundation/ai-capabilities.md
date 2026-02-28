@@ -62,7 +62,7 @@ These agents are documented in full at [Orchestration AI Agents](../10-payments-
 | Agent | Purpose | Invocation | Phase |
 |---|---|---|---|
 | **Smart Rail Selector** | Rank available rails against policy weights and runtime health. Optimizes for cost, reliability, or speed. | Synchronous — CTS orchestration pipeline, pre-Directory | Sprint 1+ |
-| **Dynamic Risk Classifier** | Assign adaptive compliance tiers based on payer/payee metadata, device signals, and historical incidents. | Synchronous — CTS compliance step | Sprint 2+ |
+| **Dynamic Risk Classifier** | Assign adaptive compliance tiers based on [CIS](../15-identity/index.md)-sourced KYC data (`cisEntityId`, `kycTier`), device signals, and historical incidents. | Synchronous — CTS compliance step | Sprint 2+ |
 | **Rail Health Monitor** | Track infrastructure health per rail (latency, failure rate, uptime). Emits `rail.flagged.degraded` when thresholds are breached. | Continuous streaming microservice on Event Bus | Sprint 1+ |
 | **Orchestration Copilot** | Human-friendly explanations of routing decisions, diagnostics, and remediation guidance. | On-demand via CLI (`stalela ctl orchestration explain`) or Operator Console | Sprint 3+ |
 
@@ -93,7 +93,7 @@ The AI layers of each pillar are **decoupled** — they do not call each other d
 | Scenario | Payments Agent | Fiscal AI | Integration Point |
 |---|---|---|---|
 | **Invoice-then-pay** | Smart Rail Selector picks optimal rail | NL Invoice Parser creates the invoice | POS/client calls CTS after fiscal sealing; `endUserRef` = `fiscal_number` |
-| **Risk + Compliance** | Dynamic Risk Classifier assigns risk tier to transfer | Anomaly Detection flags suspicious invoice patterns | Both publish to Event Bus; Operator Console shows correlated alerts per merchant |
+| **Risk + Compliance** | Dynamic Risk Classifier assigns risk tier to transfer (using [CIS](../15-identity/index.md) KYC data) | Anomaly Detection flags suspicious invoice patterns | Both publish to Event Bus; Operator Console shows correlated alerts per merchant |
 | **Health monitoring** | Rail Health Monitor flags degraded mobile money rail | — | POS can warn cashier before attempting mobile money collection |
 
 ---
@@ -135,4 +135,4 @@ stalela ctl orchestration explain --transfer-id=tr_789
 | `/api/v1/ocr/scan` | POST | Upload document for OCR extraction | Phase 4 |
 | `/api/v1/search/query` | POST | Natural language search over fiscal data | Phase 4 |
 
-All endpoints inherit the same authentication (Bearer token), rate limiting, and tenant isolation as the core APIs.
+All endpoints inherit the same authentication ([CIS](../15-identity/index.md)-issued Bearer token), rate limiting, and tenant isolation as the core APIs.

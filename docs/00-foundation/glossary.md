@@ -27,13 +27,17 @@ Merged vocabulary for the Stalela Platform. Terms that carry different meanings 
 | **Canonical Invoice** | *(Fiscal)* The deterministic JSON payload submitted to the Cloud Signing Service for fiscal sealing. Fields: `merchant_tin`, `outlet_id`, `pos_terminal_id`, `jurisdiction`, `cashier_id`, `client`, `tax_groups`, `totals`, `payments`. |
 | **Canonical Transfer** | *(Payments)* The deterministic JSON payload submitted to the CTS for payment processing. Fields: `tenantId`, `intent`, `amount`, `payer`, `payee`, `railHints`, `feeModel`. |
 | **CTS** | Canonical Transfer Service — the front-door API and orchestrator for all payment intents in the Payments Nucleus. |
+| **CIS** | Customer Identity Service — owns the full identity lifecycle (creation, verification, suspension, erasure) for all actors on the platform. Source of truth for KYC/KYB status. See [Identity (CIS)](../15-identity/index.md). |
 | **Client Classification** | *(Fiscal)* Jurisdiction-mandated buyer category on each invoice. DRC defines: individual, company, commercial individual, professional, embassy. Other jurisdictions define their own. See [Jurisdictions](../40-jurisdictions/index.md). |
 | **Compliance** | Overloaded term — see disambiguation below. |
+| **Consent** | A data-subject’s revocable grant permitting CIS to process specific personal data for a stated purpose. Stored in an append-only consent ledger. See [Consent & Privacy](../15-identity/concepts/consent-and-privacy.md). |
 | **Counter** | *(Fiscal)* Monotonic, non-resettable sequence number assigned per outlet by the Monotonic Counter Manager. |
+| **Credential** | A verifiable proof of identity held by a CIS actor — password (Argon2id), TOTP secret, WebAuthn public key, or API key. See [Credentials & Factors](../15-identity/concepts/credentials-and-factors.md). |
 
 !!! note "Disambiguation: Compliance"
     - **Payments Nucleus**: Entity screening against sanctions watchlists (OFAC, UN, EU, SA FIC) before a transfer is submitted to a rail.
     - **Fiscal Platform**: Adherence to jurisdiction-specific tax law — tax groups, invoice types, fiscal device registration, and authority sync requirements. See [Jurisdictions](../40-jurisdictions/index.md).
+    - **Identity (CIS)**: KYC/KYB verification workflows — document checks, liveness probes, and ongoing compliance screening of identities. See [KYC & KYB Flows](../15-identity/compliance/kyc-kyb-flows.md).
 
 ## D
 
@@ -43,18 +47,21 @@ Merged vocabulary for the Stalela Platform. Terms that carry different meanings 
 | **DGI** | Direction Générale des Impôts — DRC tax authority. See [DRC Country Profile](../40-jurisdictions/cd/index.md). |
 | **DLQ** | Dead Letter Queue — failed events that could not be processed after retries. |
 | **Double-Entry** | *(Payments)* Every money movement records equal debits and credits in the GL Ledger. |
+| **DSAR** | Data Subject Access Request — a formal request (GDPR/POPIA) for access, rectification, or erasure of personal data. CIS processes DSARs through the erasure pipeline. |
+| **Data Subject** | Any natural person whose personal data is processed by CIS — individual identities, cashiers, beneficial owners. |
 | **Directory Service** | *(Payments)* Institutions, BINs, settlement cutoffs, fee windows, and routing tables. |
 
 ## E–F
 
 | Term | Definition |
 |---|---|
-| **Event Bus** | SNS+SQS pub/sub backbone for exactly-once event delivery (transactional outbox pattern). |
-| **Event Envelope** | Standardized wrapper around every domain event: `eventId`, `type`, `timestamp`, `tenantId`, `payload`, `traceparent`. |
+| **Event Bus** | Transactional outbox pub/sub backbone for exactly-once event delivery. |
+| **Event Envelope** | Standardized wrapper around every domain event: `eventId`, `type`, `timestamp`, `tenantId`, `payload`, `traceparent`. See [CIS Event Envelope](../15-identity/events/envelope.md). |
 | **Fiscal Extension** | *(Fiscal)* Semi-trusted browser extension holding a Delegated Credential for offline signing. |
 | **Fiscal Ledger** | *(Fiscal)* Append-only, hash-chained log of sealed invoices. Not a GL — it is a tamper-evident audit trail. |
 | **Fiscal Number** | *(Fiscal)* Strictly monotonic invoice identifier assigned by the Cloud Signing Service or USB device. |
 | **FX Strategy** | *(Payments)* How currency conversion is handled: `AT_SOURCE`, `AT_DESTINATION`, `PRE_FUNDED`. |
+| **Factor** | A single authentication mechanism bound to a CIS identity — password, TOTP, WebAuthn (platform or cross-platform), OTP (email/SMS). See [Credentials & Factors](../15-identity/concepts/credentials-and-factors.md). |
 
 ## G–I
 
@@ -62,12 +69,20 @@ Merged vocabulary for the Stalela Platform. Terms that carry different meanings 
 |---|---|
 | **GL Ledger** | *(Payments)* General Ledger with double-entry postings, balances, and chart of accounts. Distinct from Fiscal Ledger. |
 | **HSM** | Hardware Security Module — the trusted root for cryptographic signing in the Cloud Signing Service. |
-| **Idempotency Key** | Client-supplied key ensuring that retried requests produce the same result. Used in both CTS and Invoicing API. |
+| **Idempotency Key** | Client-supplied key ensuring that retried requests produce the same result. Used in CTS, CIS, and Invoicing API. |
 | **Invoice Type** | *(Fiscal)* Jurisdiction-defined invoice categories. DRC defines: sale, advance, credit note, export, export credit. Other jurisdictions may define different types. |
 
 !!! note "Disambiguation: Ledger"
     - **GL Ledger** (Payments Nucleus): Financial double-entry accounting system tracking balances across accounts. Supports posting rules, chart of accounts, closing-the-books.
     - **Fiscal Ledger** (Fiscal Platform): Hash-chained, append-only audit log of sealed invoices. No debit/credit semantics — each entry is a signed fiscal event with a `prev_hash` pointer.
+
+## K
+
+| Term | Definition |
+|---|---|
+| **KYB** | Know Your Business — verification of a legal entity's registration, beneficial ownership, and standing. Managed by CIS. See [KYC & KYB Flows](../15-identity/compliance/kyc-kyb-flows.md). |
+| **KYC** | Know Your Customer — verification of an individual's identity (documents, liveness, address). Managed by CIS. See [KYC & KYB Flows](../15-identity/compliance/kyc-kyb-flows.md). |
+| **KYC Tier** | CIS-assigned trust level for an identity. T0 (basic/unverified), T1 (document-verified), T2 (enhanced due diligence). Determines transaction limits in CTS. |
 
 ## M–O
 
@@ -98,7 +113,7 @@ Merged vocabulary for the Stalela Platform. Terms that carry different meanings 
 | **Tax Authority** | The government agency responsible for tax collection and fiscal compliance in a given jurisdiction. DRC: DGI, Kenya: KRA, Rwanda: RRA, etc. |
 | **Tax Engine** | *(Fiscal)* Loads the active jurisdiction's tax group manifest, applies classification rules and rounding, and attaches computed totals to each invoice. See [Tax Engine](../20-fiscal-platform/fiscal/tax-engine.md). |
 | **TIN** | Taxpayer Identification Number — internationally recognized identifier for a business entity. DRC calls this NIF (Numéro d'Identification Fiscale). Stored as `merchant_tin` in the canonical invoice. |
-| **Tenant** | *(Payments)* Top-level isolation scope in CTS. Maps to `merchant_tin` + `outlet_id` in the Fiscal Platform. See [Multi-Tenant Model](multi-tenant-model.md). |
+| **Tenant** | *(Payments)* Top-level isolation scope in CTS. Maps to `merchant_tin` + `outlet_id` in the Fiscal Platform. CIS manages the identity behind each tenant — the verified organisation with its KYB status, roles, and API keys. See [Multi-Tenant Model](multi-tenant-model.md). |
 | **Transfer** | *(Payments)* A single money-movement intent processed by the CTS. Lifecycle: INITIATED → SUBMITTED → ACCEPTED → SETTLED. |
 
 ## V–Z

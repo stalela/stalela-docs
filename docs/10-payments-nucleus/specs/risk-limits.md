@@ -6,6 +6,10 @@ Defines tiered onboarding and runtime velocity controls aligned to FICA (ZA) and
 
 ## KYC Tiers
 
+[CIS](../../15-identity/index.md) is the **single authority** for KYC/KYB tier assignment. CTS caches the tier from the JWT `kycTier` claim but never independently verifies identity documents — all verification flows run through CIS.
+
+See [CIS KYC/KYB Flows](../../15-identity/compliance/kyc-kyb-flows.md) for the verification workflows that determine tier assignment.
+
 - Tier 0 (Minimal)
   - Allowed: low-value transactions; no cross-border.
   - Requirements: basic identity (name, mobile), phone verification.
@@ -41,9 +45,10 @@ Defines tiered onboarding and runtime velocity controls aligned to FICA (ZA) and
 
 ## Enforcement Points
 
-- CTS pre-submit policy check using cached tier and counters.
-- Compliance `/screen` returns `score` consumed by CTS.
+- CTS pre-submit policy check using **CIS-issued** `kycTier` (from JWT claim) and cached velocity counters.
+- Compliance `/screen` returns `score` consumed by CTS; screening uses CIS-verified identity data (`cisEntityId`).
 - Directory can convey per-rail caps.
+- When CIS emits `identity.tier.changed`, CTS must invalidate its cached tier for the affected entity.
 
 ---
 

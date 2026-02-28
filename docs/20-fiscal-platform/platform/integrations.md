@@ -138,9 +138,9 @@ See [AI & Natural Language Capabilities](ai-capabilities.md) for full specificat
 
 ## Security considerations
 
-- All integrations authenticate via API keys scoped to specific outlets and permissions.
+- All integrations authenticate via [CIS](../../15-identity/index.md)-issued API keys (JWTs) scoped to specific outlets and permissions. CIS handles credential issuance, rotation, and revocation.
 - Webhook payloads are signed with HMAC-SHA256; receivers must verify the signature before processing.
-- ERP connectors use OAuth 2.0 or certificate-based authentication for the ERP side.
-- API keys can be rotated and revoked without downtime.
+- ERP connectors use OAuth 2.0 (with CIS as the authorization server) or certificate-based authentication for the ERP side.
+- API keys can be rotated and revoked without downtime via the CIS dashboard or API.
 - Rate limiting protects the API from abuse (default: 100 req/s per API key).
 - AI endpoints inherit the same authentication, rate limiting, and tenant isolation as the core invoicing API. AI models run within the Stalela cloud boundary — no customer data is sent to third-party providers unless explicitly opted in.

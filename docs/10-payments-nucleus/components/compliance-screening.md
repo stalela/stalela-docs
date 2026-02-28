@@ -16,6 +16,7 @@ The **Compliance Screening Service** protects Stalela by screening entities (pay
 ## 🛠 Responsibilities
 - Ingest official sanctions/watchlists (OFAC, UN, EU, SA FIC).  
 - Normalize and index names, aliases, DOBs, countries.  
+- Accept **CIS-verified identity data** (`cisEntityId`, `idNumber`) for screening — [CIS](../../15-identity/index.md) verifies the entity first, then Compliance screens the verified entity.
 - Provide low-latency API for CTS screening.  
 - Emit alerts when existing entities match new list entries.  
 - Store results with versioned list references for audit.
@@ -28,8 +29,10 @@ The **Compliance Screening Service** protects Stalela by screening entities (pay
 
 ### HTTP
 - `POST /screen`
-  - body: `{ name, dob?, country?, idNumber? }`
+  - body: `{ name, dob?, country?, idNumber?, cisEntityId? }`
   - returns: `{ action: allow|deny, score, matches[], listVersion }`
+
+> When `cisEntityId` is provided, the screening service can retrieve the full CIS-verified profile (name, DOB, nationality, ID documents) to improve matching accuracy.
 
 ### Events (emit)
 - `compliance.entity.flagged`
@@ -56,7 +59,7 @@ sequenceDiagram
   participant CS as Compliance Service
   participant LIST as Sanctions Lists
 
-  CTS->>CS: POST /screen (payer, payee)
+  CTS->>CS: POST /screen (payer, payee, cisEntityId)
   CS->>LIST: query local index
   LIST-->>CS: result { score, matches }
   CS-->>CTS: { action: allow }

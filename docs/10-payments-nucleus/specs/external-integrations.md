@@ -26,11 +26,19 @@ This file maps out **external systems** Stalela must eventually connect to.
 
 ---
 
-## 🆔 Identity & KYC
-- Optional MOSIP integration for National ID checks.
-- Local credit bureau lookups (future).
-- SIM-swap signals (mobile operators / third-party providers) for risk.
-- AVS (account verification) and bank account name-matching (ZA) for pull payouts.
+## 🆔 Identity & KYC (CIS-Managed)
+
+All identity verification and KYC/KYB adapters are managed by the **Customer Identity Service (CIS)**.
+Payments Nucleus does not call these providers directly — it resolves `cisEntityId` and `kycTier` from CIS.
+
+- **MOSIP** → National ID verification (ZW, future DRC). CIS adapter.
+- **DHA (Home Affairs, SA)** → South African ID verification. CIS adapter.
+- **Credit bureaus** → Enhanced-tier checks (TransUnion, XDS). CIS adapter.
+- **SIM-swap signals** → Mobile operator / third-party providers for fraud risk. CIS adapter.
+- **AVS (Account Verification)** → Bank account name-matching (ZA) for pull payouts. CIS adapter.
+- **DGI / ZIMRA** → Tax authority identity cross-checks for KYB. CIS adapter.
+
+> See [Identity (CIS)](../../15-identity/index.md) for architecture and adapter details.
 
 ---
 

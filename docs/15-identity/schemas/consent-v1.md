@@ -1,0 +1,30 @@
+---
+title: Consent v1
+---
+
+Consent schema capturing versioned privacy grants.
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stalela.dev/schemas/consent.v1.json",
+  "title": "Consent v1",
+  "type": "object",
+  "required": ["consentId", "identityId", "scope", "policyId", "version", "status", "grantedAt"],
+  "properties": {
+    "consentId": { "type": "string", "pattern": "^cons_[a-zA-Z0-9]+$" },
+    "identityId": { "type": "string", "pattern": "^id_[a-zA-Z0-9]+$" },
+    "scope": { "type": "string" },
+    "policyId": { "type": "string" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "status": { "type": "string", "enum": ["granted", "withdrawn"] },
+    "grantedAt": { "type": "string", "format": "date-time" },
+    "withdrawnAt": { "type": ["string", "null"], "format": "date-time" },
+    "proof": { "type": "string", "description": "Hash or URI pointing to append-only consent artifacts." },
+    "metadata": { "type": "object", "additionalProperties": { "type": ["string", "number", "boolean", "null"] } }
+  },
+  "additionalProperties": false
+}
+```
+
+See [consent.v1.json](consent.v1.json) for the raw schema file.
